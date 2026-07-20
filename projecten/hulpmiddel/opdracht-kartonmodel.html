@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opdracht — Kartonmodel — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:960px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.95rem;}
+
+  section{margin-bottom:28px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.12rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .denkvraag{position:relative;margin:20px 0 14px;padding:14px 18px;
+    background:#eef4f8;border:1px solid var(--blue);border-left:6px solid var(--blue);}
+  .denkvraag .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:var(--blue);padding:4px 10px;margin-bottom:8px;}
+  .denkvraag .badge::before{content:"?";font-size:.9rem;line-height:1;}
+  .denkvraag p{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.04rem;margin:0;}
+  .zelf{margin:0 0 14px;padding:12px 14px;border:1px dashed var(--steel);background:#fbfaf6;}
+  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .zelf textarea{width:100%;resize:vertical;min-height:56px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:8px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .toon-btn{margin-top:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;
+    border:none;padding:9px 14px;cursor:pointer;}
+  .antwoord{display:none;margin:0 0 14px;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
+  .antwoord::before{content:"Voorbeeldantwoord";display:block;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.6rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--blue);margin:0 0 6px;}
+  .antwoord.open{display:block;}
+
+  .vraag{margin-bottom:14px;}
+  .vraag label{display:block;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.95rem;margin-bottom:6px;}
+  .vraag label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.86rem;}
+  textarea.groot{width:100%;resize:vertical;min-height:60px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  textarea.groot:focus,.zelf textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  input.tekst{width:100%;font-family:'Source Serif 4',Georgia,serif;font-size:1rem;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  input.tekst:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .hint{border:1px solid var(--line);background:#f4f2ec;padding:10px 14px;margin-bottom:12px;font-size:.9rem;}
+  .hint b{font-family:'Archivo',sans-serif;}
+
+  /* foto's — zelfde patroon als het logboek */
+  .bijlage-lbl{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px;}
+  .bijlage-lbl label{font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;}
+  .add-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.68rem;letter-spacing:.06em;
+    text-transform:uppercase;background:#fff;color:var(--blue);border:1px solid var(--blue);
+    padding:5px 12px;cursor:pointer;white-space:nowrap;position:relative;display:inline-block;}
+  .add-btn:hover{background:var(--blue);color:#fff;}
+  .add-btn input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;}
+  .fotogrid{display:flex;flex-wrap:wrap;gap:10px;}
+  .fotogrid:empty::after{content:"Nog geen foto's toegevoegd.";font-size:.86rem;color:var(--steel);font-style:italic;}
+  .foto-kaart{width:150px;border:1px solid var(--line);background:#fff;}
+  .foto-kaart img{display:block;width:100%;height:112px;object-fit:cover;border-bottom:1px solid var(--line);}
+  .foto-kaart .bijschrift{width:100%;border:none;background:transparent;font-family:'Source Serif 4',Georgia,serif;
+    font-size:.8rem;padding:5px 6px;color:var(--ink);}
+  .foto-kaart .bijschrift:focus{outline:2px solid var(--blue);outline-offset:-2px;}
+  .foto-kaart .verwijder{display:block;width:100%;border:none;border-top:1px solid var(--line);
+    background:#faf1f0;color:var(--red);font-family:'Space Mono',monospace;font-size:.62rem;
+    letter-spacing:.08em;text-transform:uppercase;padding:4px 0;cursor:pointer;}
+  .foto-kaart .verwijder:hover{background:var(--red);color:#fff;}
+
+  ul.check{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+  ul.check li{background:var(--sheet);}
+  ul.check label{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;cursor:pointer;font-size:.94rem;}
+  ul.check input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 auto;
+    width:18px;height:18px;margin-top:2px;border:2px solid var(--ink);background:#fff;cursor:pointer;
+    display:grid;place-content:center;}
+  ul.check input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue);}
+  ul.check input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:.76rem;}
+  ul.check b{font-family:'Archivo',sans-serif;}
+
+  .naar{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:12px 16px;margin-top:18px;font-size:.95rem;}
+  .naar b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.5pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.toon-btn,.add-btn{display:none!important;}
+    .antwoord{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .denkvraag,.zelf,.vraag,.hint,ul.check{break-inside:avoid;}
+    .zelf textarea,textarea.groot,input.tekst{border:1px solid #000;min-height:38px;}
+    .idcel input{border-bottom:1px solid #000;}
+    .foto-kaart{break-inside:avoid;width:120px;}
+    .foto-kaart img{height:90px;}
+    .foto-kaart .verwijder{display:none!important;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Opdracht · les 3</div>
+      <h1>Kartonmodel</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 6 · les 3 · Groow: Ontwerpen</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="k-naam">Naam</label><input id="k-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="k-klas">Klas</label><input id="k-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="k-datum">Datum</label><input id="k-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="denkvraag">
+    <span class="badge">Denkstimulerende vraag</span>
+    <p>Je hebt vorige week op papier al gekozen tussen drie concepten. Waarom zou je dat gekozen concept nu alsnog namaken in karton, vóórdat je ook maar één lijn in Onshape tekent?</p>
+  </div>
+  <div class="zelf">
+    <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+    <textarea data-key="denk" rows="2"></textarea>
+    <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+  </div>
+  <div class="antwoord">
+    <p>Een schets op papier verbergt fouten die je pas ziet zodra iets driedimensionaal is: een vorm die te groot is voor je hand, een haak die de verkeerde kant op wijst, een uitsteeksel dat precies tegen een kabel aan komt. Karton kost tien minuten en niets. Een verkeerd CAD-model kost een uur tekenwerk én een mislukte print van soms wel vier uur. Hoe eerder een fout zichtbaar wordt, hoe goedkoper hij is om te herstellen — dat principe gebruik je dit hele project steeds opnieuw, ook straks bij de testring en de twee iteraties.</p>
+  </div>
+
+  <div class="uitleg">
+    <b>Dit blad is deliverable 6.</b> Je gaat je gekozen concept namaken in karton, foamboard of ander
+    prakticabel materiaal — ongeveer op ware grootte, ruw en snel, geen mooi werk. Doel: vóórdat je gaat
+    precisiemeten en in Onshape tekenen, weet je al hoe je hulpmiddel er ongeveer uitziet, of het in je
+    hand past en of het op de plek past waar het moet komen. <b>± 25 minuten.</b>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 1</span><h2>Jouw concept</h2><span class="rule"></span><span class="code">Uit deliverable 5</span></div>
+    <div class="vraag">
+      <label>Welk concept heb je gekozen op het <a href="werkblad-concepten.html" target="_blank" rel="noopener">werkblad Concepten kiezen</a>, en welk probleem lost het op?</label>
+      <textarea class="groot" data-key="concept" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 2</span><h2>Bouw het model</h2><span class="rule"></span><span class="code">Ruw en snel</span></div>
+    <div class="hint"><b>Materiaal:</b> karton, foamboard, plakband, schaar/hobbymes. Geen precisie nodig — dit gaat om de vorm, niet om de maat op de tiende millimeter.</div>
+    <div class="vraag">
+      <label>Bouw je hulpmiddel na, ongeveer op ware grootte. Welke onderdelen heeft het, en hoe zitten die aan elkaar?</label>
+      <textarea class="groot" data-key="opbouw" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 3</span><h2>Testen</h2><span class="rule"></span><span class="code">Tegen je hand en de scootmobiel</span></div>
+    <div class="vraag">
+      <label>Houd je kartonmodel tegen de plek op de scootmobiel waar het moet komen (of tegen je eigen hand/arm als de scootmobiel er niet is). Past de vorm? Zit hij niemand in de weg — kabel, hendel, bewegend deel?</label>
+      <textarea class="groot" data-key="test-plek" rows="3"></textarea>
+    </div>
+    <div class="vraag">
+      <label>Pak je kartonmodel vast zoals de gebruiker het straks zou doen. Zit het lekker in de hand? Kun je het bedienen zoals bedoeld?</label>
+      <textarea class="groot" data-key="test-hand" rows="2"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 4</span><h2>Foto's van je kartonmodel</h2><span class="rule"></span><span class="code">Minimaal 2</span></div>
+    <p>Minimaal één foto van het model zelf, en één foto van het model op de plek waar het moet komen (of in je hand).</p>
+    <div class="bijlage-lbl">
+      <label>Jouw foto's</label>
+      <label class="add-btn">+ Foto toevoegen<input type="file" id="fotoInvoer" accept="image/*" capture="environment" multiple></label>
+    </div>
+    <div class="fotogrid" id="fotos"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 5</span><h2>Wat pas je aan?</h2><span class="rule"></span><span class="code">Vóór je gaat meten</span></div>
+    <div class="vraag">
+      <label>Wat werkte niet aan je eerste idee, nu je het echt in de hand hebt gehad? Wat verander je daardoor aan je concept?</label>
+      <textarea class="groot" data-key="aanpassing" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 6</span><h2>Inleveren</h2><span class="rule"></span><span class="code">Deadline: les 3</span></div>
+    <ul class="check">
+      <li><label><input type="checkbox" data-key="k1"><span>Kartonmodel gebouwd, ongeveer op ware grootte</span></label></li>
+      <li><label><input type="checkbox" data-key="k2"><span>Getest tegen de plek op de scootmobiel én in de hand</span></label></li>
+      <li><label><input type="checkbox" data-key="k3"><span>Minimaal <b>2 foto's</b> toegevoegd</span></label></li>
+      <li><label><input type="checkbox" data-key="k4"><span>Aanpassingen aan het concept genoteerd</span></label></li>
+      <li><label><input type="checkbox" data-key="k5"><span>Gedownload als PDF en ingeleverd</span></label></li>
+    </ul>
+  </section>
+
+  <div class="naar">
+    <b>Klaar?</b> Nu ga je precies meten: op naar de
+    <a href="opdracht-maatschets.html" target="_blank" rel="noopener">Maatschets met omgeving</a>.
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Opdracht les 3 — deliverable 6</span>
+    <span>Kartonmodel</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-kartonmodel-';
+
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    var isCheck=v.type==='checkbox';
+    try{
+      var x=localStorage.getItem(k);
+      if(x!==null){ if(isCheck) v.checked=(x==='1'); else v.value=x; }
+    }catch(e){}
+    v.addEventListener(isCheck?'change':'input',function(){
+      try{ localStorage.setItem(k, isCheck?(v.checked?'1':'0'):v.value); }catch(e){}
+    });
+  });
+
+  document.querySelector('.toon-btn').addEventListener('click',function(){
+    var ans=document.querySelector('.antwoord');
+    var open=ans.classList.toggle('open');
+    this.textContent=open?'Verberg voorbeeldantwoord':'Toon voorbeeldantwoord';
+  });
+
+  /* ══ Foto's — gecomprimeerd opgeslagen als dataURL, zelfde patroon als logboek.html ══ */
+  var fotoKey='hulpmiddel-kartonmodel-fotos';
+  function fotos(){ try{ return JSON.parse(localStorage.getItem(fotoKey)||'[]'); }catch(e){ return []; } }
+  function bewaarFotos(lijst){
+    try{ localStorage.setItem(fotoKey, JSON.stringify(lijst)); return true; }
+    catch(e){ return false; }
+  }
+
+  function comprimeer(file, cb){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var img=new Image();
+      img.onload=function(){
+        var maxDim=1000;
+        var schaal=Math.min(1, maxDim/Math.max(img.width,img.height));
+        var w=Math.round(img.width*schaal), h=Math.round(img.height*schaal);
+        var canvas=document.createElement('canvas');
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        cb(canvas.toDataURL('image/jpeg',0.72));
+      };
+      img.onerror=function(){ cb(null); };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderFotos(){
+    var grid=document.getElementById('fotos');
+    grid.innerHTML='';
+    fotos().forEach(function(f){
+      var kaart=document.createElement('div');
+      kaart.className='foto-kaart';
+      kaart.innerHTML=
+        '<img src="'+f.data+'" alt="Foto van het kartonmodel">'+
+        '<input class="bijschrift" type="text" placeholder="Bijschrift…" value="'+(f.bijschrift||'').replace(/"/g,'&quot;')+'">'+
+        '<button type="button" class="verwijder">Verwijderen</button>';
+      kaart.querySelector('.bijschrift').addEventListener('input',function(){
+        f.bijschrift=this.value;
+        bewaarFotos(fotos().map(function(x){ return x.id===f.id?f:x; }));
+      });
+      kaart.querySelector('.verwijder').addEventListener('click',function(){
+        if(!confirm('Deze foto verwijderen?')) return;
+        bewaarFotos(fotos().filter(function(x){ return x.id!==f.id; }));
+        renderFotos();
+      });
+      grid.appendChild(kaart);
+    });
+  }
+
+  document.getElementById('fotoInvoer').addEventListener('change',function(){
+    var bestanden=[].slice.call(this.files);
+    this.value='';
+    bestanden.forEach(function(file){
+      if(!/^image\//.test(file.type)) return;
+      comprimeer(file, function(dataUrl){
+        if(!dataUrl) return;
+        var lijst=fotos();
+        lijst.push({id:Date.now()+'-'+Math.random().toString(36).slice(2), data:dataUrl, bijschrift:''});
+        if(!bewaarFotos(lijst)){
+          alert('Deze foto past niet meer in de opslag van je browser. Verwijder een oudere foto en probeer het opnieuw.');
+          return;
+        }
+        renderFotos();
+      });
+    });
+  });
+  renderFotos();
+})();
+</script>
+
+</body>
+</html>
