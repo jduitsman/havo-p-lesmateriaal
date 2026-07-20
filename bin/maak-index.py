@@ -15,26 +15,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PROJECTEN = ROOT / "projecten"
 
-# Bestandssoorten die we per project herkennen, in de volgorde waarin ze tonen.
-SOORTEN = [
-    ("html", "Lesmateriaal", "html"),
-    ("pdf", "PDF", "pdf"),
-    ("projectdocument.md", "Projectdocument", "doc"),
-    ("rubric.md", "Rubric", "doc"),
-    ("docentenhandleiding.md", "Docentenhandleiding", "doc"),
-    ("csv", "Eindtermen", "csv"),
-]
-
-
-def mooi_label(stem: str) -> str:
-    """Leesbaar label voor een opdracht-/werkblad-bestand, bijv.
-    'opdracht-bedrijfsbezoek' -> 'Opdracht: Bedrijfsbezoek'."""
-    for prefix, woord in (("opdracht-", "Opdracht"), ("werkblad-", "Werkblad")):
-        if stem.startswith(prefix):
-            rest = stem[len(prefix):].replace("-", " ")
-            return f"{woord}: {rest.capitalize()}"
-    return stem.replace("-", " ").capitalize()
-
 
 def titel_uit(md: Path) -> str | None:
     """Eerste markdown-kop uit een projectdocument."""
@@ -64,32 +44,13 @@ def samenvatting_uit(md: Path) -> str:
 
 
 def bestanden_van(map_: Path) -> list[tuple[str, str, str]]:
-    """(label, pad, soort) voor alles wat we in een projectmap herkennen."""
-    gevonden = []
-    for patroon, label, soort in SOORTEN:
-        if patroon in ("html", "pdf", "csv"):
-            # hoofdbestand (mapnaam) eerst, daarna de rest alfabetisch;
-            # de docentenhandleiding heeft zijn eigen regel in SOORTEN
-            treffers = sorted(
-                (t for t in map_.glob(f"*.{patroon}") if t.stem != "docentenhandleiding"),
-                key=lambda t: (t.stem != map_.name, t.stem),
-            )
-        elif patroon == "docentenhandleiding.md":
-            treffers = sorted(map_.glob("docentenhandleiding.*"))
-        else:
-            kandidaat = map_ / patroon
-            treffers = [kandidaat] if kandidaat.exists() else []
-        for t in treffers:
-            if len(treffers) == 1:
-                naam = label
-            elif patroon == "docentenhandleiding.md":
-                naam = f"{label} ({t.suffix.lstrip('.')})"
-            elif patroon == "html":
-                naam = mooi_label(t.stem)
-            else:
-                naam = f"{label} — {t.stem}"
-            gevonden.append((naam, t.relative_to(ROOT).as_posix(), soort))
-    return gevonden
+    """Alleen het hoofddocument — dat linkt vanuit zichzelf al door naar
+    alle opdrachtbladen, het logboek en het protocol. Geen losse knoppen
+    ernaast, dat is dubbelop."""
+    hoofdbestand = map_ / f"{map_.name}.html"
+    if hoofdbestand.exists():
+        return [("Open het project", hoofdbestand.relative_to(ROOT).as_posix(), "html")]
+    return []
 
 
 def projecten() -> list[dict]:
