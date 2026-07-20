@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opdracht — De testring — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:960px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  section{margin-bottom:28px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.12rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  /* denkvraag + zelf antwoorden (huisstijl) */
+  .denkvraag{position:relative;margin:20px 0 14px;padding:14px 18px;
+    background:#eef4f8;border:1px solid var(--blue);border-left:6px solid var(--blue);}
+  .denkvraag .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:var(--blue);padding:4px 10px;margin-bottom:8px;}
+  .denkvraag .badge::before{content:"?";font-size:.9rem;line-height:1;}
+  .denkvraag p{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.04rem;margin:0;}
+  .zelf{margin:0 0 14px;padding:12px 14px;border:1px dashed var(--steel);background:#fbfaf6;}
+  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .zelf textarea{width:100%;resize:vertical;min-height:56px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:8px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .toon-btn{margin-top:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;
+    border:none;padding:9px 14px;cursor:pointer;}
+  .antwoord{display:none;margin:0 0 14px;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
+  .antwoord::before{content:"Voorbeeldantwoord";display:block;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.6rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--blue);margin:0 0 6px;}
+  .antwoord.open{display:block;}
+
+  /* meettabel */
+  table.meet{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line);}
+  table.meet th{background:var(--ink);color:#fff;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;text-align:left;}
+  table.meet td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;}
+  table.meet td:first-child{padding:7px 10px;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.9rem;background:#f4f2ec;white-space:nowrap;}
+  table.meet input{width:100%;border:none;background:transparent;padding:8px 10px;
+    font-family:'Space Mono',monospace;font-size:.92rem;color:var(--ink);}
+  table.meet input:focus{outline:2px solid var(--blue);outline-offset:-2px;}
+
+  .rekenrij{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;margin-top:14px;}
+  .rekenblok{flex:1;min-width:180px;border:1px solid var(--line);background:#fff;padding:10px 14px;}
+  .rekenblok label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:4px;}
+  .rekenblok input,.rekenblok select{width:100%;border:none;border-bottom:1px solid var(--steel);
+    background:transparent;font-family:'Space Mono',monospace;font-weight:700;font-size:1.15rem;
+    color:var(--blue);padding:2px 0;}
+  .rekenblok.uitkomst{background:var(--ink);}
+  .rekenblok.uitkomst label{color:#8fc4e6;}
+  .rekenblok.uitkomst .waarde{font-family:'Space Mono',monospace;font-weight:700;
+    font-size:1.3rem;color:#fff;}
+
+  /* tekening */
+  .figuur{border:1px solid var(--steel);background:var(--sheet);margin:14px 0;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .figuur svg{display:block;width:100%;height:auto;}
+  .figuur figcaption{border-top:1px solid var(--line);padding:7px 12px;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);}
+  .figuur figcaption b{color:var(--blue);font-weight:700;}
+
+  /* maattabel + stappen */
+  table.maten{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line);font-size:.92rem;}
+  table.maten th{background:var(--ink);color:#fff;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;text-align:left;}
+  table.maten td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:7px 11px;}
+  table.maten td:first-child{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);white-space:nowrap;}
+  ol.stappen{list-style:none;margin:0;padding:0;counter-reset:s;}
+  ol.stappen li{counter-increment:s;position:relative;padding:8px 0 8px 40px;
+    border-bottom:1px dotted var(--line);font-size:.96rem;}
+  ol.stappen li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:9px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;color:var(--blue);}
+  ol.stappen b{font-family:'Archivo',sans-serif;font-weight:700;}
+  ol.stappen .feature{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--red);
+    border:1px solid var(--red);padding:0 5px;white-space:nowrap;}
+
+  .werkregel{margin:14px 0;padding:11px 16px;background:var(--ink);color:var(--sheet);
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.88rem;}
+  .werkregel span{color:#8fc4e6;}
+
+  /* klaar-checklist */
+  ul.klaar{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+  ul.klaar li{background:var(--sheet);}
+  ul.klaar label{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;cursor:pointer;font-size:.94rem;}
+  ul.klaar input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 auto;
+    width:18px;height:18px;margin-top:2px;border:2px solid var(--ink);background:#fff;cursor:pointer;
+    display:grid;place-content:center;}
+  ul.klaar input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue);}
+  ul.klaar input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:.76rem;}
+
+  .bonus{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:12px 16px;margin-top:18px;font-size:.95rem;}
+  .bonus b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.toon-btn{display:none!important;}
+    .antwoord{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .figuur,.denkvraag,.zelf,.rekenrij,table.maten,ol.stappen,ul.klaar,.bonus{break-inside:avoid;}
+    .zelf textarea{border:1px solid #000;min-height:48px;}
+    .idcel input,table.meet input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Opdracht · les 3 · Onshape</div>
+      <h1>De testring</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 7 · einde les 3 · Groow: Maken</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="o-naam">Naam</label><input id="o-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="o-klas">Klas</label><input id="o-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="o-datum">Datum</label><input id="o-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="denkvraag">
+    <span class="badge">Denkstimulerende vraag</span>
+    <p>Jouw klem printen duurt straks 4 uur. Waarom zou je éérst 12 minuten besteden aan het printen van een simpel ringetje van 10 mm hoog?</p>
+  </div>
+  <div class="zelf">
+    <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+    <textarea data-key="denk" rows="2"></textarea>
+    <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+  </div>
+  <div class="antwoord">
+    <p>Omdat een geprint gat vrijwel nooit in één keer past: het plastic krimpt, de onderste lagen worden platgedrukt en printers maken ronde gaten stelselmatig te klein. De testring toetst jouw meting én jouw speling in 12 minuten. Zit je er 0,4 mm naast, dan weet je dat nu — en niet na 4 uur printen voor niets.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 1</span><h2>Jouw maten</h2><span class="rule"></span><span class="code">Uit de maatschets (deliverable 6)</span></div>
+    <p>Je hebt deze maten al gemeten en genoteerd op de opdracht
+    <a href="opdracht-maatschets.html" target="_blank" rel="noopener">Maatschets met omgeving</a>.
+    Ze staan hieronder al klaar — controleer ze en pas ze aan als je iets wilt herzien.
+    Nog niets ingevuld? <a href="opdracht-maatschets.html" target="_blank" rel="noopener">Ga eerst naar de maatschets</a>.</p>
+    <div class="rekenrij">
+      <div class="rekenblok">
+        <label>#buisD — jouw grootste meting (mm)</label>
+        <input id="buisD" data-key="buisD" inputmode="decimal" placeholder="bijv. 25,0">
+      </div>
+      <div class="rekenblok">
+        <label>#speling (mm) — jouw eigen keuze</label>
+        <input id="speling" data-key="speling" inputmode="decimal" placeholder="bijv. 0,1">
+      </div>
+      <div class="rekenblok uitkomst">
+        <label>Binnendiameter van jouw ring</label>
+        <div class="waarde" id="binnenUit">— mm</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 2</span><h2>De tekening</h2><span class="rule"></span><span class="code">Blad TR-01 · maten in mm</span></div>
+    <p>Dit is de ring die je gaat modelleren: een testring in <b>twee helften</b> die je met twee M3-boutjes aan elkaar zet — precies het twee-helften-patroon dat je echte klem straks ook gebruikt. <b>Deel A</b> (boven) krijgt <b>doorloopgaten Ø 3,4</b> waar de boutjes doorheen vallen. <b>Deel B</b> (onder) krijgt <b>gaten Ø 4,0</b> waarin een M3-draadinsert komt. Zo test één printje van 10 mm hoog álles tegelijk: je buismaat, je boutgaten én je insertgaten. De tekening rekent mee met jouw maten uit stap 1.</p>
+    <figure class="figuur">
+      <svg id="tekening" viewBox="0 4 254 100" role="img" aria-label="Technische tekening van de tweedelige testring: bovenaanzicht en vooraanzicht met maatvoering"></svg>
+      <figcaption><span>Blad <b>TR-01</b> · Testring, 2 delen</span><span>Schaal ± 2:1 · maten in mm</span><span>Hoogte 10 · niet op schaal meten</span></figcaption>
+    </figure>
+    <table class="maten">
+      <thead><tr><th>Maat</th><th>Waarde</th><th>Waarom</th></tr></thead>
+      <tbody>
+        <tr><td>#buisD</td><td>jouw grootste meting (stap 1)</td><td>Variabele in Onshape — meet zelf, neem geen tabellenwaarde</td></tr>
+        <tr><td>#speling</td><td>0,3 – 0,5 mm</td><td>Variabele in Onshape — vangt krimp, elephant foot en meetfout op</td></tr>
+        <tr><td>Binnendiameter</td><td><span class="mono">#buisD + #speling</span></td><td>Als formule invoeren, niet als getal — iteratie = 10 seconden</td></tr>
+        <tr><td>Wanddikte</td><td>3 mm</td><td>Minimaal 2,5 mm, anders scheurt de print langs de wandlijnen</td></tr>
+        <tr><td>Hoogte</td><td>10 mm</td><td>Hoog genoeg om te passen, laag genoeg voor korte printtijd</td></tr>
+        <tr><td>Twee helften</td><td>deel A boven, deel B onder</td><td>Gedeeld over de horizontale hartlijn — het patroon van je echte klem</td></tr>
+        <tr><td>Flens</td><td>10 mm uitsteek, 6 mm dik per helft</td><td>Links en rechts één flenspaar; daar gaan de boutjes doorheen</td></tr>
+        <tr><td>Boutgat deel A</td><td>Ø 3,4 mm (2×)</td><td>M3-bout valt er los doorheen — hart op 5 mm uit de buitenwand, op de hartlijn van de flens</td></tr>
+        <tr><td>Insertgat deel B</td><td>Ø 4,0 mm (2×)</td><td>Voor de M3-draadinsert — exact in lijn met het boutgat erboven</td></tr>
+        <tr><td>Bout</td><td>M3 × 12, 2 stuks</td><td>Door deel A (6 mm) in de insert van deel B</td></tr>
+        <tr><td>Afronding flens</td><td>R 2 mm</td><td>Geen scherpe hoeken — veiligheid én sterkte</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 3</span><h2>Bouwvolgorde in Onshape</h2><span class="rule"></span><span class="code">De features van deze les</span></div>
+    <ol class="stappen">
+      <li><b>Variabelen eerst.</b> Maak <span class="mono">#buisD</span> en <span class="mono">#speling</span> aan (Variable Studio of #-menu) en vul jouw waarden uit stap 1 in.</li>
+      <li><b>Schets op het Top-vlak</b> <span class="feature">Sketch</span> — twee cirkels vanuit de oorsprong: binnencirkel <span class="mono">#buisD + #speling</span>, buitencirkel 6 mm groter (wand 2 × 3 mm). Zet de maten met <span class="feature">Dimension</span> en gebruik de formule, geen los getal.</li>
+      <li><b>Teken de flenzen</b> in dezelfde schets: links en rechts een blok van 10 mm uitsteek en 12 mm hoog, symmetrisch om de horizontale hartlijn. Trek de horizontale hartlijn als deellijn door alles heen — die splitst de schets in deel A (boven) en deel B (onder).</li>
+      <li><b>Extrude 10 mm</b> <span class="feature">Extrude</span> — kies bij het extruden <b>twee losse parts</b>: deel A en deel B. Twee helften die elk 180° om de buis vallen.</li>
+      <li><b>Boutgaten deel A</b> <span class="feature">Extrude — Remove</span> — schets op het <b>kopvlak van de flens van deel A</b> (het platte vlak waar straks de boutkop zit): 2 cirkels <b>Ø 3,4 mm</b>, hart op 5 mm uit de buitenwand en op halve hoogte (5 mm). Snijd 6 mm diep — precies door deel A heen, tot het deelvlak.</li>
+      <li><b>Insertgaten deel B</b> <span class="feature">Extrude — Remove</span> — schets op het <b>deelvlak van deel B</b> (waar deel A tegenaan komt): 2 cirkels <b>Ø 4,0 mm</b>, exact in lijn met de boutgaten — zelfde hartlijnen, niet opnieuw meten. Snijd 6 mm diep. Hier perst straks de M3-insert in.</li>
+      <li><b>Afronden</b> <span class="feature">Fillet</span> — R 2 op de buitenhoeken van beide flensparen.</li>
+      <li><b>Controleer</b> — klik de binnenrand aan en lees de diameter af: staat daar jouw <span class="mono">#buisD + #speling</span>? Wijzig <span class="mono">#speling</span> eens naar 0,5 en kijk of béide helften meebewegen. Zo niet: je hebt ergens een los getal gebruikt.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 4</span><h2>Exporteren en inleveren</h2><span class="rule"></span><span class="code">Deadline: einde les 3</span></div>
+    <ol class="stappen">
+      <li>Rechtsklik op elk deel → <b>Export</b> → <b>STL</b>, resolutie Fine — <b>twee bestanden</b>, deel A en deel B apart.</li>
+      <li>Bestandsnamen: <span class="mono">testringA_[naam]_[#buisD]_[#speling].stl</span> en <span class="mono">testringB_[naam]_…</span> — bijvoorbeeld <span class="mono">testringA_sanne_25-0_0-4.stl</span>.</li>
+      <li>Lever beide bestanden in. De delen worden tussen les 3 en 4 geprint (± 12 min per deel). In les 4 plaats je de inserts en zet je de helften met twee M3 × 12-boutjes om de echte buis.</li>
+      <li><b>Inserts plaatsen gaat met de soldeerbout (± 200 °C)</b> — dat doe je in les 4, alleen onder toezicht van de docent. Niet zelf alvast proberen.</li>
+    </ol>
+    <ul class="klaar">
+      <li><label><input type="checkbox" data-key="k1"><span>Binnendiameter is een <b>formule</b> (<span class="mono">#buisD + #speling</span>), geen los getal</span></label></li>
+      <li><label><input type="checkbox" data-key="k2"><span>#buisD is jouw <b>grootste</b> gemeten maat — niet de eerste de beste</span></label></li>
+      <li><label><input type="checkbox" data-key="k3"><span>Twee losse delen, gedeeld over de hartlijn — wand 3 mm, hoogte 10 mm</span></label></li>
+      <li><label><input type="checkbox" data-key="k4"><span>Deel A: 2 doorloopgaten <b>Ø 3,4</b> — deel B: 2 insertgaten <b>Ø 4,0</b>, exact in lijn</span></label></li>
+      <li><label><input type="checkbox" data-key="k5"><span>Fillets R 2 op de flenzen — geen scherpe hoeken</span></label></li>
+      <li><label><input type="checkbox" data-key="k6"><span><b>Twee</b> STL's geëxporteerd met de juiste bestandsnamen en ingeleverd</span></label></li>
+    </ul>
+    <div class="bonus"><b>Sneller klaar?</b> Exporteer nóg een setje met een andere #speling (0,3 of 0,5 — alleen de variabele wijzigen, je model rekent zelf) en schrijf de speling met stift op de flens. In les 4 voel je dan zelf het verschil tussen klemmen, passen en rammelen — dat is je tolerantieberekening voor deliverable 12.</div>
+  </section>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Opdracht les 3 — deliverable 7</span>
+    <span>Blad TR-01</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-testring-';
+  /* buisD en speling worden gedeeld met opdracht-maatschets.html — daar
+     meet de leerling ze, hier worden ze alleen nog gebruikt. */
+  var GEDEELD='hulpmiddel-buismeting-';
+  var GEDEELDE_VELDEN={buisD:1,speling:1};
+
+  /* ── Opslag van alle velden ── */
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var naam=v.dataset.key||v.id;
+    var k=(GEDEELDE_VELDEN[naam]?GEDEELD:KEY)+naam;
+    var isCheck=v.type==='checkbox';
+    try{
+      var x=localStorage.getItem(k);
+      if(x!==null){ if(isCheck) v.checked=(x==='1'); else v.value=x; }
+    }catch(e){}
+    v.addEventListener(isCheck?'change':'input',function(){
+      try{ localStorage.setItem(k, isCheck?(v.checked?'1':'0'):v.value); }catch(e){}
+      if(v.id==='buisD'||v.id==='speling') teken();
+    });
+  });
+
+  document.querySelector('.toon-btn').addEventListener('click',function(){
+    var ans=document.querySelector('.antwoord');
+    var open=ans.classList.toggle('open');
+    this.textContent=open?'Verberg voorbeeldantwoord':'Toon voorbeeldantwoord';
+  });
+
+  /* ══ De tekening — alles rekent vanuit dezelfde constanten ══
+     Hartlijnregel: het hart van de ring en het hart van het boutgat liggen op
+     ÉÉN horizontale hartlijn (HART_Y). Elk onderdeel verwijst daarnaar. */
+  var SVG='http://www.w3.org/2000/svg';
+  var svg=document.getElementById('tekening');
+  var BLAUW='#1e5f8c', STAAL='#767e87', INKT='#22262b';
+
+  function el(naam,at){ var e=document.createElementNS(SVG,naam);
+    for(var k in at) e.setAttribute(k,at[k]); svg.appendChild(e); return e; }
+  function lijn(x1,y1,x2,y2,at){ at=at||{}; at.x1=x1; at.y1=y1; at.x2=x2; at.y2=y2;
+    at.stroke=at.stroke||INKT; at['stroke-width']=at['stroke-width']||0.55; el('line',at); }
+  function hartlijn(x1,y1,x2,y2){ lijn(x1,y1,x2,y2,{stroke:STAAL,'stroke-width':0.35,'stroke-dasharray':'5 1.4 1 1.4'}); }
+  function verborgen(x1,y1,x2,y2){ lijn(x1,y1,x2,y2,{stroke:STAAL,'stroke-width':0.4,'stroke-dasharray':'2 1.4'}); }
+  function tekst(x,y,t,at){ at=at||{}; at.x=x; at.y=y; var e=el('text',at);
+    e.setAttribute('font-family',"'Space Mono',monospace");
+    e.setAttribute('font-size',at['font-size']||3.4);
+    e.setAttribute('fill',at.fill||INKT); e.textContent=t; return e; }
+  function maat(x1,y1,x2,y2,label,offset){
+    /* maatlijn met pijlen, horizontaal of verticaal */
+    var horiz=(y1===y2);
+    var ox=horiz?0:offset, oy=horiz?offset:0;
+    var ax1=x1+ox, ay1=y1+oy, ax2=x2+ox, ay2=y2+oy;
+    lijn(x1,y1,ax1,ay1+(horiz?(offset>0?1.2:-1.2):0),{stroke:STAAL,'stroke-width':0.3});
+    lijn(x2,y2,ax2,ay2+(horiz?(offset>0?1.2:-1.2):0),{stroke:STAAL,'stroke-width':0.3});
+    lijn(ax1,ay1,ax2,ay2,{stroke:STAAL,'stroke-width':0.35});
+    [[ax1,ay1,1],[ax2,ay2,-1]].forEach(function(p){
+      var d=horiz
+        ? 'M'+p[0]+','+p[1]+' l'+(2.2*p[2])+','+(-0.9)+' l0,1.8 z'
+        : 'M'+p[0]+','+p[1]+' l'+(-0.9)+','+(2.2*p[2])+' l1.8,0 z';
+      el('path',{d:d,fill:STAAL});
+    });
+    var tx=horiz?(ax1+ax2)/2:ax1, ty=horiz?ay1-1.2:(ay1+ay2)/2;
+    tekst(tx,ty,label,{ 'text-anchor':'middle', fill:STAAL,
+      transform:horiz?'':'rotate(-90 '+tx+' '+ty+')',
+      dy:horiz?0:-1.2 });
+  }
+
+  function num(v,d){ return v.toFixed(d===undefined?1:d).replace('.',','); }
+
+  function teken(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    /* ── Parameters: dezelfde getallen voeden rekenblok én tekening ── */
+    var buisD=parseFloat((document.getElementById('buisD').value||'25,0').replace(',','.'));
+    if(!isFinite(buisD)||buisD<5||buisD>60) buisD=25.0;
+    var speling=parseFloat(document.getElementById('speling').value);
+    var binnenD=buisD+speling;
+    var WAND=3, HOOG=10, FLENS_UIT=10, FLENS_DIK=6, GAT_A=3.4, GAT_B=4.0, BOUT_X=5, FILLET=2;
+    var buitenD=binnenD+2*WAND;
+
+    document.getElementById('binnenUit').textContent=
+      num(buisD)+' + '+num(speling)+' = Ø '+num(binnenD)+' mm';
+
+    var S=1.9;                       // schaal mm → tekeneenheden
+    var rB=binnenD/2*S, rU=buitenD/2*S;
+    var uit=FLENS_UIT*S, dik=FLENS_DIK*S, fil=FILLET*S;
+    var rA=GAT_A/2*S, rIns=GAT_B/2*S;
+
+    /* ── Bovenaanzicht ──
+       Dé hartlijn (HART_Y) is tegelijk het deelvlak: deel A erboven, deel B
+       eronder. De bouthartlijnen staan er haaks op, links en rechts. */
+    var CX=62, HART_Y=52;
+    var boutL=CX-rU-BOUT_X*S, boutR=CX+rU+BOUT_X*S;   // bouthart t.o.v. buitenwand
+
+    // flenzen links en rechts (afgeronde buitenhoeken R2), symmetrisch om HART_Y
+    function flens(x0,x1,rond){ // rond: welke kant de buitenhoeken zitten (-1 links, +1 rechts)
+      var xa=rond<0?x1:x0, xb=rond<0?x0:x1; // xb = buitenrand
+      el('path',{d:'M'+xa+','+(HART_Y-dik)+
+        ' L'+(xb-rond*fil)+','+(HART_Y-dik)+
+        ' Q'+xb+','+(HART_Y-dik)+' '+xb+','+(HART_Y-dik+fil)+
+        ' L'+xb+','+(HART_Y+dik-fil)+
+        ' Q'+xb+','+(HART_Y+dik)+' '+(xb-rond*fil)+','+(HART_Y+dik)+
+        ' L'+xa+','+(HART_Y+dik)+' Z',
+        fill:'#eef4f8',stroke:BLAUW,'stroke-width':0.7});
+    }
+    flens(CX-rU-uit,CX-rU+2,-1);
+    flens(CX+rU-2,CX+rU+uit,+1);
+
+    // ring
+    el('circle',{cx:CX,cy:HART_Y,r:rU,fill:'#eef4f8',stroke:BLAUW,'stroke-width':0.7});
+    el('circle',{cx:CX,cy:HART_Y,r:rB,fill:'#fbfaf7',stroke:BLAUW,'stroke-width':0.7});
+
+    // deelnaad: zichtbare rand op het deelvlak (niet dwars door het gat)
+    lijn(CX-rU-uit,HART_Y,CX-rB,HART_Y,{stroke:BLAUW,'stroke-width':0.7});
+    lijn(CX+rB,HART_Y,CX+rU+uit,HART_Y,{stroke:BLAUW,'stroke-width':0.7});
+
+    // boutgaten als verborgen lijnen: Ø3,4 in deel A (boven), Ø4,0 in deel B (onder)
+    [boutL,boutR].forEach(function(bx){
+      verborgen(bx-rA,HART_Y-dik,bx-rA,HART_Y);
+      verborgen(bx+rA,HART_Y-dik,bx+rA,HART_Y);
+      verborgen(bx-rIns,HART_Y,bx-rIns,HART_Y+dik);
+      verborgen(bx+rIns,HART_Y,bx+rIns,HART_Y+dik);
+      hartlijn(bx,HART_Y-dik-4,bx,HART_Y+dik+4);      // bouthartlijn, haaks op het deelvlak
+    });
+
+    // hartlijnen: deelvlak/hartlijn horizontaal, ringhart verticaal
+    hartlijn(CX-rU-uit-6,HART_Y,CX+rU+uit+6,HART_Y);
+    hartlijn(CX,HART_Y-rU-6,CX,HART_Y+rU+6);
+
+    // labels deel A / deel B — in de open boring, aan weerszijden van het deelvlak
+    tekst(CX,HART_Y-rB/2-1,'DEEL A',{'text-anchor':'middle','font-size':3.2,fill:BLAUW,'letter-spacing':0.6});
+    tekst(CX,HART_Y+rB/2+3,'DEEL B',{'text-anchor':'middle','font-size':3.2,fill:BLAUW,'letter-spacing':0.6});
+
+    // maatvoering bovenaanzicht
+    maat(CX-rB,HART_Y,CX+rB,HART_Y,'Ø'+num(binnenD),-(rU+10));
+    maat(CX+rU,HART_Y+dik,CX+rU+uit,HART_Y+dik,num(FLENS_UIT,0),rU-dik+9);
+    maat(CX+rU,HART_Y-dik,boutR,HART_Y-dik,num(BOUT_X,0),-(rU-dik+9));
+    lijn(boutR+rA,HART_Y-dik*0.55,boutR+7,HART_Y-dik-7,{stroke:STAAL,'stroke-width':0.3});
+    tekst(boutR+7.5,HART_Y-dik-8,'Ø3,4 (2×)',{fill:STAAL});
+    lijn(boutR+rIns,HART_Y+dik*0.55,boutR+7,HART_Y+dik+8,{stroke:STAAL,'stroke-width':0.3});
+    tekst(boutR+7.5,HART_Y+dik+11,'Ø4,0 insert (2×)',{fill:STAAL});
+    lijn(CX-rU-uit+fil*0.3,HART_Y-dik+fil*0.3,CX-rU-uit+4,HART_Y-dik-6,{stroke:STAAL,'stroke-width':0.3});
+    tekst(CX-rU-uit+4.5,HART_Y-dik-7,'R2',{fill:STAAL});
+    tekst(CX,HART_Y+rU+11,'BOVENAANZICHT',{'text-anchor':'middle','font-size':3,fill:STAAL,'letter-spacing':1});
+
+    /* ── Vooraanzicht — kijkend langs de bout, op het kopvlak van deel A ── */
+    var FX=CX+rU+uit+30;
+    var fB=2*(rU+uit);               // totale breedte
+    var fCX=FX+fB/2;
+    var fTop=HART_Y-HOOG*S/2, fBot=HART_Y+HOOG*S/2;
+    var fBoutL=fCX-(rU+BOUT_X*S), fBoutR=fCX+(rU+BOUT_X*S);
+
+    // omtrek (flenzen en ring zijn even hoog)
+    el('rect',{x:FX,y:fTop,width:fB,height:HOOG*S,fill:'#eef4f8',stroke:BLAUW,'stroke-width':0.7});
+    // zichtbare randen van de cilinder, verborgen lijnen van het binnengat
+    lijn(fCX-rU,fTop,fCX-rU,fBot,{stroke:BLAUW,'stroke-width':0.55});
+    lijn(fCX+rU,fTop,fCX+rU,fBot,{stroke:BLAUW,'stroke-width':0.55});
+    verborgen(fCX-rB,fTop,fCX-rB,fBot);
+    verborgen(fCX+rB,fTop,fCX+rB,fBot);
+    // boutgaten: Ø3,4 zichtbaar (kopvlak deel A), Ø4,0 verborgen erachter
+    [fBoutL,fBoutR].forEach(function(bx){
+      el('circle',{cx:bx,cy:HART_Y,r:rA,fill:'#fbfaf7',stroke:BLAUW,'stroke-width':0.6});
+      el('circle',{cx:bx,cy:HART_Y,r:rIns,fill:'none',stroke:STAAL,'stroke-width':0.4,'stroke-dasharray':'2 1.4'});
+      hartlijn(bx,HART_Y-rIns-3,bx,HART_Y+rIns+3);
+    });
+    // hartlijnen: horizontaal door de bouthartn, verticaal door het ringhart
+    hartlijn(FX-5,HART_Y,FX+fB+5,HART_Y);
+    hartlijn(fCX,fTop-6,fCX,fBot+6);
+
+    // maatvoering vooraanzicht
+    maat(FX+fB,fTop,FX+fB,fBot,num(HOOG,0),7);
+    maat(fCX-rU,fTop,fCX-rB,fTop,num(WAND,0),-6);
+    tekst(fCX,fBot+9,'VOORAANZICHT',{'text-anchor':'middle','font-size':3,fill:STAAL,'letter-spacing':1});
+  }
+
+  teken();
+})();
+</script>
+
+</body>
+</html>

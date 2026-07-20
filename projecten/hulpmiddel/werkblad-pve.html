@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Werkblad — Van probleem naar PvE — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:1000px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0 26px;font-size:.95rem;}
+
+  section{margin-bottom:30px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.15rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .vraag{margin-bottom:14px;}
+  .vraag label{display:block;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.95rem;margin-bottom:6px;}
+  .vraag label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.86rem;}
+  textarea{width:100%;resize:vertical;min-height:64px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  /* harde eisen (referentie) */
+  .hard{border:1px solid var(--line);background:#f4f2ec;padding:10px 14px;margin-bottom:14px;font-size:.88rem;}
+  .hard b{font-family:'Archivo',sans-serif;}
+  .hard span{white-space:nowrap;display:inline-block;margin-right:14px;}
+
+  /* eigen eisen tabel */
+  table.eisen{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line);}
+  table.eisen th{background:var(--ink);color:#fff;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;text-align:left;}
+  table.eisen td{border-bottom:1px solid var(--line);padding:0;}
+  table.eisen td:first-child{width:44px;text-align:center;
+    font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);border-right:1px solid var(--line);}
+  table.eisen input{width:100%;border:none;background:transparent;padding:9px 12px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:.96rem;color:var(--ink);}
+  table.eisen input:focus{outline:2px solid var(--blue);outline-offset:-2px;}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.tools,.alleen-scherm{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .vraag,.schets,.hard,table.eisen,.keuzerij{break-inside:avoid;}
+    textarea{border:1px solid #000;min-height:52px;}
+    .uitleg{padding:8px 12px;margin:10px 0;font-size:9pt;}
+    .schetsen{grid-template-columns:1fr 1fr 1fr;gap:8px;}
+    canvas.tekenvlak{background-image:none;}
+    .idcel input,.schets-kop input,table.eisen input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Werkblad · les 2</div>
+      <h1>Van probleem naar PvE</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 4 · les 2 · Groow: Ontwerpen</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="w-naam">Naam / groep</label><input id="w-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="w-klas">Klas</label><input id="w-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="w-gebruiker">Gebruiker</label><input id="w-gebruiker" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="w-datum">Datum</label><input id="w-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt dit blad.</b> Je vertaalt je gebruikersonderzoek (deliverable 3) naar een
+    meetbaar Programma van Eisen. Daarna ga je verder op het werkblad
+    <b>Concepten kiezen</b> (deliverable 5).
+    <span class="alleen-scherm">Alles wordt in deze browser bewaard. Klaar? Druk op
+    <b>Downloaden als PDF</b> en lever het bestand in — dit blad is deliverable 4.</span>
+  </div>
+
+  <div class="uitleg" style="border-left-color:var(--amber);background:#fdf8ec">
+    <b>Richtlijn voor je tijd deze les:</b> ± 70 minuten voor dit blad, daarna ± 100 minuten
+    voor <b>Concepten kiezen</b>. Ga niet te lang door op één eis of één schets — een goed
+    onderbouwde keuze is belangrijker dan een perfecte tekening.
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 1</span><h2>Het probleem</h2><span class="rule"></span><span class="code">Uit je gebruikersonderzoek (deliverable 3)</span></div>
+    <div class="vraag">
+      <label>Wat is het probleem van jouw gebruiker? <em>Neem de conclusie over van je opdrachtblad Gebruikersonderzoek — concreet: wat lukt er niet, wanneer, en hoe vaak?</em></label>
+      <textarea data-key="probleem" rows="3"></textarea>
+    </div>
+    <div class="vraag">
+      <label>Waaruit blijkt dat dit écht een probleem is — en niet een aanname van jou? <em>Citeer je interview, je observatie of de empathie-oefening.</em></label>
+      <textarea data-key="bewijs" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 2</span><h2>Programma van Eisen</h2><span class="rule"></span><span class="code">Meetbaar: getal, maat of test</span></div>
+    <div class="hard">
+      <b>De harde eisen gelden altijd — die hoef je niet over te schrijven:</b><br>
+      <span>max 120×120×120 mm</span> <span>max 4 uur printtijd</span> <span>max 3 onderdelen</span>
+      <span>veiligheidsfactor 3×</span> <span>zonder gereedschap demontabel</span>
+      <span>blokkeert niets</span> <span>doorstaat de schud-test</span>
+    </div>
+    <div class="vraag">
+      <label>Jouw gebruikerseisen — minimaal 3, elk meetbaar. <em>Niet "moet stevig zijn", wel "draagt een tas van 2 kg" of "met één hand te bedienen, ook met handschoen".</em></label>
+      <table class="eisen">
+        <thead><tr><th></th><th>Eis van jouw gebruiker</th><th>Zo meet of test je het</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><input data-key="eis1" type="text"></td><td><input data-key="test1" type="text"></td></tr>
+          <tr><td>2</td><td><input data-key="eis2" type="text"></td><td><input data-key="test2" type="text"></td></tr>
+          <tr><td>3</td><td><input data-key="eis3" type="text"></td><td><input data-key="test3" type="text"></td></tr>
+          <tr><td>4</td><td><input data-key="eis4" type="text"></td><td><input data-key="test4" type="text"></td></tr>
+          <tr><td>5</td><td><input data-key="eis5" type="text"></td><td><input data-key="test5" type="text"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="uitleg" style="border-left-color:var(--amber);background:#fdf8ec">
+    <b>Klaar met je PvE?</b> Ga verder op het werkblad
+    <a href="werkblad-concepten.html" target="_blank" rel="noopener"><b>Concepten kiezen</b></a> —
+    daar schets je drie oplossingen en kies je er één, getoetst aan de eisen die je hier
+    net hebt opgeschreven.
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Werkblad les 2 — deliverable 4</span>
+    <span>Programma van Eisen</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-wpve-';
+
+  /* ── Tekst bewaren ── */
+  var velden=[].slice.call(document.querySelectorAll('textarea[data-key], input[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    try{ var x=localStorage.getItem(k); if(x) v.value=x; }catch(e){}
+    v.addEventListener('input',function(){ try{ localStorage.setItem(k,v.value); }catch(e){} });
+  });
+})();
+</script>
+
+</body>
+</html>

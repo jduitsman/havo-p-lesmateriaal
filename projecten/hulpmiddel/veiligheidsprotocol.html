@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veiligheidsprotocol — Hulpmiddel voor scootmobielgebruikers — HAVO-P</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:900px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;
+  }
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  /* ── Titelhoek ── */
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--red);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.2rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  /* ── Naamblok ── */
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  /* ── Intro + statusbalk ── */
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.96rem;}
+  .uitleg ol{margin:6px 0 0;padding-left:20px;}
+  .uitleg li{margin-bottom:2px;}
+  .status{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;
+    background:rgba(251,250,247,.95);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--ink);padding:9px 2px;margin-bottom:20px;}
+  .status .teller{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;}
+  .status .teller b{color:var(--red);}
+  .status .teller.klaar b{color:#2c7a4b;}
+  .balk{flex:1;height:8px;border:1px solid var(--steel);background:#fff;}
+  .balk div{height:100%;width:0;background:var(--blue);transition:width .25s;}
+
+  /* ── Secties ── */
+  section{margin-bottom:26px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}
+  .sec-head h2{font-size:1.15rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.64rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  /* ── Regels met vinkvak ── */
+  .regels{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);
+    border:1px solid var(--line);}
+  .regels li{background:var(--sheet);}
+  .regels label{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;cursor:pointer;
+    font-size:.96rem;}
+  .regels label:hover{background:#f4f2ec;}
+  .regels input[type=checkbox]{
+    appearance:none;-webkit-appearance:none;flex:0 0 auto;width:19px;height:19px;margin-top:2px;
+    border:2px solid var(--ink);background:#fff;cursor:pointer;display:grid;place-content:center;
+  }
+  .regels input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue);}
+  .regels input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:.8rem;line-height:1;}
+  .regels b{font-family:'Archivo',sans-serif;font-weight:700;}
+  .regels .why{display:block;font-size:.84rem;color:#5a616a;font-style:italic;margin-top:2px;}
+  section.verbod .regels input[type=checkbox]:checked{background:var(--red);border-color:var(--red);}
+  section.verbod .sec-head h2{color:var(--red);}
+  section.machines .sec-head h2{color:var(--amber);}
+
+  .kernregel{margin:14px 0 0;padding:12px 18px;background:var(--ink);color:var(--sheet);
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;}
+  .kernregel span{color:#f0a9a1;}
+
+  /* ── Verklaring + handtekeningen ── */
+  .verklaring{border:2px solid var(--ink);margin-top:30px;}
+  .verklaring .kop{background:var(--ink);color:#fff;padding:10px 16px;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;}
+  .verklaring .body{padding:16px;}
+  .verklaring ul{list-style:none;margin:0 0 14px;padding:0;}
+  .verklaring li{padding:4px 0 4px 22px;position:relative;font-size:.98rem;}
+  .verklaring li::before{content:"—";position:absolute;left:0;color:var(--blue);font-weight:700;}
+  .tekenrij{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+  .tekenvak{border:1px dashed var(--steel);padding:10px 14px 8px;min-height:96px;
+    display:flex;flex-direction:column;justify-content:flex-end;background:#fff;}
+  .tekenvak .lbl{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--steel);}
+  .tekenvak .lijn{border-bottom:1px solid var(--ink);height:44px;margin-bottom:4px;}
+  .peninstructie{margin-top:12px;font-size:.88rem;color:#5a616a;font-style:italic;}
+
+  /* ── Print-knop ── */
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid,.tekenrij{grid-template-columns:1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+
+  /* ── Print: compact, checkbox-status zichtbaar, handtekening met pen ── */
+  @media print{
+    @page{size:A4;margin:14mm 14mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.status,.uitleg .alleen-scherm{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;break-inside:avoid;}
+    .regels label{padding:5px 8px;font-size:9.2pt;}
+    .regels .why{font-size:8pt;}
+    .regels input[type=checkbox]{width:13px;height:13px;border-width:1.5px;margin-top:1px;}
+    .uitleg{padding:8px 12px;margin:10px 0;font-size:9pt;}
+    .kernregel{padding:7px 12px;font-size:9pt;}
+    .verklaring{break-inside:avoid;margin-top:14px;}
+    .tekenvak{min-height:80px;}
+    .idcel input{border-bottom:1px solid #000;}
+    tr,li{break-inside:avoid;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Veiligheidsprotocol · verplicht vóór deelname</div>
+      <h1>Veilig werken</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 2 · les 2 · Groow: Begrijpen</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="p-naam">Naam leerling</label><input id="p-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="p-klas">Klas</label><input id="p-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="p-datum">Datum</label><input id="p-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het.</b> Dit project werkt met een echte scootmobiel en een echte gebruiker —
+    vaak iemand met dunne huid en minder gevoel in de handen. Daarom gelden deze regels
+    zonder uitzondering. <span class="alleen-scherm">
+    <ol>
+      <li>Lees elke regel en vink hem af — daarmee zeg je: gelezen én begrepen.</li>
+      <li>Vul je naam, klas en datum in.</li>
+      <li>Druk op <b>Downloaden als PDF</b> en print het blad.</li>
+      <li>Onderteken met pen en lever het in bij je docent — uiterlijk eind les 2.</li>
+    </ol>
+    Zonder ondertekend protocol doe je niet mee aan het praktische werk.</span>
+  </div>
+
+  <div class="status">
+    <span class="teller" id="teller"></span>
+    <div class="balk"><div id="balk"></div></div>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Werken aan de scootmobiel</h2><span class="rule"></span><span class="code">Altijd, vóór je begint</span></div>
+    <ul class="regels">
+      <li><label><input type="checkbox"><span><b>Sleutel eruit, accu los.</b> Pas daarna raak ik de scootmobiel aan.<span class="why">Een scootmobiel die per ongeluk gas krijgt, rijdt — ook binnen.</span></span></label></li>
+      <li><label><input type="checkbox"><span><b>Parkeerrem erop en wielen geblokkeerd</b> voordat er iemand aan werkt.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Ik rijd er niet in.</b> Niet op de gang, niet "heel even" op het plein.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Ik boor niet in het frame.</b> Mijn bevestiging klemt — hij boort niet.<span class="why">Een gat verzwakt het frame en is niet terug te draaien. De scootmobiel is geleend.</span></span></label></li>
+    </ul>
+  </section>
+
+  <section class="verbod">
+    <div class="sec-head"><h2>Grenzen aan het ontwerp</h2><span class="rule"></span><span class="code">Mag niet — geen uitzonderingen</span></div>
+    <ul class="regels">
+      <li><label><input type="checkbox"><span><b>Niets waar een mens op steunt.</b> Geen handgreep, geen opstaphulp, niets dat lichaamsgewicht draagt.<span class="why">Een 3D-print die 70 kg moet houden bestaat niet — niet in PLA, niet in PETG. Als hij breekt, valt de gebruiker.</span></span></label></li>
+      <li><label><input type="checkbox"><span><b>Niets aan stuur, gashendel, remhendel of bedieningsconsole</b> — en niets dat het zicht op het display blokkeert.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Niets bij bewegende delen of wielen.</b></span></label></li>
+      <li><label><input type="checkbox"><span><b>Niets aan accu, lader, bedrading of motor.</b></span></label></li>
+      <li><label><input type="checkbox"><span><b>Niets zwaars naast of boven het hoofd</b> van de gebruiker.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Binnen de contour blijven.</b> Niets dat uitsteekt en achter een deurpost of voorbijganger kan haken.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Maximaal 2–3 kg statische last</b>, bevestigd aan niet-bewegende delen: framebuis van de mand, achterframe, armleuningstang of rugleuning.</span></label></li>
+    </ul>
+    <div class="kernregel">Kernregel — <span>je maakt nooit iets waar een mens op steunt.</span></div>
+  </section>
+
+  <section class="machines">
+    <div class="sec-head"><h2>Machines en gereedschap</h2><span class="rule"></span><span class="code">In de makerspace</span></div>
+    <ul class="regels">
+      <li><label><input type="checkbox"><span><b>Kolomboor: werkstuk altijd inklemmen</b> en veiligheidsbril op.<span class="why">Een los geprint deel wordt door de boor gegrepen en tolt rond — dat is een snijwond.</span></span></label></li>
+      <li><label><input type="checkbox"><span><b>Kolomboor: laag toerental bij plastic.</b> Hoog toerental smelt het materiaal en de boor loopt vast.</span></label></li>
+      <li><label><input type="checkbox"><span><b>3D-printer: nozzle en bed niet aanraken</b> — ook niet "even". Nozzle 200–240 °C, bed 60–90 °C.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Bij PETG printen: ventileren</b> — deur of raam open.<span class="why">PETG geeft meer fijnstof en dampen af dan PLA.</span></span></label></li>
+      <li><label><input type="checkbox"><span><b>Snijden altijd van mijn lichaam af.</b> Ontbramen met gereedschap, niet met mijn duim.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Eindproduct: geen scherpe randen, geen uitstekende boutdraden</b> — ik gebruik dopmoeren.<span class="why">Het product wordt aangeraakt door iemand met dunne huid en verminderd gevoel in de handen.</span></span></label></li>
+    </ul>
+  </section>
+
+  <div class="verklaring">
+    <div class="kop">Verklaring</div>
+    <div class="body">
+      <ul>
+        <li>Ik heb alle regels hierboven gelezen, afgevinkt en begrepen.</li>
+        <li>Ik houd me aan deze regels, ook als niemand meekijkt.</li>
+        <li>Twijfel ik of iets mag, dan vraag ik het éérst aan de docent.</li>
+        <li>Ik begrijp dat ik zonder ondertekend protocol niet meedoe aan het praktische werk.</li>
+      </ul>
+      <div class="tekenrij">
+        <div class="tekenvak"><div class="lijn"></div><span class="lbl">Handtekening leerling (met pen)</span></div>
+        <div class="tekenvak"><div class="lijn"></div><span class="lbl">Paraaf docent + datum ontvangst</span></div>
+      </div>
+      <p class="peninstructie">Onderteken op papier, na het printen. Een getypte naam is geen handtekening.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Veiligheidsprotocol — deliverable 2</span>
+    <span>Inleveren: eind les 2</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-vprotocol-';
+  var boxes=[].slice.call(document.querySelectorAll('.regels input[type=checkbox]'));
+  var velden=[].slice.call(document.querySelectorAll('.idcel input'));
+  var teller=document.getElementById('teller');
+  var balk=document.getElementById('balk');
+
+  function update(){
+    var n=boxes.filter(function(b){return b.checked;}).length;
+    teller.innerHTML='<b>'+n+'</b> / '+boxes.length+' regels afgevinkt';
+    teller.classList.toggle('klaar', n===boxes.length);
+    balk.style.width=(100*n/boxes.length)+'%';
+  }
+  boxes.forEach(function(b,i){
+    try{ if(localStorage.getItem(KEY+'r'+i)==='1') b.checked=true; }catch(e){}
+    b.addEventListener('change',function(){
+      try{ localStorage.setItem(KEY+'r'+i, b.checked?'1':'0'); }catch(e){}
+      update();
+    });
+  });
+  velden.forEach(function(v){
+    try{ var x=localStorage.getItem(KEY+v.id); if(x) v.value=x; }catch(e){}
+    v.addEventListener('input',function(){
+      try{ localStorage.setItem(KEY+v.id, v.value); }catch(e){}
+    });
+  });
+  update();
+
+  // Waarschuw bij printen als er nog regels open staan — blokkeer niet:
+  // de docent print dit blad ook leeg als klassenset.
+  window.addEventListener('beforeprint',function(){
+    var open=boxes.filter(function(b){return !b.checked;}).length;
+    if(open>0 && (document.getElementById('p-naam').value||'').trim()!==''){
+      console.log('Let op: '+open+' regel(s) nog niet afgevinkt.');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

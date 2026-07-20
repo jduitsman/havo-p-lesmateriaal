@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logboek — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:960px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.95rem;}
+  .uitleg p:last-child{margin-bottom:0;}
+
+  /* 5W1H-legenda, klein referentiekaartje */
+  .legenda{border:1px solid var(--line);background:#f4f2ec;padding:10px 14px;margin:0 0 24px;}
+  .legenda .lbl{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);margin-bottom:6px;display:block;}
+  .legenda-rij{display:flex;flex-wrap:wrap;gap:6px;}
+  .legenda-rij span{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;
+    color:var(--blue);border:1px solid var(--blue);padding:2px 8px;white-space:nowrap;}
+
+  /* voortgang */
+  .status{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;
+    background:rgba(251,250,247,.95);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--ink);padding:9px 2px;margin-bottom:22px;}
+  .status .teller{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;white-space:nowrap;}
+  .status .teller b{color:var(--red);}
+  .status .teller.klaar b{color:#2c7a4b;}
+  .balk{flex:1;height:8px;border:1px solid var(--steel);background:#fff;}
+  .balk div{height:100%;width:0;background:var(--blue);transition:width .25s;}
+
+  /* logboekblok per les */
+  .log{border:1px solid var(--line);margin-bottom:16px;background:var(--sheet);break-inside:avoid;}
+  .log-head{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);
+    padding:10px 16px;background:#f4f2ec;flex-wrap:wrap;}
+  .log-nr{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;color:#fff;
+    background:var(--blue);padding:3px 8px;letter-spacing:.06em;white-space:nowrap;}
+  .log-head.key .log-nr{background:var(--red);}
+  .log-head h3{font-size:1.05rem;flex:1;min-width:160px;}
+  .log-head .datum{border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Space Mono',monospace;font-size:.82rem;color:var(--ink);padding:2px 4px;width:110px;}
+  .log-head .datum:focus{outline:none;border-bottom:2px solid var(--blue);}
+  .log-body{padding:14px 16px 16px;display:grid;gap:12px;}
+  .veld label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.88rem;margin-bottom:5px;}
+  .veld label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.82rem;}
+  .veld textarea{width:100%;resize:vertical;min-height:46px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:.98rem;line-height:1.55;
+    padding:8px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .veld textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .veld.bewijs textarea{min-height:36px;background:#eef4f8;}
+  .veld.bewijs label{color:var(--blue);}
+
+  /* bijlagen — foto's en bestanden per les */
+  .bijlage-lbl{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px;}
+  .bijlage-lbl label{font-family:'Archivo',sans-serif;font-weight:600;font-size:.88rem;}
+  .add-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.68rem;letter-spacing:.06em;
+    text-transform:uppercase;background:#fff;color:var(--blue);border:1px solid var(--blue);
+    padding:4px 10px;cursor:pointer;white-space:nowrap;}
+  .add-btn:hover{background:var(--blue);color:#fff;}
+  .add-btn input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;}
+  .add-btn{position:relative;display:inline-block;}
+
+  .fotogrid{display:flex;flex-wrap:wrap;gap:10px;}
+  .fotogrid:empty{display:none;}
+  .foto-kaart{width:130px;border:1px solid var(--line);background:#fff;}
+  .foto-kaart img{display:block;width:100%;height:96px;object-fit:cover;border-bottom:1px solid var(--line);}
+  .foto-kaart .bijschrift{width:100%;border:none;background:transparent;font-family:'Source Serif 4',Georgia,serif;
+    font-size:.78rem;padding:5px 6px;color:var(--ink);}
+  .foto-kaart .bijschrift:focus{outline:2px solid var(--blue);outline-offset:-2px;}
+  .foto-kaart .verwijder{display:block;width:100%;border:none;border-top:1px solid var(--line);
+    background:#faf1f0;color:var(--red);font-family:'Space Mono',monospace;font-size:.62rem;
+    letter-spacing:.08em;text-transform:uppercase;padding:3px 0;cursor:pointer;}
+  .foto-kaart .verwijder:hover{background:var(--red);color:#fff;}
+
+  .bestandlijst{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);
+    border:1px solid var(--line);}
+  .bestandlijst:empty{display:none;border:none;}
+  .bestandlijst li{background:#fff;display:flex;align-items:center;gap:8px;padding:6px 10px;}
+  .bestandlijst .naam{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--ink);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38%;}
+  .bestandlijst .grootte{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--steel);white-space:nowrap;}
+  .bestandlijst .notitie{flex:1;min-width:80px;border:none;border-bottom:1px dashed var(--line);
+    background:transparent;font-family:'Source Serif 4',Georgia,serif;font-size:.86rem;padding:2px 4px;}
+  .bestandlijst .notitie:focus{outline:none;border-bottom:1px solid var(--blue);}
+  .bestandlijst .verwijder{flex:0 0 auto;border:none;background:none;color:var(--red);
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;cursor:pointer;padding:0 4px;}
+  .bestand-hint{font-size:.8rem;color:#5a616a;font-style:italic;margin:4px 0 0;}
+
+  .naar{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:12px 16px;margin-top:8px;font-size:.95rem;}
+  .naar b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+    .log-head h3{font-size:.98rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.4pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.status{display:none!important;}
+    .tb-top{padding-top:0;}
+    .uitleg,.legenda,.naar{padding:8px 12px;margin:0 0 12px;font-size:9pt;break-inside:avoid;}
+    .log{break-inside:avoid;margin-bottom:10px;}
+    .log-body{padding:10px 14px 12px;gap:8px;}
+    .veld textarea{border:1px solid #000;min-height:34px;}
+    .veld.bewijs textarea{min-height:26px;background:#f4f2ec;}
+    .idcel input,.log-head .datum{border-bottom:1px solid #000;}
+    .add-btn{display:none!important;}
+    .foto-kaart{break-inside:avoid;width:100px;}
+    .foto-kaart img{height:76px;}
+    .foto-kaart .verwijder{display:none!important;}
+    .bestandlijst .verwijder{display:none!important;}
+    .bestandlijst .notitie{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Logboek · eigen exemplaar</div>
+      <h1>Logboek</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · les 1 t/m 10</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="l-naam">Naam</label><input id="l-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="l-klas">Klas</label><input id="l-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="l-groep">Groep / gebruiker</label><input id="l-groep" type="text" autocomplete="off"></div>
+  </div>
+
+  <div class="uitleg">
+    <p><b>Dit logboek is van jou persoonlijk</b> — ook als je in een groep werkt.
+    Elke leerling houdt een eigen logboek en levert eigen CAD-werk aan.</p>
+    <p>Vul na elke les de drie vragen in: wat deed je, wat ging er mis of was lastig,
+    en wat besloot je daarop (en waarom). Foto's van mislukte prints en gebroken
+    onderdelen zijn <b>géén schande</b> — dat is je bewijsmateriaal. Zonder mislukking
+    geen leerproces. Voeg ze toe bij <b>Foto's van deze les</b>: rechtstreeks vanaf je
+    telefoon of Chromebook. Exporteerde je een STL of CAD-bestand? Noteer het bij
+    <b>Bestanden van deze les</b> — de naam wordt automatisch opgehaald.</p>
+    <p>Kom je bewijs tegen voor een van de <a href="hulpmiddel.html#deelvragen" target="_blank" rel="noopener">6 deelvragen</a>
+    (wie/wat/waar/wanneer/waarom/hoe), noteer dat dan in het blauwe vak bij die les —
+    dat scheelt zoeken in les 10, als je de technische onderbouwing schrijft.</p>
+  </div>
+
+  <div class="legenda">
+    <span class="lbl">Deelvragen — ter herinnering</span>
+    <div class="legenda-rij">
+      <span>1 Wie</span><span>2 Wat</span><span>3 Waar</span>
+      <span>4 Wanneer</span><span>5 Waarom</span><span>6 Hoe</span>
+    </div>
+  </div>
+
+  <div class="status">
+    <span class="teller" id="teller"></span>
+    <div class="balk"><div id="balk"></div></div>
+  </div>
+
+  <div id="lessen"></div>
+
+  <div class="naar">
+    <b>Les 10?</b> Neem je logboek erbij voor de technische onderbouwing (deliverable 12) —
+    daar vat je de definitieve antwoorden op de deelvragen samen, met het bewijs dat
+    hier per les staat.
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Logboek — persoonlijk, per les</span>
+    <span>Les 1 t/m 10</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-logboek-';
+
+  var LESSEN=[
+    {nr:1,  titel:'Bedrijfsbezoek',                     key:false},
+    {nr:2,  titel:'Van gebruiker naar concept',         key:true},
+    {nr:3,  titel:'Precisiemeten + de testring',        key:false},
+    {nr:4,  titel:'De tolerantie-les',                  key:true},
+    {nr:5,  titel:'CAD afmaken + printvoorbereiding',   key:false},
+    {nr:6,  titel:'Iteratie 1 — passen & falen',        key:true},
+    {nr:7,  titel:'Iteratie 2 + montage',               key:true},
+    {nr:8,  titel:'Eindproduct + gebruikerstest',       key:false},
+    {nr:9,  titel:'Afwerken + onderbouwing',            key:false},
+    {nr:10, titel:'Eindtest + presentatie',             key:false}
+  ];
+
+  var wrap=document.getElementById('lessen');
+  LESSEN.forEach(function(les){
+    var el=document.createElement('div');
+    el.className='log';
+    el.innerHTML=
+      '<div class="log-head'+(les.key?' key':'')+'">'+
+        '<span class="log-nr">LES '+String(les.nr).padStart(2,'0')+'</span>'+
+        '<h3>'+les.titel+'</h3>'+
+        '<input class="datum" type="text" placeholder="dd-mm-jjjj" data-key="datum'+les.nr+'">'+
+      '</div>'+
+      '<div class="log-body">'+
+        '<div class="veld"><label>Wat deed je deze les? <em>Concreet: waar begon je, waar eindigde je.</em></label>'+
+          '<textarea data-key="deed'+les.nr+'" rows="2"></textarea></div>'+
+        '<div class="veld"><label>Wat ging er mis, of wat was lastig? <em>Ook kleine dingen — foto\'s van mislukte prints horen hier ook bij (beschrijf ze).</em></label>'+
+          '<textarea data-key="mis'+les.nr+'" rows="2"></textarea></div>'+
+        '<div class="veld"><label>Wat besloot je daarop, en waarom?</label>'+
+          '<textarea data-key="besloot'+les.nr+'" rows="2"></textarea></div>'+
+        '<div class="veld bewijs"><label>Bewijs voor een deelvraag? <em>Welk nummer (1–6), en wat noteer je erbij?</em></label>'+
+          '<textarea data-key="bewijs'+les.nr+'" rows="1"></textarea></div>'+
+        '<div class="veld">'+
+          '<div class="bijlage-lbl"><label>Foto\'s van deze les</label>'+
+            '<label class="add-btn">+ Foto toevoegen<input type="file" accept="image/*" capture="environment" multiple data-fotoles="'+les.nr+'"></label></div>'+
+          '<div class="fotogrid" id="fotos'+les.nr+'"></div>'+
+        '</div>'+
+        '<div class="veld">'+
+          '<div class="bijlage-lbl"><label>Bestanden van deze les</label>'+
+            '<label class="add-btn">+ Bestand toevoegen<input type="file" multiple data-bestandles="'+les.nr+'"></label></div>'+
+          '<ul class="bestandlijst" id="bestanden'+les.nr+'"></ul>'+
+          '<p class="bestand-hint">CAD- en STL-bestanden lever je in via de opdracht zelf — hier noteer je alleen wélk bestand je die les maakte.</p>'+
+        '</div>'+
+      '</div>';
+    wrap.appendChild(el);
+  });
+
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  var teller=document.getElementById('teller');
+  var balk=document.getElementById('balk');
+  var hoofdvelden=[].slice.call(document.querySelectorAll('.log-body textarea'));
+
+  function updateVoortgang(){
+    var ingevuld=hoofdvelden.filter(function(t){ return t.value.trim()!==''; }).length;
+    var totaal=hoofdvelden.length;
+    teller.innerHTML='<b>'+ingevuld+'</b> / '+totaal+' velden ingevuld';
+    teller.classList.toggle('klaar', ingevuld===totaal);
+    balk.style.width=(100*ingevuld/totaal)+'%';
+  }
+
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    try{ var x=localStorage.getItem(k); if(x) v.value=x; }catch(e){}
+    v.addEventListener('input',function(){
+      try{ localStorage.setItem(k, v.value); }catch(e){}
+      updateVoortgang();
+    });
+  });
+  updateVoortgang();
+
+  /* ══ Foto's per les — compressed opgeslagen als dataURL in localStorage ══ */
+  function fotoKey(nr){ return KEY+'fotos'+nr; }
+  function fotos(nr){ try{ return JSON.parse(localStorage.getItem(fotoKey(nr))||'[]'); }catch(e){ return []; } }
+  function bewaarFotos(nr, lijst){
+    try{ localStorage.setItem(fotoKey(nr), JSON.stringify(lijst)); return true; }
+    catch(e){ return false; }
+  }
+
+  function comprimeer(file, cb){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var img=new Image();
+      img.onload=function(){
+        var maxDim=1000;
+        var schaal=Math.min(1, maxDim/Math.max(img.width,img.height));
+        var w=Math.round(img.width*schaal), h=Math.round(img.height*schaal);
+        var canvas=document.createElement('canvas');
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        cb(canvas.toDataURL('image/jpeg',0.72));
+      };
+      img.onerror=function(){ cb(null); };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderFotos(nr){
+    var grid=document.getElementById('fotos'+nr);
+    grid.innerHTML='';
+    fotos(nr).forEach(function(f){
+      var kaart=document.createElement('div');
+      kaart.className='foto-kaart';
+      kaart.innerHTML=
+        '<img src="'+f.data+'" alt="Foto bij les '+nr+'">'+
+        '<input class="bijschrift" type="text" placeholder="Bijschrift…" value="'+(f.bijschrift||'').replace(/"/g,'&quot;')+'">'+
+        '<button type="button" class="verwijder">Verwijderen</button>';
+      kaart.querySelector('.bijschrift').addEventListener('input',function(){
+        f.bijschrift=this.value;
+        bewaarFotos(nr, fotos(nr).map(function(x){ return x.id===f.id?f:x; }));
+      });
+      kaart.querySelector('.verwijder').addEventListener('click',function(){
+        if(!confirm('Deze foto verwijderen?')) return;
+        bewaarFotos(nr, fotos(nr).filter(function(x){ return x.id!==f.id; }));
+        renderFotos(nr);
+      });
+      grid.appendChild(kaart);
+    });
+  }
+
+  document.querySelectorAll('input[data-fotoles]').forEach(function(input){
+    input.addEventListener('change',function(){
+      var nr=this.dataset.fotoles;
+      var bestanden=[].slice.call(this.files);
+      this.value='';
+      bestanden.forEach(function(file){
+        if(!/^image\//.test(file.type)) return;
+        comprimeer(file, function(dataUrl){
+          if(!dataUrl) return;
+          var lijst=fotos(nr);
+          lijst.push({id:Date.now()+'-'+Math.random().toString(36).slice(2), data:dataUrl, bijschrift:''});
+          if(!bewaarFotos(nr, lijst)){
+            alert('Deze foto past niet meer in de opslag van je browser. Verwijder een oudere foto en probeer het opnieuw, of lever hem apart in.');
+            return;
+          }
+          renderFotos(nr);
+        });
+      });
+    });
+  });
+  LESSEN.forEach(function(les){ renderFotos(les.nr); });
+
+  /* ══ Bestanden per les — alleen naam, grootte en notitie (geen inhoud) ══ */
+  function bestandKey(nr){ return KEY+'bestanden'+nr; }
+  function bestanden(nr){ try{ return JSON.parse(localStorage.getItem(bestandKey(nr))||'[]'); }catch(e){ return []; } }
+  function bewaarBestanden(nr, lijst){
+    try{ localStorage.setItem(bestandKey(nr), JSON.stringify(lijst)); }catch(e){}
+  }
+  function formaatGrootte(bytes){
+    if(bytes<1024) return bytes+' B';
+    if(bytes<1024*1024) return Math.round(bytes/1024)+' KB';
+    return (bytes/1024/1024).toFixed(1)+' MB';
+  }
+
+  function renderBestanden(nr){
+    var lijst=document.getElementById('bestanden'+nr);
+    lijst.innerHTML='';
+    bestanden(nr).forEach(function(b){
+      var li=document.createElement('li');
+      li.innerHTML=
+        '<span class="naam" title="'+b.naam.replace(/"/g,'&quot;')+'">'+b.naam+'</span>'+
+        '<span class="grootte">'+formaatGrootte(b.grootte)+'</span>'+
+        '<input class="notitie" type="text" placeholder="Notitie — bijv. \'v1, na iteratie 1\'…" value="'+(b.notitie||'').replace(/"/g,'&quot;')+'">'+
+        '<button type="button" class="verwijder" title="Verwijderen">×</button>';
+      li.querySelector('.notitie').addEventListener('input',function(){
+        b.notitie=this.value;
+        bewaarBestanden(nr, bestanden(nr).map(function(x){ return x.id===b.id?b:x; }));
+      });
+      li.querySelector('.verwijder').addEventListener('click',function(){
+        bewaarBestanden(nr, bestanden(nr).filter(function(x){ return x.id!==b.id; }));
+        renderBestanden(nr);
+      });
+      lijst.appendChild(li);
+    });
+  }
+
+  document.querySelectorAll('input[data-bestandles]').forEach(function(input){
+    input.addEventListener('change',function(){
+      var nr=this.dataset.bestandles;
+      var lijst=bestanden(nr);
+      [].slice.call(this.files).forEach(function(file){
+        lijst.push({id:Date.now()+'-'+Math.random().toString(36).slice(2), naam:file.name, grootte:file.size, notitie:''});
+      });
+      this.value='';
+      bewaarBestanden(nr, lijst);
+      renderBestanden(nr);
+    });
+  });
+  LESSEN.forEach(function(les){ renderBestanden(les.nr); });
+})();
+</script>
+
+</body>
+</html>

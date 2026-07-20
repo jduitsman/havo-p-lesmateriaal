@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesmateriaal HAVO-P — Projecten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:1100px;margin:22px auto 44px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,40px) 40px;}
+  h1,h2{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+  a{color:var(--blue);}
+  :focus-visible{outline:2px solid var(--red);outline-offset:2px;}
+
+  .tb-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    flex-wrap:wrap;border-bottom:2px solid var(--ink);padding:26px 0 14px;}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.7rem,4.6vw,2.8rem);letter-spacing:-.02em;text-transform:uppercase;}
+  .tb-top .meta{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .hoe{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:14px 18px;margin:22px 0 28px;}
+  .hoe h2{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);
+    font-family:'Space Mono',monospace;margin-bottom:8px;}
+  .hoe code{font-family:'Space Mono',monospace;font-weight:700;background:#fff;
+    border:1px solid var(--line);padding:1px 6px;font-size:.86rem;}
+  .hoe p{margin:0 0 .4em;font-size:.97rem;}
+  .hoe p:last-child{margin:0;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
+  .kaart{border:1px solid var(--line);background:var(--sheet);padding:0 0 14px;
+    display:flex;flex-direction:column;animation:fadeUp .55s cubic-bezier(.2,.7,.3,1) both;}
+  .kaart-kop{border-bottom:1px solid var(--line);background:#f4f2ec;padding:13px 16px;}
+  .kaart-kop h2{font-size:1.14rem;margin-bottom:4px;}
+  .map{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);}
+  .sam{padding:12px 16px 4px;margin:0;font-size:.95rem;color:#3c434a;flex:1;}
+  .files{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0;}
+  .f{font-family:'Archivo',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.04em;
+    text-transform:uppercase;text-decoration:none;padding:5px 10px;border:1px solid var(--line);
+    color:var(--ink);background:#fff;}
+  .f:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .f-html{border-color:var(--blue);color:var(--blue);}
+  .f-pdf{border-color:var(--red);color:var(--red);}
+  .f-pdf:hover{background:var(--red);border-color:var(--red);}
+  .f-csv{border-color:var(--amber);color:var(--amber);}
+  .f-csv:hover{background:var(--amber);border-color:var(--amber);}
+  .anim{padding:12px 16px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+  .anim .lbl{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--steel);}
+  .anim a{font-size:.86rem;}
+  .mist{margin:0;padding:9px 16px;background:#fdf8ec;border-bottom:1px solid var(--line);
+    font-size:.82rem;color:#7a5a10;}
+  .mist code{font-family:'Space Mono',monospace;font-size:.78rem;background:#fff;
+    border:1px solid var(--line);padding:0 4px;}
+  .leeg{padding:0 16px;font-size:.86rem;color:var(--steel);font-style:italic;}
+  .leeg-kaart{padding-bottom:18px;}
+
+  footer{border-top:2px solid var(--ink);margin-top:46px;padding-top:14px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.kaart{animation:none;}}
+  @media (max-width:560px){
+    body{font-size:16px;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 14px 28px;}
+    .tb-top .meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="eyebrow">HAVO-P · Techniek</div>
+      <h1>Projecten</h1>
+    </div>
+    <div class="meta">1 projecten<br>bijgewerkt 20-07-2026</div>
+  </div>
+
+  <div class="hoe">
+    <h2>Lesmateriaal HAVO-P</h2>
+    <p>Dit is het publieke lesmateriaal bij het HAVO-P Profielproject. Open een project
+       hieronder voor het volledige leerlingmateriaal, de opdrachtbladen en de rubric.</p>
+    <p>Werk je aan een project zelf? Vul de bladen in — je antwoorden worden bewaard in
+       je eigen browser, download je werk als PDF om in te leveren.</p>
+  </div>
+
+  <div class="grid">
+    <article class="kaart">
+      <div class="kaart-kop">
+        <h2>Hulpmiddel voor scootmobielgebruikers</h2>
+        <span class="map mono">projecten/hulpmiddel/</span>
+      </div>
+      
+      <p class="sam">In Nederland rijden ruim 300.000 mensen op een scootmobiel. Voor hen is dat voertuig geen speelgoed maar hun benen: het is het verschil tussen zelf boodschappen doen en afhankelijk…</p>
+      <div class="files"><a class="f f-html" href="projecten/hulpmiddel/hulpmiddel.html">Hulpmiddel</a><a class="f f-html" href="projecten/hulpmiddel/logboek.html">Logboek</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-bedrijfsbezoek.html">Opdracht: Bedrijfsbezoek</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-gebruikersonderzoek.html">Opdracht: Gebruikersonderzoek</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-iteratie1.html">Opdracht: Iteratie1</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-iteratie2-montage.html">Opdracht: Iteratie2 montage</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-maatschets.html">Opdracht: Maatschets</a><a class="f f-html" href="projecten/hulpmiddel/opdracht-testring.html">Opdracht: Testring</a><a class="f f-html" href="projecten/hulpmiddel/veiligheidsprotocol.html">Veiligheidsprotocol</a><a class="f f-html" href="projecten/hulpmiddel/werkblad-concepten.html">Werkblad: Concepten</a><a class="f f-html" href="projecten/hulpmiddel/werkblad-pve.html">Werkblad: Pve</a><a class="f f-pdf" href="projecten/hulpmiddel/hulpmiddel.pdf">PDF — hulpmiddel</a><a class="f f-pdf" href="projecten/hulpmiddel/veiligheidsprotocol.pdf">PDF — veiligheidsprotocol</a><a class="f f-doc" href="projecten/hulpmiddel/projectdocument.md">Projectdocument</a><a class="f f-doc" href="projecten/hulpmiddel/rubric.md">Rubric</a><a class="f f-csv" href="projecten/hulpmiddel/eindtermen-hulpmiddel-koppeling.csv">Eindtermen</a></div>
+      
+    </article>
+  </div>
+
+  <footer>
+    <span>Lesmateriaal HAVO-P</span>
+    <span>Techniek</span>
+    <span>Gegenereerd 20-07-2026</span>
+  </footer>
+
+</div></div>
+</body>
+</html>

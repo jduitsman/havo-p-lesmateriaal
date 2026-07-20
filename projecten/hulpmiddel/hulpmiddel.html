@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hulpmiddel voor scootmobielgebruikers — HAVO-P</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1;      /* werkbank */
+    --sheet:#fbfaf7;      /* tekenblad */
+    --ink:#22262b;        /* grafiet */
+    --steel:#767e87;      /* maatlijnen, bijschrift */
+    --blue:#1e5f8c;       /* blauwdruk: de constructie */
+    --red:#c43b2e;        /* machinerood: de waarschuwing */
+    --amber:#b07a12;      /* veiligheid */
+    --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--board);
+    color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- Het blad ---------- */
+  .sheet{
+    max-width:1040px;
+    margin:22px auto 40px;
+    background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);
+    padding:14px;
+  }
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,40px) 40px;}
+
+  h1,h2,h3,h4{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .8em;}
+  p:last-child{margin-bottom:0;}
+  strong{font-weight:600;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+  a{color:var(--blue);}
+  :focus-visible{outline:2px solid var(--red);outline-offset:2px;}
+
+  /* ---------- Titelhoek ---------- */
+  .titleblock{margin:0 0 6px;}
+  .tb-top{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);padding:26px 0 14px;
+  }
+  .tb-eyebrow{
+    font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--blue);
+  }
+  .tb-top h1{font-size:clamp(1.7rem,4.6vw,3rem);letter-spacing:-.02em;text-transform:uppercase;}
+  .tb-top .tagline{font-size:1.02rem;color:var(--steel);font-style:italic;max-width:34ch;text-align:right;}
+  .tb-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    border:1px solid var(--line);border-top:none;
+  }
+  .tb-cell{padding:9px 12px;border-right:1px solid var(--line);}
+  .tb-cell:last-child{border-right:none;}
+  .tb-cell dt{
+    font-family:'Space Mono',monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--steel);margin-bottom:2px;
+  }
+  .tb-cell dd{margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;}
+
+  /* ---------- Signatuur: technische doorsnede (hero) ---------- */
+  .figuur{border:1px solid var(--steel);background:var(--sheet);margin:18px 0 4px;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    animation:fadeUp .7s cubic-bezier(.2,.7,.3,1) both;animation-delay:.12s;}
+  .figuur svg{display:block;width:100%;height:auto;}
+  .figuur .fig-txt{font-family:'Space Mono',monospace;fill:var(--steel);letter-spacing:.02em;}
+  .figuur figcaption{border-top:1px solid var(--line);padding:8px 14px;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);}
+  .figuur figcaption b{color:var(--blue);font-weight:700;}
+  @media (prefers-reduced-motion:reduce){.figuur{animation:none;}}
+
+  /* ---------- Bladindex (nav) ---------- */
+  nav.index{
+    position:sticky;top:0;z-index:30;
+    display:flex;flex-wrap:wrap;gap:0;
+    background:rgba(251,250,247,.94);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--ink);margin-bottom:34px;
+  }
+  nav.index a{
+    flex:1 1 auto;text-align:center;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;padding:11px 10px;
+    border-right:1px solid var(--line);
+  }
+  nav.index a:last-child{border-right:none;}
+  nav.index a:hover{background:var(--blue);color:#fff;}
+  nav.index a.mark{color:var(--red);}
+  nav.index a.mark:hover{background:var(--red);color:#fff;}
+
+  /* ---------- Secties ---------- */
+  section{margin-bottom:46px;scroll-margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;}
+  .sec-head h2{font-size:1.5rem;text-transform:uppercase;letter-spacing:.01em;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--steel);letter-spacing:.1em;white-space:nowrap;}
+  .lead{font-size:1.12rem;}
+  .prose{max-width:none;}
+  .prose h3{font-family:'Archivo',sans-serif;font-size:1.05rem;text-transform:uppercase;letter-spacing:.03em;color:var(--blue);margin:22px 0 6px;}
+
+  /* ---------- Denkstimulerende vraag — het signatuurkader ---------- */
+  .denkvraag{
+    position:relative;margin:22px 0;padding:16px 20px 16px 22px;
+    background:#eef4f8;border:1px solid var(--blue);border-left:6px solid var(--blue);
+  }
+  .denkvraag .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:var(--blue);padding:4px 10px;margin-bottom:10px;
+  }
+  .denkvraag .badge .num{font-size:.74rem;}
+  .denkvraag .badge::before{content:"?";font-size:.9rem;line-height:1;}
+  .denkvraag p{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.08rem;line-height:1.4;color:var(--ink);margin:0;}
+
+  /* ---------- Leerdoelen ---------- */
+  ol.doelen{list-style:none;margin:0;padding:0;counter-reset:d;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 30px;}
+  ol.doelen li{
+    counter-increment:d;position:relative;padding:10px 0 10px 40px;border-bottom:1px dotted var(--line);
+  }
+  ol.doelen li::before{
+    content:counter(d,decimal-leading-zero);position:absolute;left:0;top:12px;
+    font-family:'Space Mono',monospace;font-size:.76rem;font-weight:700;color:var(--blue);
+  }
+  ol.doelen li strong{font-family:'Archivo',sans-serif;font-weight:600;}
+
+  /* ---------- Deelvragen ---------- */
+  ol.deelvragen{list-style:none;margin:0;padding:0;counter-reset:v;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+  ol.deelvragen li{counter-increment:v;background:var(--sheet);padding:14px 18px 14px 46px;font-size:1.04rem;position:relative;}
+  ol.deelvragen li::before{content:counter(v);position:absolute;left:16px;top:15px;font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;color:var(--red);}
+  ol.deelvragen li b{font-family:'Archivo',sans-serif;font-weight:700;color:var(--blue);}
+
+  /* ---------- Tabellen ---------- */
+  .scroll{overflow-x:auto;border:1px solid var(--line);}
+  table{border-collapse:collapse;width:100%;background:var(--sheet);font-size:.9rem;}
+  table.wide{min-width:820px;}
+  th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);border-right:1px solid var(--line);}
+  th:last-child,td:last-child{border-right:none;}
+  thead th{
+    background:var(--ink);color:#fff;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;
+  }
+  tbody tr:nth-child(even) td{background:rgba(30,95,140,.03);}
+  td .num{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);}
+  td.mono,.mono td{font-family:'Space Mono',monospace;}
+  .dl-badge{font-family:'Space Mono',monospace;font-weight:700;font-size:.72rem;color:var(--red);white-space:nowrap;}
+  .dl-badge a{color:var(--red);}
+
+  /* voortgang boven de deliverable-tabel */
+  .voortgang{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;
+    background:rgba(251,250,247,.95);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--ink);padding:9px 2px;margin:14px 0 6px;}
+  .voortgang .teller{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;white-space:nowrap;}
+  .voortgang .teller b{color:var(--red);}
+  .voortgang .teller.klaar b{color:#2c7a4b;}
+  .voortgang .balk{flex:1;height:8px;border:1px solid var(--steel);background:#fff;}
+  .voortgang .balk div{height:100%;width:0;background:var(--blue);transition:width .25s;}
+  .uitleg-klein{font-size:.86rem;color:#5a616a;font-style:italic;margin:0 0 12px;}
+
+  /* afvinkkolom in de deliverable-tabel */
+  td.doen{text-align:center;width:64px;}
+  td.doen input[type=checkbox]{
+    appearance:none;-webkit-appearance:none;width:22px;height:22px;
+    border:2px solid var(--ink);background:#fff;cursor:pointer;display:inline-grid;place-content:center;
+  }
+  td.doen input[type=checkbox]:checked{background:#2c7a4b;border-color:#2c7a4b;}
+  td.doen input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:1rem;}
+  tr.gedaan td:not(.doen){opacity:.55;}
+  tr.gedaan td.pnr,tr.gedaan .dl-badge{text-decoration:line-through;text-decoration-color:#2c7a4b;}
+
+  /* ---------- Planning: lessen ---------- */
+  .les{border:1px solid var(--line);margin-bottom:14px;background:var(--sheet);}
+  .les-head{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:10px 16px;background:#f4f2ec;}
+  .les-nr{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;color:#fff;background:var(--blue);padding:3px 8px;letter-spacing:.06em;white-space:nowrap;}
+  .les-head.key .les-nr{background:var(--red);}
+  .les-week{font-weight:400;opacity:.75;letter-spacing:.03em;}
+  .les-head h3{font-size:1.12rem;flex:1;}
+  .les-body{padding:14px 16px 16px;}
+  .les-body p{font-size:.98rem;}
+  .les-dl{
+    display:flex;align-items:center;gap:10px;margin-top:12px;padding:8px 12px;
+    border-left:3px solid var(--red);background:#faf1f0;
+  }
+  .les-dl .lbl{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);}
+  .les-dl .val{font-family:'Archivo',sans-serif;font-weight:700;font-size:.92rem;}
+  .week-links{
+    margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--blue);background:#eef4f8;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;
+  }
+  .week-links a{color:var(--blue);}
+  .week-links .terug{font-weight:400;font-size:.82rem;color:var(--steel);}
+  .week-links .terug a{color:var(--steel);text-decoration:underline;}
+  .week-links.geen-dl{border-left-color:var(--steel);background:#f4f2ec;font-weight:400;}
+  .week-links.geen-dl b{font-family:'Archivo',sans-serif;font-weight:700;}
+  .tussen{
+    display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:8px 16px;
+    border:1px dashed var(--steel);background:#f4f2ec;
+    font-family:'Space Mono',monospace;font-size:.78rem;color:#3c434a;
+  }
+  /* Achtergrondsecties tussen de lesblokken in — theorie/naslag bij de les erboven */
+  section.les-ref{
+    margin:10px 0 18px;padding:16px 18px 18px;
+    background:transparent;border:none;border-left:3px solid var(--line);
+  }
+  section.les-ref .sec-head{margin-bottom:12px;}
+  section.les-ref .sec-head h2{font-size:1.1rem;}
+  .tussen b{font-family:'Space Mono',monospace;font-weight:700;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);white-space:nowrap;}
+  .callout{
+    margin:18px 0;padding:14px 18px;border:1px solid var(--red);border-left:5px solid var(--red);background:#faf1f0;
+    font-size:.98rem;
+  }
+  .callout b{font-family:'Archivo',sans-serif;font-weight:700;}
+
+  /* ---------- Twee kolommen (mag wel / mag niet, mat) ---------- */
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .box{border:1px solid var(--line);padding:16px;background:var(--sheet);}
+  .box h3{font-size:1rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;}
+  .box ul{list-style:none;margin:0;padding:0;}
+  .box li{padding:5px 0 5px 18px;position:relative;font-size:.97rem;}
+  .box li::before{content:"";position:absolute;left:0;top:13px;width:8px;height:1px;background:var(--steel);}
+  .box.wel{border-left:5px solid var(--blue);}
+  .box.wel h3{color:var(--blue);}
+  .box.wel li::before{background:var(--blue);width:8px;height:8px;top:9px;border-radius:0;}
+  .box.niet{border-left:5px solid var(--red);}
+  .box.niet h3{color:var(--red);}
+  .box.niet li::before{content:"×";background:none;font-family:'Space Mono',monospace;font-weight:700;color:var(--red);top:4px;width:auto;}
+  .box b{font-family:'Archivo',sans-serif;font-weight:600;}
+  .veiligheid{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;}
+  .veiligheid h3{color:var(--amber);}
+  .veiligheid li::before{background:var(--amber);}
+  .veiligheid b{font-family:'Archivo',sans-serif;font-weight:700;}
+
+  /* ---------- Genummerde uitleg (redenen, patroon) ---------- */
+  ol.redenen{counter-reset:r;list-style:none;margin:14px 0;padding:0;}
+  ol.redenen li{counter-increment:r;position:relative;padding:8px 0 8px 40px;border-bottom:1px dotted var(--line);font-size:.98rem;}
+  ol.redenen li::before{content:counter(r);position:absolute;left:0;top:9px;font-family:'Space Mono',monospace;font-weight:700;font-size:.82rem;color:var(--blue);}
+  ul.patroon{list-style:none;margin:14px 0;padding:0;}
+  ul.patroon li{position:relative;padding:7px 0 7px 20px;border-bottom:1px dotted var(--line);font-size:.98rem;}
+  ul.patroon li::before{content:"";position:absolute;left:0;top:15px;width:9px;height:9px;border:1.5px solid var(--blue);}
+  ul.patroon b{font-family:'Archivo',sans-serif;font-weight:600;}
+  .werkregel{
+    margin:16px 0;padding:12px 18px;background:var(--ink);color:var(--sheet);
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.92rem;letter-spacing:.02em;
+  }
+  .werkregel span{color:#8fc4e6;}
+
+  /* ---------- Producten deliverables tabel: nummerkolom ---------- */
+  td.pnr{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);text-align:center;width:34px;}
+
+  /* ---------- Randvoorwaarden ---------- */
+  .rv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+
+  /* ---------- Rubric ---------- */
+  .part{
+    border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    padding:16px 0;margin:56px 0 26px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  }
+  .part h2{font-size:1.7rem;text-transform:uppercase;}
+  .part p{margin:0;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);}
+  table.rubric{min-width:900px;}
+  table.rubric thead th{position:sticky;top:0;}
+  td.crit{min-width:200px;background:#f4f2ec;}
+  td.crit strong{display:block;font-family:'Archivo',sans-serif;font-size:.95rem;margin-bottom:5px;}
+  td.crit .vraag{font-style:italic;font-size:.82rem;color:#3c434a;display:block;margin-bottom:8px;}
+  .chip{display:inline-block;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border:1px solid;}
+  .chip-prod{color:var(--blue);border-color:var(--blue);}
+  .chip-proc{color:var(--red);border-color:var(--red);}
+  .chip-groow{color:var(--ink);border-color:var(--ink);white-space:nowrap;}
+  .weging{display:block;margin-top:6px;font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;}
+  td.n1{background:#faf1f0;} td.n2{background:#fdf8ec;} td.n3{background:#f1f5f2;} td.n4{background:#eaf1f6;}
+  .weegtabel td.lvl-tot{font-family:'Archivo',sans-serif;font-weight:700;}
+  .lbl-proc{color:var(--red);} .lbl-prod{color:var(--blue);}
+  .niveau-legenda{display:flex;gap:0;flex-wrap:wrap;margin:0 0 16px;border:1px solid var(--line);}
+  .niveau-legenda span{flex:1;min-width:120px;padding:8px 12px;font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;border-right:1px solid var(--line);}
+  .niveau-legenda span:last-child{border-right:none;}
+  .niveau-legenda .l1{background:#faf1f0;color:var(--red);}
+  .niveau-legenda .l2{background:#fdf8ec;color:var(--amber);}
+  .niveau-legenda .l3{background:#f1f5f2;color:#2c7a4b;}
+  .niveau-legenda .l4{background:#eaf1f6;color:var(--blue);}
+  ol.tips{list-style:none;margin:0;padding:0;counter-reset:t;}
+  ol.tips li{counter-increment:t;position:relative;padding:12px 0 12px 44px;border-bottom:1px dotted var(--line);}
+  ol.tips li::before{content:counter(t,decimal-leading-zero);position:absolute;left:0;top:14px;font-family:'Space Mono',monospace;font-weight:700;font-size:.76rem;color:var(--red);}
+  ol.tips strong{font-family:'Archivo',sans-serif;}
+
+  /* ---------- Verantwoording eindtermen ---------- */
+  table.eindtermen{min-width:760px;}
+  table.eindtermen td.etnr{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);text-align:center;width:34px;}
+  table.eindtermen td.ettitel{min-width:150px;}
+  table.eindtermen td.ettitel strong{font-family:'Archivo',sans-serif;font-weight:600;}
+  tr.domein-rij td{background:#f4f2ec;font-family:'Archivo',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);}
+  .dek{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;white-space:nowrap;border:1px solid;}
+  .dek-sterk{color:#2c7a4b;border-color:#2c7a4b;background:#f1f5f2;}
+  .dek-deels{color:var(--amber);border-color:var(--amber);background:#fdf8ec;}
+  .dek-niet{color:var(--red);border-color:var(--red);background:#faf1f0;}
+
+  /* ---------- Leerling/Docent-versie + zelf antwoorden ---------- */
+  .versie-toggle{
+    position:fixed;left:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+    background:#fff;color:var(--ink);border:2px solid var(--ink);padding:11px 16px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  .versie-toggle:hover{background:#f4f2ec;}
+  .versie-toggle b{color:var(--blue);}
+  .zelf{margin:16px 0;padding:14px 16px;border:1px dashed var(--steel);background:#fbfaf6;}
+  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.92rem;margin-bottom:8px;color:var(--ink);}
+  .zelf-input{
+    width:100%;box-sizing:border-box;resize:vertical;min-height:78px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.7;
+    padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);
+  }
+  .zelf-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .toon-btn{
+    margin-top:10px;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--blue);color:#fff;border:none;padding:10px 16px;cursor:pointer;
+  }
+  .toon-btn:hover{background:var(--ink);}
+  .antwoord{display:none;margin:12px 0;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
+  .antwoord::before{
+    content:"Voorbeeldantwoord";display:block;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:0 0 8px;
+  }
+  .antwoord.open{display:block;}
+  body.v-docent .antwoord{display:block;}
+  body.v-docent .zelf{display:none;}
+
+  /* ---------- PDF-knop ---------- */
+  .pdf{
+    position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--ink);color:#fff;border:none;padding:13px 20px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,.3);
+  }
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  /* ---------- Voet ---------- */
+  footer{border-top:2px solid var(--ink);margin-top:50px;padding-top:14px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);}
+
+  /* ---------- Laadanimatie ---------- */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .titleblock,section,.part{animation:fadeUp .6s cubic-bezier(.2,.7,.3,1) both;}
+  section:nth-of-type(2){animation-delay:.05s;}
+  section:nth-of-type(3){animation-delay:.1s;}
+  @media (prefers-reduced-motion:reduce){
+    .titleblock,section,.part{animation:none;}
+  }
+
+  /* ---------- Responsief ---------- */
+  @media (max-width:820px){
+    .cols2,.rv-grid{grid-template-columns:1fr;}
+    .tb-top .tagline{text-align:left;}
+  }
+  @media (max-width:560px){
+    body{font-size:16px;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 14px 28px;}
+    .sec-head .code{display:none;}
+    .part p{display:none;}
+    .pdf{right:10px;top:10px;padding:10px 14px;font-size:.7rem;}
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    @page{size:A4;margin:20mm 18mm;}
+    body{background:#fff!important;color:#000!important;font-size:11pt;line-height:1.5;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,nav.index,.no-print,.versie-toggle,.toon-btn,.voortgang,.uitleg-klein{display:none!important;}
+    body.v-leerling .antwoord{display:none!important;}
+    body.v-docent .zelf{display:none!important;}
+    .zelf{break-inside:avoid;}
+    .zelf-input{min-height:96px;}
+    .titleblock,section,.part{animation:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:22px;}
+    .les,.box,.scroll,.denkvraag,.callout,.werkregel,.les-dl,.week-links,.tussen{break-inside:avoid;}
+    tr,td,th{break-inside:avoid;}
+    thead{display:table-header-group;}
+    h1,h2,h3,h4{break-after:avoid;}
+    .part{margin-top:24px;break-before:auto;}
+    thead th{position:static;}
+    a{color:#000;text-decoration:none;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="versie-toggle" id="versieToggle" type="button" aria-label="Wissel tussen leerling- en docentversie">Weergave: <b>Leerling</b></button>
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet">
+<div class="frame">
+
+  <!-- ══ Titelhoek ══ -->
+  <header class="titleblock">
+    <div class="tb-top">
+      <div>
+        <div class="tb-eyebrow">HAVO-P Profielproject · Ontwerp &amp; 3D-print</div>
+        <h1>Hulpmiddel voor scootmobielgebruikers</h1>
+      </div>
+      <p class="tagline">Eén echte gebruiker, één echt probleem. Je meet, je ontwerpt, je print, het gaat mis, je verbetert. Geen oefening — een product.</p>
+    </div>
+    <dl class="tb-grid">
+      <div class="tb-cell"><dt>Vak</dt><dd>HAVO-P</dd></div>
+      <div class="tb-cell"><dt>Klas</dt><dd>HAVO 4</dd></div>
+      <div class="tb-cell"><dt>Duur</dt><dd>10 × 200 min · 10 weken</dd></div>
+      <div class="tb-cell"><dt>Groep</dt><dd>2 of 3 leerlingen</dd></div>
+      <div class="tb-cell"><dt>Product</dt><dd>3D-geprint hulpmiddel</dd></div>
+    </dl>
+  </header>
+
+  <!-- ══ Signatuur: klemverbinding in doorsnede ══ -->
+  <figure class="figuur">
+    <svg viewBox="0 0 560 232" role="img" aria-label="Technische doorsnede van een tweedelige klem om een ronde buis. Kernmaat: klemgat = buismaat plus 0,3 tot 0,5 millimeter speling. De spleet tussen de twee helften blijft open.">
+      <title>Klemverbinding in doorsnede — de tolerantie</title>
+      <defs>
+        <marker id="dimA" markerWidth="9" markerHeight="8" refX="7.4" refY="3" orient="auto-start-reverse">
+          <path d="M0,0 L7.4,3 L0,6" fill="none" stroke="#1e5f8c" stroke-width="1"/>
+        </marker>
+      </defs>
+      <!-- klemhelften -->
+      <rect x="98" y="54" width="104" height="52" rx="10" fill="#e7eef4" stroke="#1e5f8c" stroke-width="1.5"/>
+      <rect x="98" y="114" width="104" height="52" rx="10" fill="#e7eef4" stroke="#1e5f8c" stroke-width="1.5"/>
+      <!-- boring 'uitgesneden' + gestreepte binnenrand -->
+      <circle cx="150" cy="110" r="34" fill="#fbfaf7"/>
+      <circle cx="150" cy="110" r="34" fill="none" stroke="#1e5f8c" stroke-width="1.3" stroke-dasharray="5 3"/>
+      <!-- de buis -->
+      <circle cx="150" cy="110" r="27" fill="#eceae4" stroke="#22262b" stroke-width="1.5"/>
+      <!-- hartlijnen -->
+      <line x1="103" y1="110" x2="197" y2="110" stroke="#767e87" stroke-width="1" stroke-dasharray="9 3 2 3"/>
+      <line x1="150" y1="65" x2="150" y2="155" stroke="#767e87" stroke-width="1" stroke-dasharray="9 3 2 3"/>
+      <!-- doorlopende bouten -->
+      <g stroke="#22262b" stroke-width="2">
+        <line x1="106" y1="46" x2="106" y2="176"/>
+        <line x1="194" y1="46" x2="194" y2="176"/>
+      </g>
+      <g fill="#22262b">
+        <rect x="101" y="40" width="10" height="6"/><rect x="189" y="40" width="10" height="6"/>
+        <rect x="100" y="176" width="12" height="7"/><rect x="188" y="176" width="12" height="7"/>
+      </g>
+      <!-- maatlijn: Ø klemgat -->
+      <g stroke="#767e87" stroke-width="1">
+        <line x1="116" y1="170" x2="116" y2="204"/>
+        <line x1="184" y1="170" x2="184" y2="204"/>
+      </g>
+      <line x1="116" y1="198" x2="184" y2="198" stroke="#1e5f8c" stroke-width="1.2" marker-start="url(#dimA)" marker-end="url(#dimA)"/>
+      <text x="150" y="191" text-anchor="middle" class="fig-txt" font-size="10.5" fill="#1e5f8c">Ø klemgat = Ø buis + 0,3–0,5 mm</text>
+      <!-- verwijzing: spleet -->
+      <circle cx="202" cy="110" r="2.4" fill="#1e5f8c"/>
+      <polyline points="202,110 236,86 292,86" fill="none" stroke="#1e5f8c" stroke-width="1"/>
+      <text x="296" y="89" class="fig-txt" font-size="10.5" fill="#1e5f8c">spleet — blijft open</text>
+      <!-- verwijzing: buis -->
+      <circle cx="169" cy="128" r="2.4" fill="#22262b"/>
+      <polyline points="169,128 248,150 312,150" fill="none" stroke="#767e87" stroke-width="1"/>
+      <text x="316" y="153" class="fig-txt" font-size="10">Ø buis — meet 3× · 2 richtingen</text>
+    </svg>
+    <figcaption><span><b>Fig. 01</b> — Klemverbinding in doorsnede</span><span>Het kernidee · tolerantie op een ronde buis</span></figcaption>
+  </figure>
+
+  <nav class="index" aria-label="Inhoud">
+    <a href="#context">Context</a>
+    <a href="#opdracht">Opdracht</a>
+    <a href="#leerdoelen">Leerdoelen</a>
+    <a href="#deelvragen">Deelvragen</a>
+    <a href="#producten">Producten</a>
+    <a href="#planning">Planning</a>
+    <a href="#pve">Eisen</a>
+    <a href="#veiligheid">Veiligheid</a>
+    <a href="#tolerantie">Toleranties</a>
+    <a href="#printen">Printen</a>
+    <a href="#klem">Klem</a>
+    <a href="#randvoorwaarden">Randvoorwaarden</a>
+    <a href="#rubric" class="mark">Beoordeling</a>
+    <a href="#eindtermen" class="mark">Eindtermen</a>
+    <a href="logboek.html" target="_blank" rel="noopener" class="mark">Logboek ↗</a>
+  </nav>
+
+  <!-- ══ Context ══ -->
+  <section id="context">
+    <div class="sec-head"><h2>Context &amp; aanleiding</h2><span class="rule"></span><span class="code">Deel A · Projectdocument</span></div>
+    <div class="prose">
+      <p class="lead">In Nederland rijden ruim 300.000 mensen op een scootmobiel. Voor hen is dat voertuig geen speelgoed maar hun benen: het is het verschil tussen zelf boodschappen doen en afhankelijk zijn van iemand anders.</p>
+      <p>Maar een scootmobiel is een standaardproduct. Hij wordt gebouwd voor "de gemiddelde gebruiker" — en die bestaat niet. De ene gebruiker heeft één hand die het niet meer goed doet. De ander kan niet bukken en laat elke keer zijn wandelstok vallen. Weer een ander heeft een boodschappentas die telkens van de armleuning glijdt, een telefoon die hij onder het rijden nergens kwijt kan, of een regenhoes die hij in zijn eentje niet vast krijgt.</p>
+      <p>Dat zijn kleine problemen. Voor jou. Voor de gebruiker betekenen ze: niet meer alleen de deur uit.</p>
+      <p>Zo'n klein probleem is precies het soort probleem dat jij kunt oplossen met een goed doordacht, 3D-geprint hulpmiddel dat exact op déze scootmobiel en déze gebruiker past. Een fabrikant maakt zoiets niet — daar is de markt te klein voor. Jij wel.</p>
+      <p>In dit project werk je voor één echte gebruiker. Je gaat naar de scootmobiel toe, je meet, je interviewt, je ontwerpt, je print, het gaat mis, je verbetert het, en je levert een product op dat de gebruiker in zijn handen kan houden en kan gebruiken. Geen oefening. Een product.</p>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">01</span></span>
+        <p>Hoe zou jij erachter komen wat een scootmobielgebruiker écht lastig vindt aan zijn voertuig — zonder dat je hem de vraag "wat vind je lastig?" stelt?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <p>De vraag "wat vind je lastig?" levert bijna nooit een bruikbaar antwoord op. Mensen zijn gewend aan hun eigen ongemak en noemen het niet meer. Ze zeggen "het gaat wel" terwijl ze drie keer moeten grijpen om hun tas te pakken. Daarom kijk en meet je in les 2 zelf: je filmt de gebruiker terwijl hij instapt, wegrijdt en zijn spullen pakt, en je gaat zelf 10 minuten in de scootmobiel zitten met je jas dicht en handschoenen aan. Wat kun jíj dan niet? Wat je zelf voelt en op film ziet, is echte informatie. Wat iemand zegt, is een mening.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ De opdracht ══ -->
+  <section id="opdracht">
+    <div class="sec-head"><h2>De opdracht</h2><span class="rule"></span><span class="code">Wat je maakt is vrij</span></div>
+    <div class="prose">
+      <p class="lead">Ontwerp, print en test een hulpmiddel dat het gebruik van een scootmobiel makkelijker, veiliger of comfortabeler maakt voor één echte gebruiker.</p>
+      <p>Je begint bij het probleem van die gebruiker, je vertaalt dat naar een Programma van Eisen, je ontwerpt in Onshape, je print een prototype in PLA, je test het tot het faalt, je verbetert het in minimaal twee iteraties en je levert een eindproduct in PETG op dat je op de echte scootmobiel monteert en door de gebruiker laat testen.</p>
+      <p><strong>Wat je maakt is vrij.</strong> Een slimme opberging, een tashaak, een stokhouder, een bevestigingssysteem, een bedieningshulp, een houder voor een telefoon of medicijnen — als het maar een echt probleem van je gebruiker oplost en binnen het Programma van Eisen past.</p>
+    </div>
+  </section>
+
+  <!-- ══ Leerdoelen ══ -->
+  <section id="leerdoelen">
+    <div class="sec-head"><h2>Leerdoelen</h2><span class="rule"></span><span class="code">Na dit project kun je</span></div>
+    <ol class="doelen">
+      <li>de wensen en eisen van een <strong>échte gebruiker onderzoeken</strong> via interview, observatie en een empathie-oefening, en die vertalen naar een meetbaar Programma van Eisen.</li>
+      <li><strong>nauwkeurig meten</strong> aan een bestaand product met een schuifmaat (3 plekken × 2 richtingen, min- én maxwaarde) en die maten vastleggen in een maatschets mét de omgeving eromheen.</li>
+      <li><strong>een 3D-model ontwerpen in Onshape</strong> met schetsen, maatvoering, extruderen, uitsnijden, afronden en variabelen (<span class="mono">#buisD</span>, <span class="mono">#speling</span>), zodat je model aanpasbaar blijft.</li>
+      <li><strong>een schetsidee vertalen naar een digitaal 3D-model</strong> met aandacht voor vorm, functie en gebruiksgemak, en je constructieve keuzes onderbouwen: wanddikte, toleranties, klemverbinding, boutgaten en afrondingen.</li>
+      <li><strong>een ontwerp printklaar maken en veilig produceren:</strong> correct exporteren naar STL/3MF, controleren, slicen met een bewuste printoriëntatie, infill, wanden, materiaalkeuze en supports, en veilig werken volgens het veiligheidsprotocol.</li>
+      <li><strong>een prototype testen</strong> op pasvorm, functionaliteit en sterkte, inclusief een belastingstest met veerunster en een breukvlakanalyse.</li>
+      <li><strong>je ontwerp in minimaal twee iteraties verbeteren</strong> in het CAD-model op basis van testresultaten en gebruikersfeedback, en aantoonbaar maken wat er misging, wat je veranderde en wat dat opleverde.</li>
+      <li><strong>je technische ontwerp presenteren en onderbouwen</strong> richting een opdrachtgever: ontwerpkeuzes, materiaalkeuze, productiekeuzes en de waarde voor de gebruiker.</li>
+    </ol>
+  </section>
+
+  <!-- ══ Deelvragen ══ -->
+  <section id="deelvragen">
+    <div class="sec-head"><h2>Deelvragen</h2><span class="rule"></span><span class="code">5W1H · Je kompas voor het hele project</span></div>
+    <p>Deze zes vragen volgen de <strong>5W1H-methode</strong>: wie, wat, waar, wanneer, waarom en hoe. Samen dekken ze je hele onderzoek — van gebruiker tot werkend hulpmiddel. Lees ze <b>nu, in les 2</b> — het bedrijfsbezoek in les 1 staat er los van. Je beantwoordt ze niet in één keer: kom je tijdens een les bewijs tegen, noteer dat dan in je <a href="logboek.html" target="_blank" rel="noopener">logboek</a>. In les 10 vat je de definitieve antwoorden — met dat bewijs — samen in je technische onderbouwing.</p>
+    <ol class="deelvragen">
+      <li><b>Wie</b> is jouw gebruiker, en waaruit blijkt dat het probleem dat je oplost écht bestaat — en niet een aanname van jou is?</li>
+      <li><b>Wat</b> moet jouw hulpmiddel precies kunnen om dat probleem op te lossen, en welke eisen uit het Programma van Eisen horen daarbij?</li>
+      <li><b>Waar</b> op de scootmobiel mag jouw hulpmiddel bevestigd worden — en waar absoluut niet, omdat het de besturing, de verlichting of de veiligheid van de gebruiker hindert?</li>
+      <li><b>Wanneer</b> is jouw hulpmiddel geslaagd: welke tests met de echte gebruiker moet het doorstaan voordat jij het "af" mag noemen?</li>
+      <li><b>Waarom</b> breekt een 3D-geprint onderdeel op de ene manier wél en op de andere manier niet, en hoe stuur je dat met printoriëntatie en materiaalkeuze?</li>
+      <li><b>Hoe</b> vertaal je een gemeten buismaat naar een gat in je CAD-model dat na het printen daadwerkelijk past — en wat leerden je twee iteraties je daarover?</li>
+    </ol>
+  </section>
+
+  <!-- ══ Producten & deliverables ══ -->
+  <section id="producten">
+    <div class="sec-head"><h2>Producten &amp; deliverables</h2><span class="rule"></span><span class="code">Wat je oplevert — dé plek om te weten wat je nog moet doen</span></div>
+    <div class="voortgang">
+      <span class="teller" id="dl-teller"></span>
+      <div class="balk"><div id="dl-balk"></div></div>
+    </div>
+    <div class="uitleg-klein">Klik op een product voor het opdrachtblad. Klik op de week om te zien in welke les dit hoort. Vink af zodra je het hebt ingeleverd — dat onthoudt deze pagina voor je. <b>Upload de PDF van elk product bij de bijbehorende Groow-fase</b> op het onlineplatform.</div>
+    <div class="scroll">
+      <table class="wide">
+        <thead>
+          <tr><th>#</th><th>Product</th><th>Beschrijving</th><th>Groow-fase</th><th>Wanneer</th><th>Gedaan?</th></tr>
+        </thead>
+        <tbody>
+          <tr id="deliverable-1"><td class="pnr">1</td><td><a href="opdracht-bedrijfsbezoek.html" target="_blank" rel="noopener">Bedrijfsbezoek</a></td><td>Voorbereidingsvragen, aantekeningen tijdens het bezoek, minimaal 2 foto's en een kort verslag: wat vond je interessant, wat neem je mee voor je eigen ontwerpproces. Invullen op de <a href="opdracht-bedrijfsbezoek.html" target="_blank" rel="noopener">opdracht Bedrijfsbezoek</a>, inleveren als PDF.</td><td class="groow-fase"><span class="chip chip-groow">Begrijpen</span></td><td class="dl-badge"><a href="#les1">Week 1</a></td><td class="doen"><input type="checkbox" data-d="1"></td></tr>
+          <tr id="deliverable-2"><td class="pnr">2</td><td><a href="veiligheidsprotocol.html" target="_blank" rel="noopener">Ondertekend veiligheidsprotocol</a></td><td>Iedere leerling vinkt de regels digitaal af, print het blad en ondertekent met pen. Zonder handtekening geen toegang tot scootmobiel, gereedschap of printer. <a href="veiligheidsprotocol.html" target="_blank" rel="noopener">→ Open het protocol</a></td><td class="groow-fase"><span class="chip chip-groow">Begrijpen</span></td><td class="dl-badge"><a href="#les2">Week 2</a></td><td class="doen"><input type="checkbox" data-d="2"></td></tr>
+          <tr id="deliverable-3"><td class="pnr">3</td><td><a href="opdracht-gebruikersonderzoek.html" target="_blank" rel="noopener">Gebruikersonderzoek</a></td><td>Interviewvragen + antwoorden, foto's/film van de scootmobiel, bevindingen uit de empathie-oefening, conclusie: dit is het probleem. Dit is de <b>input</b> voor het PvE — geen onderdeel ervan. Invullen op de <a href="opdracht-gebruikersonderzoek.html" target="_blank" rel="noopener">opdracht Gebruikersonderzoek</a>, inleveren als PDF.</td><td class="groow-fase"><span class="chip chip-groow">Ontdekken</span></td><td class="dl-badge"><a href="#les2">Week 2</a></td><td class="doen"><input type="checkbox" data-d="3"></td></tr>
+          <tr id="deliverable-4"><td class="pnr">4</td><td><a href="werkblad-pve.html" target="_blank" rel="noopener">Programma van Eisen</a></td><td>Eisen van de gebruiker + de harde eisen (zie randvoorwaarden), meetbaar geformuleerd. Invullen op het <a href="werkblad-pve.html" target="_blank" rel="noopener">werkblad Van probleem naar PvE</a>; stap 1 neemt de conclusie uit deliverable 3 over. Inleveren als PDF.</td><td class="groow-fase"><span class="chip chip-groow">Ontwerpen</span></td><td class="dl-badge"><a href="#les2">Week 2</a></td><td class="doen"><input type="checkbox" data-d="4"></td></tr>
+          <tr id="deliverable-5"><td class="pnr">5</td><td><a href="werkblad-concepten.html" target="_blank" rel="noopener">3 concepten + gekozen concept</a></td><td>Drie geschetste concepten, peer review, onderbouwde keuze voor één. Invullen op het <a href="werkblad-concepten.html" target="_blank" rel="noopener">werkblad Concepten kiezen</a>, inleveren als PDF.</td><td class="groow-fase"><span class="chip chip-groow">Ontwerpen</span></td><td class="dl-badge"><a href="#les2">Week 2</a></td><td class="doen"><input type="checkbox" data-d="5"></td></tr>
+          <tr id="deliverable-6"><td class="pnr">6</td><td><a href="opdracht-maatschets.html" target="_blank" rel="noopener">Maatschets met omgeving</a></td><td>Schets van de bevestigingsplek met alle maten (min/max, 3 plekken × 2 richtingen) én de kabels, hendels en bewegende delen eromheen. Meten en tekenen op de <a href="opdracht-maatschets.html" target="_blank" rel="noopener">opdracht Maatschets met omgeving</a> (blad MS-01), inleveren als PDF.</td><td class="groow-fase"><span class="chip chip-groow">Ontwerpen</span></td><td class="dl-badge"><a href="#les3">Week 3</a></td><td class="doen"><input type="checkbox" data-d="6"></td></tr>
+          <tr id="deliverable-7"><td class="pnr">7</td><td><a href="opdracht-testring.html" target="_blank" rel="noopener">Testring, 2 delen (STL)</a></td><td>Tweedelige ring van 10 mm hoog om je gemeten buismaat te controleren: deel A met doorloopgaten Ø3,4, deel B met insertgaten Ø4,0 voor M3-inserts. Modelleren volgens de <a href="opdracht-testring.html" target="_blank" rel="noopener">opdracht De testring</a> (blad TR-01).</td><td class="groow-fase"><span class="chip chip-groow">Maken</span></td><td class="dl-badge"><a href="#les3">Einde week 3</a></td><td class="doen"><input type="checkbox" data-d="7"></td></tr>
+          <tr id="deliverable-8"><td class="pnr">8</td><td>Prototype v1 (STL/3MF)</td><td>Volledig CAD-model, printklaar, docentcheck afgetekend.</td><td class="groow-fase"><span class="chip chip-groow">Maken</span></td><td class="dl-badge"><a href="#les5">Einde week 5</a></td><td class="doen"><input type="checkbox" data-d="8"></td></tr>
+          <tr id="deliverable-9"><td class="pnr">9</td><td><a href="opdracht-iteratie1.html" target="_blank" rel="noopener">Prototype v2 (STL/3MF)</a></td><td>Verbeterd model na iteratie 1, met logboeknotitie wat er veranderde en waarom. Testen en analyseren op de <a href="opdracht-iteratie1.html" target="_blank" rel="noopener">opdracht Iteratie 1 — passen &amp; falen</a>.</td><td class="groow-fase"><span class="chip chip-groow">Maken</span></td><td class="dl-badge"><a href="#les6">Einde week 6</a></td><td class="doen"><input type="checkbox" data-d="9"></td></tr>
+          <tr id="deliverable-10"><td class="pnr">10</td><td><a href="opdracht-iteratie2-montage.html" target="_blank" rel="noopener">Definitief bestand in PETG</a></td><td>Eindmodel na iteratie 2, getest tot de PvE-eis (niet-destructief) en vergeleken met de breuk van v1, klaar voor de eindprint. Monteren en controleren op de <a href="opdracht-iteratie2-montage.html" target="_blank" rel="noopener">opdracht Iteratie 2 + montage</a>.</td><td class="groow-fase"><span class="chip chip-groow">Maken</span></td><td class="dl-badge"><a href="#les7">Einde week 7</a></td><td class="doen"><input type="checkbox" data-d="10"></td></tr>
+          <tr id="deliverable-11"><td class="pnr">11</td><td>Eindproduct</td><td>Gemonteerd, getest hulpmiddel op de echte scootmobiel.</td><td class="groow-fase"><span class="chip chip-groow">Maken</span></td><td class="dl-badge"><a href="#les10">Week 10</a></td><td class="doen"><input type="checkbox" data-d="11"></td></tr>
+          <tr id="deliverable-12"><td class="pnr">12</td><td>Technische onderbouwing</td><td>3–5 pagina's: probleem, PvE, ontwerpkeuzes, tolerantieberekening, printoriëntatie, materiaalkeuze, beide iteraties met foto's van wat faalde, testresultaten, en de definitieve antwoorden op de <a href="#deelvragen">6 deelvragen</a> (met bewijs uit je logboek).</td><td class="groow-fase"><span class="chip chip-groow">Delen</span></td><td class="dl-badge"><a href="#les10">Week 10</a></td><td class="doen"><input type="checkbox" data-d="12"></td></tr>
+          <tr id="deliverable-13"><td class="pnr">13</td><td>Presentatie (8 min)</td><td>Probleem → oplossing → wat ging er mis → wat leerde je daarvan.</td><td class="groow-fase"><span class="chip chip-groow">Delen</span></td><td class="dl-badge"><a href="#les10">Week 10</a></td><td class="doen"><input type="checkbox" data-d="13"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>Logboek:</b> je houdt per les bij wat je deed, wat er misging en wat je besloot. Foto's van mislukte prints en gebroken onderdelen zijn géén schande — die zijn je bewijsmateriaal. Zonder mislukking geen leerproces. Kom je bewijs tegen voor een van de <a href="#deelvragen">deelvragen</a>, noteer dat er dan meteen bij — dat scheelt zoeken in les 10. Vul het in op je <a href="logboek.html" target="_blank" rel="noopener">logboek</a> (persoonlijk, elke leerling een eigen exemplaar).</div>
+  </section>
+
+  <!-- ══ Planning ══ -->
+  <section id="planning">
+    <div class="sec-head"><h2>Planning</h2><span class="rule"></span><span class="code">10 lessen · 10 weken · 200 min</span></div>
+    <div class="prose">
+      <p>Dit project loopt over <strong>10 weken</strong>, met steeds één les per week: les 1 is week 1, les 10 is week 10. Printen gebeurt <strong>tussen de lessen door</strong> — dus in de week ertussen. Daarom eindigt bijna elke les met een harde deadline: je bestand is dan ingeleverd. Lever je te laat in, dan staat de printer stil en loop je een hele week achter. Deze deadlines zijn niet onderhandelbaar — de planning valt zonder hen om.</p>
+    </div>
+
+    <article class="les" id="les1">
+      <div class="les-head"><span class="les-nr">LES 01 <span class="les-week">· WEEK 1</span></span><h3>Bedrijfsbezoek</h3></div>
+      <div class="les-body">
+        <p>Op bezoek bij een bedrijf: voorbereiden, aantekeningen maken, foto's nemen. Geen scootmobielwerk deze week — dat begint in week 2.</p>
+        <p class="week-links">Lever op: <a href="opdracht-bedrijfsbezoek.html" target="_blank" rel="noopener">1. Bedrijfsbezoek ↗</a> <span class="terug">(<a href="#deliverable-1">details</a>)</span></p>
+      </div>
+    </article>
+
+    <article class="les key" id="les2">
+      <div class="les-head key"><span class="les-nr">LES 02 <span class="les-week">· WEEK 2</span></span><h3>Van gebruiker naar concept</h3></div>
+      <div class="les-body">
+        <p>Een zware week — vier deliverables in één les. Eerst de <a href="#deelvragen">6 deelvragen</a> doornemen — dit is je kompas voor het hele project. Veiligheidsprotocol ondertekenen. Interview, observatie en empathie-oefening met je gebruiker. Gebruikersonderzoek omzetten in een Programma van Eisen. Drie concepten schetsen, peer review, één concept kiezen en onderbouwen.</p>
+        <p class="week-links">Lever op: <a href="veiligheidsprotocol.html" target="_blank" rel="noopener">2. Protocol ↗</a> · <a href="opdracht-gebruikersonderzoek.html" target="_blank" rel="noopener">3. Onderzoek ↗</a> · <a href="werkblad-pve.html" target="_blank" rel="noopener">4. PvE ↗</a> · <a href="werkblad-concepten.html" target="_blank" rel="noopener">5. Concepten ↗</a> <span class="terug">(<a href="#deliverable-2">details</a>)</span></p>
+        <p class="week-links geen-dl"><b>Docent — richtlijn voor de tijd:</b> protocol ± 10 min, gebruikersonderzoek ± 55 min, PvE ± 65 min, concepten ± 65 min. Dat is precies vol, zonder buffer. Overweeg het interview en de empathie-oefening als voorbereiding vóór de les te laten doen, zodat leerlingen in de les meteen met hun bevindingen aan de slag kunnen.</p>
+      </div>
+    </article>
+
+    <section id="veiligheid" class="les-ref">
+      <div class="sec-head"><h2>Veiligheidsgrenzen aan de scootmobiel</h2><span class="rule"></span><span class="code">De belangrijkste grens</span></div>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">02</span></span>
+        <p>Je weet al dat je nooit iets mag ontwerpen waar een gebruiker op kan steunen. Waarom zou je toch in de verleiding kunnen komen om dat wél te doen?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <div class="prose">
+        <p>Omdat een handgreep of opstaphulp vaak precies het probleem oplost dat je gebruiker het meest hindert — juist het nuttigste idee is het verleidelijkst. Maar daarom is dit de belangrijkste grens van dit hele project: je maakt nooit iets waar een mens op steunt. Een geprint onderdeel dat 70 kg lichaamsgewicht moet dragen bestaat niet — niet in PLA, niet in PETG, niet met 100 % infill. Zet een gebruiker daar bij het opstappen zijn gewicht op en die beugel begeeft het, dan valt hij — en een val van een 80-jarige betekent in de praktijk vaak een gebroken heup. Bedenk in plaats daarvan een oplossing die het probleem verkleint zónder dat er iemand op hoeft te steunen.</p>
+      </div>
+      </div>
+
+      <div class="cols2">
+        <div class="box wel">
+          <h3>Dit mag wél</h3>
+          <ul>
+            <li>Bevestigen aan niet-bewegende, niet-veiligheidskritische delen: framebuis van de mand, achterframe, armleuningstang, rugleuning.</li>
+            <li>Lichte lasten: richtlijn max 2–3 kg statisch.</li>
+            <li>Alles blijft binnen de contour van de scootmobiel. Niets dat uitsteekt en achter een deurpost of een voorbijganger kan haken.</li>
+          </ul>
+        </div>
+        <div class="box niet">
+          <h3>Dit mag niet</h3>
+          <ul>
+            <li>Niets aan stuur, gashendel, remhendel of bedieningsconsole. Je mag de besturing niet hinderen en het zicht op het display niet blokkeren.</li>
+            <li>Niets waar een mens op steunt bij op- of afstappen.</li>
+            <li>Niets bij bewegende delen of wielen.</li>
+            <li>Niets zwaars naast of boven het hoofd.</li>
+            <li>Niets aan accu, lader, bedrading of motor.</li>
+            <li>Geen scherpe randen en geen uitstekende boutdraden — gebruik dopmoeren.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:16px"><b>Werken aan de scootmobiel:</b> sleutel eruit, accu los, parkeerrem erop, wielen geblokkeerd. Er wordt <b>niet</b> in gereden en er wordt <b>niet</b> in het frame geboord. Je bevestiging klemt — hij boort niet.</div>
+    </section>
+
+    <section id="pve" class="les-ref">
+      <div class="sec-head"><h2>Programma van Eisen — de harde eisen</h2><span class="rule"></span><span class="code">Geldt voor iedereen</span></div>
+      <div class="prose"><p>Deze eisen gelden voor iedereen, boven op de eisen van je eigen gebruiker die je hierboven op het werkblad hebt vastgelegd.</p></div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Eis</th><th>Norm</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Afmetingen</strong></td><td>Max 120 × 120 × 120 mm per onderdeel</td></tr>
+            <tr><td><strong>Printtijd</strong></td><td>Max 4 uur per onderdeel</td></tr>
+            <tr><td><strong>Complexiteit</strong></td><td>Max 3 losse onderdelen, max 1 bewegend deel</td></tr>
+            <tr><td><strong>Sterkte</strong></td><td><strong>Veiligheidsfactor 3×:</strong> het onderdeel draagt 3× de bedoelde last zonder blijvende vervorming. Tashaak voor 2 kg → testen op 6 kg.</td></tr>
+            <tr><td><strong>Demontage</strong></td><td>Moet zónder gereedschap van de scootmobiel af kunnen</td></tr>
+            <tr><td><strong>Hinder</strong></td><td>Mag niets blokkeren: geen bediening, geen zicht, geen bewegend deel</td></tr>
+            <tr><td><strong>Schud-test</strong></td><td>30 seconden stevig heen en weer schudden — zit het dan nog vast?</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <article class="les" id="les3">
+      <div class="les-head"><span class="les-nr">LES 03 <span class="les-week">· WEEK 3</span></span><h3>Precisiemeten + de testring</h3></div>
+      <div class="les-body">
+        <p>Schuifmaat-metingen + omgevingsschets. Daarna geeft de docent klassikaal Onshape-instructie (samen blokken tekenen met gaten en maten); je past het meteen toe op je eigen testring — je maten staan daar al klaar.</p>
+        <p class="week-links">Lever op: <a href="opdracht-maatschets.html" target="_blank" rel="noopener">5. Maatschets ↗</a> · <a href="opdracht-testring.html" target="_blank" rel="noopener">6. Testring ↗</a> <span class="terug">(<a href="#deliverable-6">details</a>)</span></p>
+      </div>
+    </article>
+    <div class="tussen"><b>Tussen de lessen</b> Testringen printen (± 12 min per deel, 2 delen per leerling). Docent: M3-inserts en M3 × 12-boutjes klaarleggen voor les 4.</div>
+
+    <article class="les" id="les4">
+      <div class="les-head key"><span class="les-nr">LES 04 <span class="les-week">· WEEK 4</span></span><h3>De tolerantie-les</h3></div>
+      <div class="les-body">
+        <p>Je testring past niet. Klassikaal uitzoeken waarom (zie <a href="#tolerantie">De tolerantie-les</a> hieronder), eigen speling-waarde bepalen, eigen ontwerp starten met <span class="mono">#buisD</span> en <span class="mono">#speling</span>.</p>
+        <p class="week-links geen-dl">Geen apart deliverable-nummer deze week — wel verplicht: <b>eigen speling-waarde vastgelegd</b> in je CAD-model.</p>
+      </div>
+    </article>
+
+    <section id="tolerantie" class="les-ref">
+      <div class="sec-head"><h2>De tolerantie-les</h2><span class="rule"></span><span class="code">Les 4 · achtergrond</span></div>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">03</span></span>
+        <p>Waarom zou een geprint gat van precies Ø25,0 mm níet om een buis van precies Ø25,0 mm passen?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <div class="prose">
+        <p>Vier redenen, en ze stapelen op:</p>
+        <ol class="redenen">
+          <li><strong>Krimp.</strong> Warm plastic krimpt bij afkoelen. PLA 0,3–0,5 %, PETG 0,4–0,8 %.</li>
+          <li><strong>Elephant foot.</strong> De onderste lagen worden platgedrukt en tot 0,2 mm te breed — je gat wordt onderin nauwer.</li>
+          <li><strong>Printers maken ronde gaten stelselmatig te klein.</strong> De nozzle snijdt de bocht af.</li>
+          <li><strong>Meetfout.</strong> Jouw schuifmaat, jouw hand, jouw aflezing.</li>
+        </ol>
+
+        <div class="werkregel">Werkregel: klemgat = gemeten buismaat <span>+ 0,3 tot 0,5 mm</span></div>
+
+        <p>Daarom print je eerst een <strong>testring</strong> van 10 mm hoog (12 minuten printtijd) en pas je die op de echte buis. Twaalf minuten om te ontdekken dat je 0,4 mm mist — in plaats van 4 uur printen voor niets.</p>
+        <p><strong>Meet altijd zelf.</strong> Framebuizen zitten meestal tussen 20 en 32 mm, maar die getallen zijn geen excuus om niet te meten. Buizen worden na jaren gebruik licht ovaal: meet daarom op <strong>minimaal 3 plekken en in 2 richtingen per plek</strong>, en noteer de <strong>min én de max</strong>. Ontwerp op de maximale maat, anders past hij op één plek wél en drie plekken niet.</p>
+        <p><strong>Meet ook de omgeving.</strong> Een klem die perfect om de buis past maar tegen een kabel, een remhendel of het bewegende stuur aanloopt, is waardeloos. Je maatschets bevat dus niet alleen de buis, maar ook alles wat eromheen zit.</p>
+        <p><strong>Zet je maten als variabelen in Onshape</strong> (<span class="mono">#buisD</span> en <span class="mono">#speling</span>). Dan is een iteratie een parameterwijziging van 10 seconden in plaats van een hertekening van een uur. Dit is geen extra werk — dit is de reden dat je in les 6 en 7 nog op tijd bent.</p>
+      </div>
+      </div>
+    </section>
+
+    <article class="les" id="les5">
+      <div class="les-head"><span class="les-nr">LES 05 <span class="les-week">· WEEK 5</span></span><h3>CAD afmaken + printvoorbereiding</h3></div>
+      <div class="les-body">
+        <p>Karton/foamboard mock-up (20 min). Fillets, boutgaten, materiaal weghalen waar het niet draagt (zie <a href="#klem">De klemverbinding</a> hieronder). <strong>Docentcheck vóór export</strong> — ook wíe wat gemodelleerd heeft, niet alleen of het ontwerp klopt. Slicen: zie <a href="#printen">Printoriëntatie en materiaalkeuze</a>.</p>
+        <p class="week-links">Lever op: <b>7. Prototype v1 (STL/3MF)</b> <span class="terug">(<a href="#deliverable-8">details</a>)</span></p>
+      </div>
+    </article>
+
+    <section id="klem" class="les-ref">
+      <div class="sec-head"><h2>De klemverbinding — het robuuste patroon</h2><span class="rule"></span><span class="code">Snap-fits werken niet</span></div>
+      <div class="prose">
+        <p>Dit werkt, en snap-fits werken niet. Snap-fit klemmen in PLA scheuren bij de eerste montage. Gebruik ze niet.</p>
+        <p><strong>Het patroon:</strong> twee helften + doorlopende M4- of M5-bouten.</p>
+        <ul class="patroon">
+          <li><b>De spleet tussen de helften MOET openblijven</b> als de bouten vastzitten. Dat is je bewijs dat de bóút klemt en niet het plastic. Sluit de spleet, dan drukken de twee helften op elkaar en klemt er niets meer om de buis.</li>
+          <li><b>Rubberstrip binnenin</b> (oude fietsbinnenband): vangt je tolerantie op, geeft grip en beschermt de lak van de scootmobiel.</li>
+          <li><b>Zelfborgende (nylock) moeren.</b> Trilling op een voertuig loopt gewone moeren binnen een week los.</li>
+          <li><b>Carrosserieringen</b> onder bout en moer: verdelen de druk over het plastic in plaats van er een put in te drukken.</li>
+          <li><b>Boutgat Ø4,3 mm voor M4.</b> Niet 4,0 — dan past de bout er na het krimpen niet in.</li>
+          <li><b>Wanddikte minimaal 2,5 mm.</b> Dunner en je print scheurt langs de wandlijnen.</li>
+          <li><b>Fillets op alle buitenhoeken.</b> Dat is tegelijk veiligheid (geen scherpe randen bij de gebruiker) en sterkte (minder spanningsconcentratie).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="printen" class="les-ref">
+      <div class="sec-head"><h2>Printoriëntatie en materiaalkeuze</h2><span class="rule"></span><span class="code">Les 5 en 6</span></div>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">04</span></span>
+        <p>Hoe zou jij een tashaak op de printplaat leggen zodat hij bij de bocht niet afbreekt — plat of staand? En waarom denk je dat?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <div class="prose">
+        <p>Een FDM-print is <strong>anisotroop</strong>: sterk binnen een laag, zwak tússen de lagen. Laagscheiding (delaminatie) is dé faalmodus. Een tashaak die plat geprint is — met de lagen loodrecht op de trekrichting — breekt bij de bocht. Dezelfde haak, staand geprint, houdt het 3 tot 5 keer langer uit. Zelfde model, zelfde materiaal, zelfde infill. Alleen anders neergelegd.</p>
+        <p>In les 6 print je daarom <strong>twee identieke haakjes in twee oriëntaties</strong> en trek je ze allebei kapot. Je meet met de veerunster bij hoeveel newton ze bezwijken, je fotografeert het breukvlak en je legt uit wat je ziet. Dat verschil is je bewijs — en het is het argument waarmee je in je onderbouwing je eigen printoriëntatie verdedigt.</p>
+      </div>
+      </div>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">05</span></span>
+        <p>Welk materiaal zou jij kiezen voor een onderdeel dat een jaar lang buiten hangt, in de regen, in de zon en op een trillend voertuig — en waarom?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <div class="scroll">
+        <table>
+          <thead><tr><th></th><th>PLA</th><th>PETG</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Printen</strong></td><td>Makkelijk</td><td>Kieskeuriger</td></tr>
+            <tr><td><strong>Stijfheid</strong></td><td>Hoog</td><td>Iets lager</td></tr>
+            <tr><td><strong>Breukgedrag</strong></td><td><strong>Bros</strong> — knapt zonder waarschuwing</td><td><strong>Taai</strong> — vervormt eerst</td></tr>
+            <tr><td><strong>Warmte</strong></td><td>Vervormt al bij ~55–60 °C</td><td>Tot ~75 °C</td></tr>
+            <tr><td><strong>UV / buiten</strong></td><td>Slecht</td><td>Goed</td></tr>
+            <tr><td><strong>Laaghechting</strong></td><td>Matig</td><td>Beter</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose" style="margin-top:16px">
+        <p>Een auto op een zomerdag wordt binnenin 60 °C. Een zwarte scootmobielklem in de zon dus ook. En een onderdeel dat zonder waarschuwing knapt terwijl een gebruiker eraan hangt, is onacceptabel.</p>
+        <p><strong>Advies: prototype in PLA (snel en goedkoop), eindproduct in PETG.</strong> Wijk je hiervan af, dan onderbouw je dat in je verslag.</p>
+      </div>
+      </div>
+
+      <div class="denkvraag">
+        <span class="badge">Denkstimulerende vraag <span class="num">06</span></span>
+        <p>Wat zou er gebeuren als er tijdens het printen support onder het klemvlak van jouw klem zit — het vlak dat straks strak om de buis moet sluiten?</p>
+      </div>
+
+      <div class="zelf">
+        <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+        <textarea class="zelf-input" rows="3" placeholder="Typ hier je antwoord… (of schrijf het in je logboek)"></textarea>
+        <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+      </div>
+      <div class="antwoord">
+      <div class="prose">
+        <p>Support laat een ruw, hobbelig oppervlak achter. Ruw klemvlak = geen goed contact = je klem zit los, hoeveel je de bout ook aandraait. De <strong>45°-regel</strong> zegt: steiler dan 45° overhang → support nodig. Maar de betere les is: <strong>ontwerp de support wég.</strong> Kantel je onderdeel, schuin een overhang af, splits het in twee delen. Elke support die je niet hoeft te printen, is een probleem dat je niet krijgt.</p>
+      </div>
+      </div>
+    </section>
+
+    <div class="tussen"><b>Tussen de lessen</b> Prototype 1 printen in PLA.</div>
+
+    <article class="les" id="les6">
+      <div class="les-head key"><span class="les-nr">LES 06 <span class="les-week">· WEEK 6</span></span><h3>Iteratie 1 — passen &amp; falen</h3></div>
+      <div class="les-body">
+        <p>Prototype past niet, zit los of raakt een kabel. Belastingstest tot het breekt, breukvlak analyseren, oriëntatieproef, CAD aanpassen. Alle stappen op het opdrachtblad.</p>
+        <p class="week-links">Lever op: <a href="opdracht-iteratie1.html" target="_blank" rel="noopener">8. Prototype v2 (STL/3MF) ↗</a> <span class="terug">(<a href="#deliverable-9">details</a>)</span></p>
+      </div>
+    </article>
+    <div class="tussen"><b>Tussen de lessen</b> Prototype 2 printen in PLA.</div>
+
+    <article class="les" id="les7">
+      <div class="les-head key"><span class="les-nr">LES 07 <span class="les-week">· WEEK 7</span></span><h3>Iteratie 2 + montage</h3></div>
+      <div class="les-body">
+        <p>v2 passen, boutgaten ruimen, monteren, niet-destructief belasten tot de PvE-eis (vergelijk met de breuk van v1), spleet- en trillingcontrole. Alle stappen op het opdrachtblad.</p>
+        <p class="week-links">Lever op: <a href="opdracht-iteratie2-montage.html" target="_blank" rel="noopener">9. Definitief bestand PETG ↗</a> <span class="terug">(<a href="#deliverable-10">details</a>)</span></p>
+      </div>
+    </article>
+    <div class="tussen"><b>Tussen de lessen</b> Eindproduct printen in PETG. Langere printtijd, hoger faalrisico — buffer ingepland.</div>
+
+    <article class="les" id="les8">
+      <div class="les-head"><span class="les-nr">LES 08 <span class="les-week">· WEEK 8</span></span><h3>Eindproduct + gebruikerstest</h3></div>
+      <div class="les-body">
+        <p>Assembleren en monteren op de scootmobiel. Gebruikerstest: verminderde handkracht, één hand, handschoenen, zittend. Bevindingen noteren. Reserve-printslot voor mislukte prints.</p>
+        <p class="week-links geen-dl">Geen apart deliverable-nummer deze week — wel verplicht: <b>testverslag gebruikerstest</b> (input voor deliverable 11, week 10).</p>
+      </div>
+    </article>
+
+    <article class="les" id="les9">
+      <div class="les-head"><span class="les-nr">LES 09 <span class="les-week">· WEEK 9</span></span><h3>Afwerken + onderbouwing</h3></div>
+      <div class="les-body">
+        <p>Afwerken (randen ontbramen, dopmoeren). Technische onderbouwing schrijven, presentatie voorbereiden.</p>
+        <p class="week-links geen-dl">Geen apart deliverable-nummer deze week — wel verplicht: <b>concept-onderbouwing</b> (input voor deliverable 12, week 10).</p>
+      </div>
+    </article>
+
+    <article class="les" id="les10">
+      <div class="les-head"><span class="les-nr">LES 10 <span class="les-week">· WEEK 10</span></span><h3>Eindtest + presentatie</h3></div>
+      <div class="les-body">
+        <p>Eindtest op de scootmobiel volgens je eigen PvE (3× de bedoelde last, niet tot breuk). Schud-test. Presentatie (8 min): probleem → oplossing → wat ging er mis.</p>
+        <p class="week-links">Lever op: <b>10. Eindproduct</b> · <b>11. Technische onderbouwing</b> · <b>12. Presentatie</b> <span class="terug">(<a href="#deliverable-11">details</a>)</span></p>
+      </div>
+    </article>
+
+    <div class="callout"><b>Reken op 15–20 % printfaal.</b> Filament op, bedhechting weg, PETG die niet wil hechten — het hoort erbij. Daarom staan er reserveslots in de planning. <b>Een project zonder mislukte eerste print is een verdacht project.</b></div>
+  </section>
+
+  <!-- ══ Randvoorwaarden ══ -->
+  <section id="randvoorwaarden">
+    <div class="sec-head"><h2>Randvoorwaarden</h2><span class="rule"></span><span class="code">Tools · materiaal · veiligheid</span></div>
+
+    <div class="prose">
+      <h3>Groepsgrootte</h3>
+      <p>2 of 3 leerlingen per groep. Elke leerling levert eigen CAD-werk aan (minimaal één onderdeel of één iteratie is aantoonbaar van jou) en houdt een eigen logboek.</p>
+    </div>
+
+    <div class="rv-grid" style="margin-top:16px">
+      <div class="box">
+        <h3>Tools en machines</h3>
+        <ul>
+          <li>Onshape (webbased, schoolaccount voor elke leerling)</li>
+          <li>Slicer (schoolstandaard) op de werkplekken</li>
+          <li>FDM-printers, PLA én PETG beschikbaar — <b>docent: check vooraf of het aantal printers de piek tussen les 3 en 4 aankan.</b> Elke leerling print dan 2 ringdelen × ± 12 min; bij 24 leerlingen is dat ± 9,5 printeruur in één week. Te weinig printers? Print in duo's of laat de ringdelen als batch draaien.</li>
+          <li>Één echte scootmobiel in het praktijklokaal om aan te meten en te passen</li>
+          <li>Schuifmaat (minimaal 1 per 2 groepen), rolmaat, digitale camera/telefoon</li>
+          <li>Kolomboor, handgereedschap, ontbraamgereedschap, vijlen, schuurpapier</li>
+          <li>Veerunster (minimaal 100 N) voor de belastingstesten</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Materialen</h3>
+        <ul>
+          <li>PLA-filament (prototypes), PETG-filament (eindproducten)</li>
+          <li>M4/M5-bouten, nylock-moeren, dopmoeren, carrosserieringen</li>
+          <li>Oude fietsbinnenband voor rubberstrips</li>
+          <li>Karton / foamboard voor mock-ups</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Software</h3>
+        <ul>
+          <li>Onshape voor alle CAD (schetsen, extruderen, uitsnijden, fillet, shell, mirror/pattern, variabelen). Loft, sweep en sheet metal heb je niet nodig.</li>
+          <li>Slicer voor oriëntatie, infill, wanden en supports.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box veiligheid" style="margin-top:16px">
+      <h3>Veiligheid — dit is een harde voorwaarde voor deelname</h3>
+      <ul>
+        <li><b>Aan de scootmobiel:</b> sleutel eruit, accu los, parkeerrem erop, wielen geblokkeerd. Er wordt niet in gereden. Er wordt niet in het frame geboord. De veiligheidsgrenzen ("mag wél / mag niet", zie hierboven) gelden zonder uitzondering en worden in les 2 klassikaal behandeld en ondertekend. <b>Docent:</b> zorg dat de handtekening er staat vóórdat een leerling de scootmobiel aanraakt — is de printer in les 2 bezet of de rij lang, laat leerlingen dan wachten met de scootmobiel tot hun protocol echt ondertekend is, of houd een paar vooraf geprinte protocolvellen achter de hand.</li>
+        <li><b>Kolomboor:</b> werkstuk altijd inklemmen — een los geprint deel wordt door de boor gegrepen en tolt rond, dat is een snijwond. Veiligheidsbril op. <b>Laag toerental bij plastic:</b> hoog toerental smelt het materiaal en de boor loopt vast.</li>
+        <li><b>3D-printer:</b> nozzle 200–240 °C, bed 60–90 °C — niet aanraken, ook niet "even". PETG geeft meer fijnstof en VOC's dan PLA: ventileer de ruimte, deur of raam open.</li>
+        <li><b>Handgereedschap:</b> snijden altijd van je lichaam af. Ontbramen met gereedschap, niet met je duim.</li>
+        <li><b>Eindproduct:</b> geen scherpe randen, geen uitstekende boutdraden (dopmoeren). Het product wordt door een echte gebruiker aangeraakt — vaak met dunne huid en verminderd gevoel in de handen.</li>
+      </ul>
+    </div>
+
+    <div class="prose" style="margin-top:16px">
+      <h3>Iteratie — verplicht en beoordeeld</h3>
+      <p>Minimaal <strong>twee</strong> iteratierondes zijn verplicht (les 6 en les 7) en tellen mee in je beoordeling. Je verslag laat zien: dit ging er mis, dit heb ik daarom in het CAD-model veranderd, en dit leverde dat op. Een verslag zonder mislukking is geen goed verslag — het is een onvolledig verslag.</p>
+    </div>
+
+    <div class="callout"><b>Beoordeling:</b> je wordt beoordeeld met de rubric die bij dit project hoort (hieronder, Deel B). Lees die vóórdat je begint — dan weet je waar je op wordt beoordeeld en kun je jezelf onderweg controleren.</div>
+  </section>
+
+  <!-- ══ Rubric-scheiding ══ -->
+  <div class="part" id="rubric">
+    <h2>Beoordelingsrubric</h2>
+    <p>Deel B · HAVO-P · HAVO 4 · 10 lessen</p>
+  </div>
+
+  <section id="weging">
+    <div class="prose">
+      <p>Deze rubric hoort bij het projectdocument. Lees hem vóórdat je begint: dan weet je precies waarop je wordt beoordeeld en kun je jezelf onderweg controleren.</p>
+      <p><strong>Zo werkt het:</strong> er zijn 6 criteria. Elk criterium heeft 4 niveaus. Je moet een niveau kunnen <em>aantonen</em> — met je logboek, je CAD-bestanden, je foto's, je testresultaten en je eindproduct. Wat je niet kunt laten zien, telt niet mee.</p>
+    </div>
+    <div class="scroll" style="margin-top:14px">
+      <table class="weegtabel">
+        <thead><tr><th>Criterium</th><th>Weging</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>1. Gebruikersonderzoek &amp; Programma van Eisen</td><td class="num">15 %</td><td class="lbl-proc">🔄 Proces</td></tr>
+          <tr><td>2. CAD-ontwerp in Onshape</td><td class="num">20 %</td><td class="lbl-prod">🔧 Product</td></tr>
+          <tr><td>3. 3D-printkennis toegepast</td><td class="num">15 %</td><td class="lbl-prod">🔧 Product</td></tr>
+          <tr><td>4. Iteratie &amp; testen</td><td class="num">20 %</td><td class="lbl-proc">🔄 Proces</td></tr>
+          <tr><td>5. Eindproduct: functie, veiligheid &amp; pasvorm</td><td class="num">20 %</td><td class="lbl-prod">🔧 Product</td></tr>
+          <tr><td>6. Onderbouwing, presentatie &amp; samenwerking</td><td class="num">10 %</td><td class="lbl-proc">🔄 Proces</td></tr>
+          <tr><td class="lvl-tot">Totaal</td><td class="lvl-tot num">100 %</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="niveau-legenda" style="margin-top:16px">
+      <span class="l1">Onvoldoende</span>
+      <span class="l2">Voldoende</span>
+      <span class="l3">Goed</span>
+      <span class="l4">Uitstekend</span>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 1 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">1. Gebruikersonderzoek &amp; PvE</h2><span class="rule"></span><span class="code">15 % · 🔄 Proces</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Is je ontwerp gebaseerd op een écht probleem van een échte gebruiker, en heb je dat vertaald naar eisen die je kunt meten?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Het probleem is een aanname van jezelf. Geen interview, geen observatie, of alleen "ik dacht dat dit handig zou zijn". Het PvE ontbreekt, of bevat alleen niet-meetbare wensen ("moet stevig zijn", "moet mooi zijn").</td>
+          <td class="n2">Er is een interview gedaan en het probleem is beschreven. Het PvE bevat de harde eisen (120 mm, 4 uur, 3 onderdelen, factor 3×, schud-test) plus minstens 3 eigen gebruikerseisen, waarvan de meeste meetbaar zijn (met een getal, een maat of een test).</td>
+          <td class="n3">Interview én observatie/film én empathie-oefening zijn gedaan en leiden aantoonbaar tot hetzelfde probleem. Je laat zien wat de gebruiker zei én wat je zelf zag — en waar die twee van elkaar verschilden. Alle eigen eisen zijn meetbaar geformuleerd.</td>
+          <td class="n4">Je hebt een probleem gevonden dat de gebruiker zelf niet benoemde, en je bewijst met je observatie of empathie-oefening dát het een probleem is. Je PvE bevat een eis die uit jouw eigen waarneming komt en die je met een concrete test kunt controleren. De 3 concepten zijn tegen het PvE afgewogen, niet op smaak gekozen.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 2 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">2. CAD-ontwerp in Onshape</h2><span class="rule"></span><span class="code">20 % · 🔧 Product</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Kun je nauwkeurig meten aan een bestaand product en die maten correct vertalen naar een aanpasbaar 3D-model?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Maten zijn geschat, overgenomen van internet of één keer gemeten. Geen maatschets. Het model is een losse verzameling vormen; wanddikte &lt; 2,5 mm of boutgaten ontbreken. Het model is niet aanpasbaar zonder opnieuw te tekenen.</td>
+          <td class="n2">Er is met de schuifmaat gemeten en er is een maatschets. Het model gebruikt sketch, dimensions, extrude en extrude-remove correct. Wanddikte ≥ 2,5 mm, boutgaten Ø4,3 mm voor M4, fillets op de buitenhoeken. Het model past binnen 120 × 120 × 120 mm.</td>
+          <td class="n3">Gemeten op 3 plekken × 2 richtingen, met min- én maxwaarde genoteerd, en het model is op de <strong>max</strong>waarde ontworpen. De maatschets bevat ook de omgeving (kabels, hendels, bewegende delen). <span class="mono">#buisD</span> en <span class="mono">#speling</span> staan als variabelen in het model.</td>
+          <td class="n4">Het model is echt parametrisch: één variabele wijzigen past het hele model correct aan, zonder fouten in de feature-tree. Constructieve keuzes zijn zichtbaar doordacht — materiaal weggehaald waar het niet draagt, fillets waar spanning zit, en het ontwerp is aantoonbaar aangepast op een obstakel dat je bij het meten van de omgeving ontdekte.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 3 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">3. 3D-printkennis toegepast</h2><span class="rule"></span><span class="code">15 % · 🔧 Product</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Snap je hoe een FDM-print zich gedraagt, en stuur je dat bewust met oriëntatie, materiaal en supports?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Het model is geprint zoals de slicer het neerlegde; oriëntatie is niet gekozen maar overkomen. Geen materiaalkeuze gemaakt of "PLA want dat lag er". Support onder het klemvlak. Het bestand printte niet in één keer door een exportfout of een te grote/te lange print.</td>
+          <td class="n2">Het bestand is correct geëxporteerd (STL/3MF) en print binnen 4 uur. De printoriëntatie is bewust gekozen en je kunt uitleggen waarom. Infill 30–40 %, 4 wanden. Prototype in PLA, eindproduct in PETG (of een afwijking die je onderbouwt). Geen support op klemvlakken.</td>
+          <td class="n3">Je legt de oriëntatie uit met anisotropie: je benoemt de belastingsrichting en laat zien dat je lagen dáár niet loodrecht op staan. De 45°-regel is toegepast. De materiaalkeuze is onderbouwd met eigenschappen (bros vs. taai, ~55–60 °C vs. ~75 °C, UV), niet met "PETG is beter".</td>
+          <td class="n4">Je hebt supports <strong>wegontworpen</strong> door te kantelen, af te schuinen of te splitsen — en laat zien welk probleem je daarmee voorkwam. Je onderbouwt je oriëntatie met je eigen breekproef-data (bij hoeveel newton bezweken de twee haakjes?), niet alleen met de theorie uit het projectdocument.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 4 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">4. Iteratie &amp; testen</h2><span class="rule"></span><span class="code">20 % · 🔄 Proces</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Twee iteratierondes zijn verplicht. Kun je aantonen wát er misging, wát je daarom veranderde in je CAD-model, en of dát werkte?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Minder dan 2 iteraties, of "iteratie" betekent alleen: opnieuw geprint zonder het model te wijzigen. Geen testresultaten. Er ging volgens het verslag niets mis — en dat is niet geloofwaardig, want de eerste print past nooit meteen. Geen belastingstest.</td>
+          <td class="n2">2 iteraties met bewijs in het logboek: per ronde staat er wat er misging, wat er in het CAD-model veranderde en wat het resultaat was. De testring is gebruikt. De belastingstest is uitgevoerd met de veerunster en het resultaat is genoteerd.</td>
+          <td class="n3">De analyse gaat over de <strong>oorzaak</strong>, niet over het symptoom: niet "hij paste niet" maar "hij paste 0,4 mm te krap omdat ik op de minmaat had ontworpen en de print bovendien krimpt". Het breukvlak is gefotografeerd en geanalyseerd (laagscheiding? te dunne wand?). De wijziging volgt logisch uit de meting.</td>
+          <td class="n4">Elke iteratie is een gerichte ingreep op één variabele, waardoor je wéét wat het effect was. Je meet vóór en na (mm, newton) en laat de verbetering met getallen zien. Je oriëntatieproef (twee haakjes, twee richtingen, allebei kapot) is uitgevoerd en de uitkomst heeft je eindontwerp aantoonbaar veranderd. Een mislukking is niet verstopt maar gebruikt.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 5 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">5. Eindproduct: functie, veiligheid &amp; pasvorm</h2><span class="rule"></span><span class="code">20 % · 🔧 Product</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Doet het wat het moet doen, past het op de échte scootmobiel, en is het veilig voor een échte gebruiker?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Past niet op de scootmobiel, of valt eraf. Zakt door de schud-test of onder de 3×-last. Overtreedt een veiligheidsgrens: zit aan stuur/rem/gas, blokkeert zicht of bediening, of draagt lichaamsgewicht. Scherpe randen of uitstekende boutdraden. Lost het gekozen probleem niet op.</td>
+          <td class="n2">Het hulpmiddel zit vast op de scootmobiel, lost het probleem van de gebruiker op en voldoet aan het eigen PvE. Doorstaat de schud-test (30 s) en draagt 3× de bedoelde last zonder blijvende vervorming. Geen scherpe randen, dopmoeren gebruikt, blokkeert niets. Gaat er zonder gereedschap af.</td>
+          <td class="n3">De klemverbinding klopt: <strong>de spleet tussen de helften blijft open</strong> onder de aangedraaide bouten, nylock-moeren en carrosserieringen zitten erop, rubberstrip binnenin. De afwerking is netjes (ontbraamd, geschuurd). Het product is in PETG en blijft binnen de contour van de scootmobiel.</td>
+          <td class="n4">De gebruikerstest is echt uitgevoerd en het product doorstaat hem: bedienbaar met één hand, met handschoenen, zittend zonder op te staan. Het eindproduct is aantoonbaar aangepast op wat die test opleverde. Het is een product dat de gebruiker morgen kan gebruiken en niet meer wil missen — niet een schoolopdracht die toevallig past.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Criterium 6 ══ -->
+  <section>
+    <div class="sec-head"><h2 style="font-size:1.2rem">6. Onderbouwing, presentatie &amp; samenwerking</h2><span class="rule"></span><span class="code">10 % · 🔄 Proces</span></div>
+    <p class="prose" style="font-style:italic;color:#3c434a;margin-bottom:12px">Kun je je keuzes uitleggen aan iemand die er niet bij was — en heb je je deel van het werk gedaan?</p>
+    <div class="scroll">
+      <table class="rubric">
+        <thead><tr><th>Onvoldoende</th><th>Voldoende</th><th>Goed</th><th>Uitstekend</th></tr></thead>
+        <tbody><tr>
+          <td class="n1">Onderbouwing ontbreekt of beschrijft alleen wat je deed, niet waarom. Geen (eigen) logboek. STL-deadlines gemist, waardoor de printer stilstond. Geen aantoonbaar eigen CAD-werk. De presentatie is een verhaal waarin alles meteen goed ging.</td>
+          <td class="n2">Onderbouwing van 3–5 pagina's met probleem, PvE, ontwerpkeuzes, materiaalkeuze, beide iteraties en testresultaten. Eigen logboek per les. Deadlines gehaald. Presentatie van 8 minuten met probleem → oplossing → wat ging er mis. Elke leerling heeft aantoonbaar eigen CAD-werk geleverd.</td>
+          <td class="n3">Elke keuze is onderbouwd mét een reden en een bron: waarom déze speling (uit je testring), waarom déze oriëntatie (uit je breekproef), waarom PETG (uit de materiaaleigenschappen). Foto's van mislukte prints en breukvlakken staan erin. De taakverdeling staat in het logboek en klopt met wat er is opgeleverd.</td>
+          <td class="n4">Je legt eerlijk uit wat er misging én wat je er de vólgende keer anders in zou doen. Je onderbouwing kan een andere leerling gebruiken om jouw ontwerp na te bouwen. In de presentatie kun je een kritische vraag over een ontwerpkeuze beantwoorden met een getal of een testresultaat, niet met een mening.</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ Beoordelingstips ══ -->
+  <section id="tips">
+    <div class="sec-head"><h2>Beoordelingstips voor de docent</h2><span class="rule"></span><span class="code">Deel B · slot</span></div>
+    <ol class="tips">
+      <li><strong>Vraag naar de mislukte print, niet naar het eindproduct.</strong> Het eindproduct laat zien of het werkt; de mislukte print laat zien of ze het begrijpen. Een groep die geen enkele fout kan laten zien, heeft óf niet getest óf het bewijs weggegooid — beide zijn een probleem bij criterium 4. Leg de v1-print naast de v2-print op tafel en laat ze het verschil aanwijzen en verklaren. Dat gesprek van twee minuten onderscheidt "Voldoende" van "Goed" beter dan het hele verslag.</li>
+      <li><strong>Toets de tolerantie met één vraag.</strong> "Welke buismaat heb je gemeten, en welke maat staat er in je CAD-model?" Het verschil moet 0,3–0,5 mm zijn, en de leerling moet dat verschil kunnen verklaren (krimp, elephant foot, meetfout). Kan hij het getal niet noemen of is het verschil 0,0 mm, dan is het CAD-model niet begrepen maar overgetekend — ongeacht hoe mooi het model eruitziet.</li>
+      <li><strong>Beoordeel criterium 5 fysiek, op de scootmobiel, met de veerunster erbij.</strong> Niet op foto en niet op het model. Hang het gewicht eraan (3× de bedoelde last), doe de schud-test van 30 seconden, en voel met je hand over de randen. Veiligheidsgrenzen zijn geen weging maar een drempel: een product dat aan de rem zit of waar een mens op kan steunen, is Onvoldoende op criterium 5 — hoe goed het CAD-werk ook is. Dat is geen strengheid, dat is de kern van het vak: een ontwerp dat gevaarlijk is, is geen goed ontwerp.</li>
+    </ol>
+  </section>
+
+  <!-- ══ Verantwoording eindtermen ══ -->
+  <div class="part" id="eindtermen">
+    <h2>Verantwoording eindtermen</h2>
+    <p>Deel C · pgp-Technologie grote variant · SLO juni 2026</p>
+  </div>
+
+  <section id="eindtermen-tabel">
+    <div class="prose">
+      <p>Dit hoofdstuk koppelt het project aan de eindtermen van het examenprogramma <strong>Praktijkgericht programma Technologie — grote variant</strong> (SLO, juni 2026). Per eindterm staat hoe sterk die in dit project aan bod komt en waaraan je dat kunt aantonen.</p>
+      <p><strong>Let op:</strong> in het examenprogramma hoeven niet alle eindtermen in één opdracht te zitten — ze moeten over het hele onderwijsprogramma aan bod komen en worden afgesloten. De eindtermen met dekking <em>Niet</em> horen dus in een ander project of een aanvulling thuis.</p>
+    </div>
+
+    <div class="niveau-legenda" style="margin-top:16px">
+      <span class="l3">Sterk — kernonderdeel, aantoonbaar</span>
+      <span class="l2">Deels — komt aan bod, niet volledig</span>
+      <span class="l1">Niet — nog te borgen</span>
+    </div>
+    <p class="prose" style="margin-top:10px;font-size:.95rem;color:#3c434a">Dekking in dit project: <strong>14× Sterk</strong>, <strong>7× Deels</strong>, <strong>3× Niet</strong> — van 24 eindtermen.</p>
+
+    <div class="scroll" style="margin-top:14px">
+      <table class="wide eindtermen">
+        <thead><tr><th>Nr</th><th>Eindterm</th><th>Dekking</th><th>Waar in het project</th></tr></thead>
+        <tbody>
+          <tr class="domein-rij"><td colspan="4">Domein A · Loopbaanontwikkeling in praktijkgerichte opdrachten</td></tr>
+          <tr><td class="etnr">1</td><td class="ettitel"><strong>Praktijkgerichte opdrachten</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Hele project: plan van aanpak, planning met harde deadlines, uitvoering en evaluatie via het logboek.</td></tr>
+          <tr><td class="etnr">2</td><td class="ettitel"><strong>Interactie met externe opdrachtgevers</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>De gebruiker is de opdrachtgever: interview (les 2), gebruikerstest (les 8) en presentatie (les 10). Daarnaast het bedrijfsbezoek (les 1).</td></tr>
+          <tr><td class="etnr">3</td><td class="ettitel"><strong>De context van externe opdrachtgevers</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Veiligheids- en officiële voorschriften komen sterk aan bod (les 2). Bedrijfscontext en sociale conventies op de werkvloer worden nu ook expliciet ervaren tijdens het bedrijfsbezoek (les 1, verslag + foto's).</td></tr>
+          <tr><td class="etnr">4</td><td class="ettitel"><strong>Ontwikkelen van interesses</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Ervaring in een technologisch werkveld; oriëntatie op sector, functies en opleidingen is niet expliciet.</td></tr>
+          <tr><td class="etnr">5</td><td class="ettitel"><strong>Ontwikkelen van kwaliteiten</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Reflectie via logboek, onderbouwing en presentatie. Koppeling met beroepsbeelden en een persoonlijk leerdoel niet expliciet.</td></tr>
+
+          <tr class="domein-rij"><td colspan="4">Domein B · Programmaoverstijgende vaardigheden</td></tr>
+          <tr><td class="etnr">6</td><td class="ettitel"><strong>Sociaal handelen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Empathie-oefening (10 min zelf in de scootmobiel, les 2) en de gebruikerstest (les 8).</td></tr>
+          <tr><td class="etnr">7</td><td class="ettitel"><strong>Samenwerken</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Groepen van 2–3, peer review (les 2), taakverdeling en eigen bijdrage in het logboek.</td></tr>
+          <tr><td class="etnr">8</td><td class="ettitel"><strong>Taalvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Interview, technische onderbouwing (3–5 pag.) en presentatie van 8 minuten.</td></tr>
+          <tr><td class="etnr">9</td><td class="ettitel"><strong>Informatievaardigheden</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Informatie verzamelen en verwerken via het onderzoek. Bronvermelding en het wegen van bronbetrouwbaarheid niet expliciet gevraagd.</td></tr>
+          <tr><td class="etnr">10</td><td class="ettitel"><strong>Reken- en wiskundige vaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Tolerantieberekening (les 4), veiligheidsfactor 3×, metingen met min/max en in newton (les 6).</td></tr>
+          <tr><td class="etnr">11</td><td class="ettitel"><strong>Digitale vaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Onshape (CAD), slicer, export naar STL/3MF, digitale camera/film.</td></tr>
+          <tr><td class="etnr">12</td><td class="ettitel"><strong>Analytische denkvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Breukvlakanalyse (les 6) en oorzaakanalyse "waarom past de testring niet?" (les 4).</td></tr>
+          <tr><td class="etnr">13</td><td class="ettitel"><strong>Kritische denkvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Concept- en materiaalkeuze onderbouwd en afgewogen tegen het Programma van Eisen.</td></tr>
+          <tr><td class="etnr">14</td><td class="ettitel"><strong>Creatief denken en handelen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Drie concepten schetsen (divergeren), keuze maken (convergeren), mock-up en experimenteren met materiaal en oriëntatie.</td></tr>
+
+          <tr class="domein-rij"><td colspan="4">Domein C · Werkvelden</td></tr>
+          <tr><td class="etnr">15</td><td class="ettitel"><strong>Werkvelden</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Het project speelt in één werkveld (mobiliteit / zorgtechnologie); leerlingen oriënteren zich niet op verschillende werkvelden.</td></tr>
+
+          <tr class="domein-rij"><td colspan="4">Domein D · Programmaspecifieke vaardigheden</td></tr>
+          <tr><td class="etnr">16</td><td class="ettitel"><strong>Onderzoeken</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Deelvragen, gebruikersonderzoek (les 2) en onderzoek naar tolerantie en breukgedrag.</td></tr>
+          <tr><td class="etnr">17</td><td class="ettitel"><strong>STEAM</strong></td><td><span class="dek dek-deels">Deels</span></td><td>3D-uitwerkingen in Onshape. Expliciete combinatie van natuurwetenschap en kunst (VR/AR, artistieke visualisatie) is beperkt.</td></tr>
+          <tr><td class="etnr">18</td><td class="ettitel"><strong>Maken van een prototype</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Kern van het project: prototype v1/v2 en definitief PETG-product met ontwerpmethodiek en technische tekening.</td></tr>
+          <tr><td class="etnr">19</td><td class="ettitel"><strong>Kansen, risico's en gevolgen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Veiligheidsgrenzen, belastingstest en schud-test; gebruikszekerheid van het product.</td></tr>
+          <tr><td class="etnr">20</td><td class="ettitel"><strong>Expert bevragen</strong></td><td><span class="dek dek-niet">Niet</span></td><td>Wel een gebruiker/opdrachtgever, maar geen inhoudelijke expert. Te borgen: een groep een ergotherapeut, 3D-printtechnicus of hbo-student laten bevragen.</td></tr>
+          <tr><td class="etnr">21</td><td class="ettitel"><strong>Processen</strong></td><td><span class="dek dek-niet">Niet</span></td><td>Het project ontwerpt een product, geen proces. Te borgen: een montage-werkinstructie of stappenplan als deliverable vragen.</td></tr>
+          <tr><td class="etnr">22</td><td class="ettitel"><strong>Technologieën, technieken en materialen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Materiaalkeuze PLA vs PETG (les 5), Onshape/slicer, kolomboor en handgereedschap, voor- en nadelen van materialen.</td></tr>
+          <tr><td class="etnr">23</td><td class="ettitel"><strong>Vorm, functie en werking van systemen</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Vorm–functie via de klemverbinding en constructieve keuzes. Systeemdenken (input/output, terugkoppeling, rendement) komt niet aan bod.</td></tr>
+          <tr><td class="etnr">24</td><td class="ettitel"><strong>Duurzame ontwikkelingsdoelen</strong></td><td><span class="dek dek-niet">Niet</span></td><td>SDG's worden niet expliciet benoemd. Te borgen: het product laten koppelen aan minstens drie SDG's (bijv. 3, 10, 12).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Hulpmiddel voor scootmobielgebruikers</span>
+    <span>HAVO-P · HAVO 4 · 10 lessen</span>
+    <span>Projectdocument + rubric + verantwoording eindtermen</span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var body = document.body;
+  var toggle = document.getElementById('versieToggle');
+
+  function setMode(m){
+    body.classList.remove('v-leerling','v-docent');
+    body.classList.add(m);
+    toggle.innerHTML = (m === 'v-docent') ? 'Weergave: <b>Docent</b>' : 'Weergave: <b>Leerling</b>';
+    try{ localStorage.setItem('hulpmiddel-versie', m); }catch(e){}
+  }
+  toggle.addEventListener('click', function(){
+    setMode(body.classList.contains('v-docent') ? 'v-leerling' : 'v-docent');
+  });
+  var saved = null;
+  try{ saved = localStorage.getItem('hulpmiddel-versie'); }catch(e){}
+  setMode(saved || 'v-leerling');
+
+  // Onthul-knoppen: tonen/verbergen het bijbehorende voorbeeldantwoord
+  document.querySelectorAll('.toon-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var ans = btn.closest('.zelf').nextElementSibling;
+      if(ans && ans.classList.contains('antwoord')){
+        var open = ans.classList.toggle('open');
+        btn.textContent = open ? 'Verberg voorbeeldantwoord' : 'Toon voorbeeldantwoord';
+      }
+    });
+  });
+
+  // Getypte antwoorden bewaren, zodat ze niet verdwijnen bij per ongeluk herladen
+  document.querySelectorAll('.zelf-input').forEach(function(ta, i){
+    var key = 'hulpmiddel-antwoord-' + i;
+    try{ var v = localStorage.getItem(key); if(v) ta.value = v; }catch(e){}
+    ta.addEventListener('input', function(){
+      try{ localStorage.setItem(key, ta.value); }catch(e){}
+    });
+  });
+
+  // Deliverables afvinken — bewaard op déze pagina, dus altijd betrouwbaar
+  // (niet afhankelijk van of losse opdrachtbladen onderling gegevens delen).
+  var vinkjes = [].slice.call(document.querySelectorAll('td.doen input[type=checkbox]'));
+  var dlTeller = document.getElementById('dl-teller');
+  var dlBalk = document.getElementById('dl-balk');
+
+  function updateDlVoortgang(){
+    var gedaan = vinkjes.filter(function(c){ return c.checked; }).length;
+    dlTeller.innerHTML = '<b>' + gedaan + '</b> / ' + vinkjes.length + ' deliverables ingeleverd';
+    dlTeller.classList.toggle('klaar', gedaan === vinkjes.length);
+    dlBalk.style.width = (100 * gedaan / vinkjes.length) + '%';
+  }
+  vinkjes.forEach(function(c){
+    var key = 'hulpmiddel-deliverable-' + c.dataset.d;
+    try{ if(localStorage.getItem(key) === '1') c.checked = true; }catch(e){}
+    c.closest('tr').classList.toggle('gedaan', c.checked);
+    c.addEventListener('change', function(){
+      try{ localStorage.setItem(key, c.checked ? '1' : '0'); }catch(e){}
+      c.closest('tr').classList.toggle('gedaan', c.checked);
+      updateDlVoortgang();
+    });
+  });
+  updateDlVoortgang();
+})();
+</script>
+
+</body>
+</html>

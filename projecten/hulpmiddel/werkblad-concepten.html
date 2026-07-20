@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Werkblad — Concepten kiezen — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:1000px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0 26px;font-size:.95rem;}
+
+  section{margin-bottom:30px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.15rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .vraag{margin-bottom:14px;}
+  .vraag label{display:block;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.95rem;margin-bottom:6px;}
+  .vraag label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.86rem;}
+  textarea{width:100%;resize:vertical;min-height:64px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  /* schetsvakken */
+  .schetsen{display:grid;grid-template-columns:1fr;gap:18px;}
+  .schets{border:1px solid var(--steel);background:#fff;}
+  .schets-kop{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);
+    padding:7px 12px;background:#f4f2ec;flex-wrap:wrap;}
+  .schets-kop .nr{font-family:'Space Mono',monospace;font-weight:700;font-size:.74rem;
+    color:#fff;background:var(--red);padding:2px 8px;white-space:nowrap;}
+  .schets-kop input{flex:1;min-width:140px;border:none;border-bottom:1px dashed var(--steel);
+    background:transparent;font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;padding:2px 4px;}
+  .schets-kop input:focus{outline:none;border-bottom:1px solid var(--blue);}
+  .tools{display:flex;gap:6px;align-items:center;}
+  .tool{width:26px;height:26px;border:2px solid var(--ink);background:#fff;cursor:pointer;padding:0;
+    display:grid;place-content:center;font-size:.72rem;font-family:'Space Mono',monospace;font-weight:700;}
+  .tool.kleur-ink{background:var(--ink);}
+  .tool.kleur-blue{background:var(--blue);}
+  .tool.kleur-red{background:var(--red);}
+  .tool.actief{outline:3px solid var(--amber);outline-offset:1px;}
+  .tool.gum{color:var(--ink);}
+  .tool.wis{color:var(--red);border-color:var(--red);width:auto;padding:0 8px;font-size:.62rem;}
+  canvas.tekenvlak{display:block;width:100%;touch-action:none;cursor:crosshair;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .schets-voet{border-top:1px solid var(--line);padding:6px 12px;
+    font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  .keuzerij{display:flex;gap:14px;align-items:center;margin-bottom:12px;flex-wrap:wrap;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;}
+  .keuzerij label{display:flex;gap:7px;align-items:center;cursor:pointer;
+    border:1px solid var(--line);padding:8px 14px;background:#fff;}
+  .keuzerij input[type=radio]{accent-color:var(--blue);width:16px;height:16px;}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (min-width:760px){ .schetsen{grid-template-columns:1fr 1fr 1fr;} }
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.tools,.alleen-scherm{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .vraag,.schets,.keuzerij{break-inside:avoid;}
+    textarea{border:1px solid #000;min-height:52px;}
+    .uitleg{padding:8px 12px;margin:10px 0;font-size:9pt;}
+    .schetsen{grid-template-columns:1fr 1fr 1fr;gap:8px;}
+    canvas.tekenvlak{background-image:none;}
+    .idcel input,.schets-kop input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Werkblad · les 2</div>
+      <h1>Concepten kiezen</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 5 · les 2 · Groow: Ontwerpen</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="c-naam">Naam / groep</label><input id="c-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="c-klas">Klas</label><input id="c-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="c-gebruiker">Gebruiker</label><input id="c-gebruiker" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="c-datum">Datum</label><input id="c-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="uitleg">
+    <b>Leg je PvE ernaast.</b> Dit blad hoort bij het werkblad <b>Van probleem naar PvE</b> —
+    je schetst drie oplossingen voor hetzelfde probleem en kiest er één,
+    getoetst aan je eigen eisen. <span class="alleen-scherm">Teken met muis, vinger of
+    stylus in de vakken; alles wordt in deze browser bewaard. Klaar? Druk op
+    <b>Downloaden als PDF</b> en lever het bestand in — dit blad is deliverable 5.</span>
+  </div>
+  <div class="uitleg" style="border-left-color:var(--amber);background:#fdf8ec">
+    <b>Richtlijn:</b> ± 100 minuten voor dit blad. Schetsen mag écht lelijk zijn —
+    tijd die je hier bespaart, gebruik je om je keuze goed te onderbouwen.
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 1</span><h2>Drie concepten</h2><span class="rule"></span><span class="code">Schets — teken in de vakken</span></div>
+    <p>Drie verschillende oplossingen voor hetzelfde probleem. Schetsen mag lelijk zijn —
+    het gaat om het idee, niet om de tekening. Zet er maten of aantekeningen bij.</p>
+    <div class="schetsen">
+      <div class="schets" data-schets="1">
+        <div class="schets-kop"><span class="nr">A</span><input data-key="titelA" type="text" placeholder="Naam van dit concept…"></div>
+        <canvas class="tekenvlak" width="640" height="520"></canvas>
+        <div class="schets-voet">Concept A</div>
+      </div>
+      <div class="schets" data-schets="2">
+        <div class="schets-kop"><span class="nr">B</span><input data-key="titelB" type="text" placeholder="Naam van dit concept…"></div>
+        <canvas class="tekenvlak" width="640" height="520"></canvas>
+        <div class="schets-voet">Concept B</div>
+      </div>
+      <div class="schets" data-schets="3">
+        <div class="schets-kop"><span class="nr">C</span><input data-key="titelC" type="text" placeholder="Naam van dit concept…"></div>
+        <canvas class="tekenvlak" width="640" height="520"></canvas>
+        <div class="schets-voet">Concept C</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 2</span><h2>Peer review</h2><span class="rule"></span><span class="code">Door een andere groep</span></div>
+    <div class="vraag">
+      <label>Wat zei de andere groep over jullie concepten? <em>Noteer hun sterkste kritiekpunt per concept — juist de kritiek waar je het niet mee eens bent.</em></label>
+      <textarea data-key="peer" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 3</span><h2>Keuze en onderbouwing</h2><span class="rule"></span><span class="code">Tegen het PvE, niet op smaak</span></div>
+    <div class="keuzerij">
+      Wij kiezen concept:
+      <label><input type="radio" name="keuze" value="A"> A</label>
+      <label><input type="radio" name="keuze" value="B"> B</label>
+      <label><input type="radio" name="keuze" value="C"> C</label>
+    </div>
+    <div class="vraag">
+      <label>Waarom dit concept? <em>Weeg alle drie de concepten tegen je PvE af — noem minstens één eis waarop je gekozen concept wint, en één punt waarop een afgevallen concept beter was.</em></label>
+      <textarea data-key="onderbouwing" rows="4"></textarea>
+    </div>
+  </section>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Werkblad les 2 — deliverable 5</span>
+    <span>3 concepten + keuze</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-wconcept-';
+
+  /* ── Tekst bewaren ── */
+  var velden=[].slice.call(document.querySelectorAll('textarea[data-key], input[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    try{ var x=localStorage.getItem(k); if(x) v.value=x; }catch(e){}
+    v.addEventListener('input',function(){ try{ localStorage.setItem(k,v.value); }catch(e){} });
+  });
+  var radios=[].slice.call(document.querySelectorAll('input[name=keuze]'));
+  try{ var rk=localStorage.getItem(KEY+'keuze');
+    if(rk) radios.forEach(function(r){ if(r.value===rk) r.checked=true; }); }catch(e){}
+  radios.forEach(function(r){
+    r.addEventListener('change',function(){ try{ localStorage.setItem(KEY+'keuze',r.value); }catch(e){} });
+  });
+
+  /* ── Schetsvakken: tekenen met muis, vinger of stylus ── */
+  var KLEUREN={ink:'#22262b',blue:'#1e5f8c',red:'#c43b2e'};
+
+  document.querySelectorAll('.schets').forEach(function(blok){
+    var canvas=blok.querySelector('canvas');
+    var ctx=canvas.getContext('2d');
+    var sKey=KEY+'schets'+blok.dataset.schets;
+    var kleur=KLEUREN.ink, gum=false, bezig=false, vorig=null;
+
+    var kop=blok.querySelector('.schets-kop');
+    var tools=document.createElement('div'); tools.className='tools';
+    tools.innerHTML=
+      '<button type="button" class="tool kleur-ink actief" data-k="ink" title="Grafiet"></button>'+
+      '<button type="button" class="tool kleur-blue" data-k="blue" title="Blauwdruk"></button>'+
+      '<button type="button" class="tool kleur-red" data-k="red" title="Machinerood"></button>'+
+      '<button type="button" class="tool gum" data-k="gum" title="Gum">G</button>'+
+      '<button type="button" class="tool wis" data-k="wis" title="Alles wissen">WIS</button>';
+    kop.appendChild(tools);
+
+    tools.addEventListener('click',function(e){
+      var b=e.target.closest('.tool'); if(!b) return;
+      if(b.dataset.k==='wis'){
+        if(confirm('Deze schets helemaal wissen?')){
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          bewaar();
+        }
+        return;
+      }
+      tools.querySelectorAll('.tool').forEach(function(t){t.classList.remove('actief');});
+      b.classList.add('actief');
+      gum=(b.dataset.k==='gum');
+      if(!gum) kleur=KLEUREN[b.dataset.k];
+    });
+
+    function pos(e){
+      var r=canvas.getBoundingClientRect();
+      return { x:(e.clientX-r.left)*canvas.width/r.width,
+               y:(e.clientY-r.top)*canvas.height/r.height };
+    }
+    function bewaar(){
+      try{ localStorage.setItem(sKey, canvas.toDataURL('image/png')); }catch(e){}
+    }
+    canvas.addEventListener('pointerdown',function(e){
+      e.preventDefault(); canvas.setPointerCapture(e.pointerId);
+      bezig=true; vorig=pos(e);
+    });
+    canvas.addEventListener('pointermove',function(e){
+      if(!bezig) return;
+      var p=pos(e);
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      if(gum){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=22; }
+      else   { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=kleur; ctx.lineWidth=2.4; }
+      ctx.beginPath(); ctx.moveTo(vorig.x,vorig.y); ctx.lineTo(p.x,p.y); ctx.stroke();
+      vorig=p;
+    });
+    ['pointerup','pointercancel'].forEach(function(ev){
+      canvas.addEventListener(ev,function(){ if(bezig){ bezig=false; bewaar(); } });
+    });
+
+    try{
+      var data=localStorage.getItem(sKey);
+      if(data){ var img=new Image(); img.onload=function(){ ctx.drawImage(img,0,0); }; img.src=data; }
+    }catch(e){}
+  });
+})();
+</script>
+
+</body>
+</html>

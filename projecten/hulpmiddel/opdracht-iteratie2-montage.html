@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opdracht — Iteratie 2 + montage — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:1000px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--red);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.95rem;}
+
+  section{margin-bottom:28px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.12rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .denkvraag{position:relative;margin:20px 0 14px;padding:14px 18px;
+    background:#eef4f8;border:1px solid var(--blue);border-left:6px solid var(--blue);}
+  .denkvraag .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:var(--blue);padding:4px 10px;margin-bottom:8px;}
+  .denkvraag .badge::before{content:"?";font-size:.9rem;line-height:1;}
+  .denkvraag p{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.04rem;margin:0;}
+  .zelf{margin:0 0 14px;padding:12px 14px;border:1px dashed var(--steel);background:#fbfaf6;}
+  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .zelf textarea{width:100%;resize:vertical;min-height:56px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:8px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .toon-btn{margin-top:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;
+    border:none;padding:9px 14px;cursor:pointer;}
+  .antwoord{display:none;margin:0 0 14px;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
+  .antwoord::before{content:"Voorbeeldantwoord";display:block;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.6rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--blue);margin:0 0 6px;}
+  .antwoord.open{display:block;}
+
+  .vraag{margin-bottom:14px;}
+  .vraag label{display:block;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.95rem;margin-bottom:6px;}
+  .vraag label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.86rem;}
+  textarea.groot{width:100%;resize:vertical;min-height:56px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  textarea.groot:focus,.zelf textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .keuzerij{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;}
+  .keuzerij label{display:flex;gap:7px;align-items:center;cursor:pointer;
+    border:1px solid var(--line);padding:7px 12px;background:#fff;}
+  .keuzerij input{accent-color:var(--blue);width:15px;height:15px;}
+
+  .rekenrij{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;margin:12px 0;}
+  .rekenblok{flex:1;min-width:160px;border:1px solid var(--line);background:#fff;padding:10px 14px;}
+  .rekenblok label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:4px;}
+  .rekenblok input{width:100%;border:none;border-bottom:1px solid var(--steel);
+    background:transparent;font-family:'Space Mono',monospace;font-weight:700;font-size:1.1rem;
+    color:var(--blue);padding:2px 0;}
+  .rekenblok.uitkomst{background:var(--ink);}
+  .rekenblok.uitkomst label{color:#8fc4e6;}
+  .rekenblok.uitkomst .waarde{font-family:'Space Mono',monospace;font-weight:700;
+    font-size:1.2rem;color:#fff;}
+
+  .hint{border:1px solid var(--line);background:#f4f2ec;padding:10px 14px;margin-bottom:12px;font-size:.9rem;}
+  .hint b{font-family:'Archivo',sans-serif;}
+  .veiligheid{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:10px 14px;margin-bottom:12px;font-size:.9rem;}
+  .veiligheid b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  /* onderdelenlijst */
+  ul.onderdelen{list-style:none;margin:0 0 14px;padding:0;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+  ul.onderdelen li{background:#fff;padding:9px 13px;font-size:.92rem;display:flex;gap:9px;align-items:baseline;}
+  ul.onderdelen .n{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);white-space:nowrap;}
+
+  ol.stappen{list-style:none;margin:0 0 14px;padding:0;counter-reset:s;}
+  ol.stappen li{counter-increment:s;position:relative;padding:8px 0 8px 40px;
+    border-bottom:1px dotted var(--line);font-size:.96rem;}
+  ol.stappen li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:9px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;color:var(--blue);}
+  ol.stappen b{font-family:'Archivo',sans-serif;font-weight:700;}
+
+  .werkregel{margin:14px 0;padding:11px 16px;background:var(--ink);color:var(--sheet);
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.86rem;}
+  .werkregel span{color:#8fc4e6;}
+
+  ul.check{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+  ul.check li{background:var(--sheet);}
+  ul.check label{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;cursor:pointer;font-size:.94rem;}
+  ul.check input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 auto;
+    width:18px;height:18px;margin-top:2px;border:2px solid var(--ink);background:#fff;cursor:pointer;
+    display:grid;place-content:center;}
+  ul.check input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue);}
+  ul.check input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:.76rem;}
+  ul.check b{font-family:'Archivo',sans-serif;}
+
+  .naar{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:12px 16px;margin-top:18px;font-size:.95rem;}
+  .naar b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.5pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.toon-btn{display:none!important;}
+    .antwoord{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .denkvraag,.zelf,.vraag,ul.onderdelen,ol.stappen,ul.check,.hint,.veiligheid,.keuzerij,.rekenrij{break-inside:avoid;}
+    .zelf textarea,textarea.groot{border:1px solid #000;min-height:38px;}
+    .idcel input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Opdracht · les 7</div>
+      <h1>Iteratie 2 + montage</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 10 · einde les 7 · Groow: Maken</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="i-naam">Naam</label><input id="i-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="i-klas">Klas</label><input id="i-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="i-datum">Datum</label><input id="i-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="denkvraag">
+    <span class="badge">Denkstimulerende vraag</span>
+    <p>Je draait een gewone moer muurvast met de steeksleutel. Waarom is die moer, op een rijdend voertuig, dan ondanks dat nog steeds niet klaar voor gebruik?</p>
+  </div>
+  <div class="zelf">
+    <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+    <textarea data-key="denk" rows="2"></textarea>
+    <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+  </div>
+  <div class="antwoord">
+    <p>Trilling. Een scootmobiel rijdt over stoeptegels, drempels en oneffen wegdek — dat trilt continu door tot in elke verbinding. Een gewone moer die "muurvast" aanvoelt bij het monteren, loopt onder die trilling binnen dagen tot een week los, zonder dat iemand het ziet gebeuren. Een zelfborgende (nylock) moer heeft een kunststof ring die om de schroefdraad blijft klemmen, ook bij trilling. Daarom gebruik je op de scootmobiel nooit een gewone moer.</p>
+  </div>
+
+  <div class="uitleg">
+    <b>Dit blad is deliverable 10.</b> Vandaag rond je je ontwerp definitief af: v2 passen,
+    monteren met het echte klemverbinding-patroon, en twee controles die niet mogen ontbreken.
+    Na dit blad print je in PETG — dus dit ontwerp is daarna niet zomaar nog aan te passen.
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 1</span><h2>Past v2 nu wél?</h2><span class="rule"></span><span class="code">Terugkoppeling op je voorspelling uit les 6</span></div>
+    <p>In les 6 voorspelde je wat je CAD-wijziging zou opleveren. Klopte dat?</p>
+    <div class="keuzerij">
+      <label><input type="radio" name="klopte" value="ja" data-key="klopte"> Ja, mijn voorspelling klopte</label>
+      <label><input type="radio" name="klopte" value="deels" data-key="klopte"> Deels</label>
+      <label><input type="radio" name="klopte" value="nee" data-key="klopte"> Nee</label>
+    </div>
+    <div class="vraag">
+      <label>Licht toe. <em>Past v2 nu goed? Zo niet: is dit met nabewerken op te lossen, of moet het CAD-model opnieuw aangepast?</em></label>
+      <textarea class="groot" data-key="terugkoppeling" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 2</span><h2>Boutgaten ruimen</h2><span class="rule"></span><span class="code">Kolomboor</span></div>
+    <div class="veiligheid"><b>Veiligheid — kolomboor.</b> Werkstuk altijd inklemmen: een los onderdeel wordt door de boor gegrepen en tolt rond, dat is een snijwond. Veiligheidsbril op. Laag toerental bij plastic — hoog toerental smelt het materiaal en de boor loopt vast.</div>
+    <p>Ruim beide boutgaten met de kolomboor tot een M4-bout er zonder wringen doorheen valt.</p>
+    <div class="keuzerij">
+      <label><input type="checkbox" data-key="gat-a"> Boutgat A geruimd — bout past zonder wringen</label>
+      <label><input type="checkbox" data-key="gat-b"> Boutgat B geruimd — bout past zonder wringen</label>
+    </div>
+    <div class="werkregel">Werkregel — <span>boutgat Ø4,3 mm voor M4. Niet 4,0 — dan past de bout er na het krimpen niet in.</span></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 3</span><h2>Monteren</h2><span class="rule"></span><span class="code">Het klemverbinding-patroon</span></div>
+    <p>Zorg dat je deze onderdelen compleet hebt vóór je begint:</p>
+    <ul class="onderdelen">
+      <li><span class="n">2×</span> M4- of M5-bout, lang genoeg voor beide helften + moer</li>
+      <li><span class="n">2×</span> zelfborgende (nylock) moer</li>
+      <li><span class="n">4×</span> carrosserieringen (2 per bout)</li>
+      <li><span class="n">1×</span> rubberstrip, op maat geknipt uit een oude fietsbinnenband</li>
+    </ul>
+    <ol class="stappen">
+      <li><b>Rubberstrip aanbrengen</b> aan de binnenkant van de ring — vangt tolerantie op, geeft grip, beschermt de lak.</li>
+      <li><b>Beide helften om de buis</b> plaatsen, met de rubberstrip ertussen.</li>
+      <li><b>Bout erdoor</b>, met aan elke kant een carrosserie­ring tussen bout/moer en het plastic — die verdeelt de druk in plaats van er een put in te drukken.</li>
+      <li><b>Nylock-moer handvast</b> draaien op beide bouten, verdeeld — niet de ene bout helemaal vast en dan pas de andere.</li>
+      <li><b>Definitief vastdraaien</b>, om en om, tot de klem niet meer beweegt op de buis.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 4</span><h2>Belastingstest op v2</h2><span class="rule"></span><span class="code">Niet-destructief — dit exemplaar moet het blijven</span></div>
+    <p>In les 6 trok je v1 stuk om de grens te vinden. Dat doe je nu <b>niet</b> — dit exemplaar
+    wordt gemonteerd op de scootmobiel. Trek met de veerunster rustig door tot je eigen
+    PvE-eis (3× de bedoelde last) en stop dáár. Dit is je meting: houdt v2 stand op precies
+    het punt waar v1 het in les 6 niet deed?</p>
+    <div class="rekenrij">
+      <div class="rekenblok">
+        <label>Bedoelde last (kg)</label>
+        <input id="last2" data-key="last2" inputmode="decimal" placeholder="bijv. 2">
+      </div>
+      <div class="rekenblok uitkomst">
+        <label>Eis: 3× last, in newton</label>
+        <div class="waarde" id="eisUit2">— N</div>
+      </div>
+    </div>
+    <div class="keuzerij">
+      <label><input type="radio" name="standhoudt" value="ja" data-key="standhoudt"> Houdt de eis stand — geen blijvende vervorming</label>
+      <label><input type="radio" name="standhoudt" value="nee" data-key="standhoudt"> Vervormt of breekt al vóór de eis</label>
+    </div>
+    <div class="vraag">
+      <label>Vergelijk met les 6. <em>Wat is er anders aan v2 waardoor dit resultaat verschilt van v1?</em></label>
+      <textarea class="groot" data-key="vergelijk-v1" rows="2"></textarea>
+    </div>
+    <div class="hint">Vervormt of breekt v2 toch vóór de eis? Dan is dit géén montageprobleem meer maar een ontwerpprobleem — meld dit bij de docent vóórdat je verdergaat met monteren.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 5</span><h2>De twee controles</h2><span class="rule"></span><span class="code">Nooit overslaan</span></div>
+    <div class="hint"><b>Spleet-check.</b> Blijft de spleet tussen de twee helften open nu de bouten vastzitten? Dat is je bewijs dat de bóút klemt en niet het plastic. Sluit de spleet, dan drukken de helften op elkaar en klemt er niets meer om de buis — dan moet je de boutgaten opnieuw positioneren of de helften dunner maken.</div>
+    <div class="keuzerij">
+      <label><input type="radio" name="spleet2" value="open" data-key="spleet2"> Spleet blijft open</label>
+      <label><input type="radio" name="spleet2" value="dicht" data-key="spleet2"> Spleet sluit — actie nodig</label>
+    </div>
+    <div class="hint"><b>Trilling-check.</b> Pak de scootmobiel bij de klem vast en schud stevig, minimaal 30 seconden, in alle richtingen. Zit hij nog even vast als aan het begin?</div>
+    <div class="vraag">
+      <label>Resultaat van de trilling-check. <em>Bewoog er iets? Wat deed je daarop?</em></label>
+      <textarea class="groot" data-key="trilling" rows="2"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 6</span><h2>Definitief maken</h2><span class="rule"></span><span class="code">Geen wijzigingen meer na dit blad</span></div>
+    <p>Dit CAD-model wordt zo je definitieve bestand. Er komt geen iteratie 3 — de eerstvolgende print is in PETG, voor het eindproduct.</p>
+    <div class="vraag">
+      <label>Laatste check — noem drie dingen die je hebt gecontroleerd voordat je dit model definitief verklaart.</label>
+      <textarea class="groot" data-key="laatstecheck" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">STAP 7</span><h2>Exporteren en inleveren</h2><span class="rule"></span><span class="code">Deadline: einde les 7</span></div>
+    <ol class="stappen">
+      <li>Exporteer je definitieve model als STL, resolutie Fine.</li>
+      <li>Bestandsnaam: <span class="mono">definitief_[naam].stl</span>.</li>
+      <li>Lever de STL in. Tussen les 7 en 8 wordt het eindproduct geprint in PETG — langere printtijd, hoger faalrisico, daar staat een buffer voor in de planning.</li>
+    </ol>
+    <ul class="check">
+      <li><label><input type="checkbox" data-key="k1"><span>Teruggekoppeld op je voorspelling uit les 6</span></label></li>
+      <li><label><input type="checkbox" data-key="k2"><span>Beide boutgaten geruimd — <b>M4-bout past zonder wringen</b></span></label></li>
+      <li><label><input type="checkbox" data-key="k3"><span>Gemonteerd met rubberstrip, carrosserieringen en nylock-moeren</span></label></li>
+      <li><label><input type="checkbox" data-key="k3b"><span><b>Belastingstest tot de PvE-eis</b> gedaan (niet-destructief) en vergeleken met v1</span></label></li>
+      <li><label><input type="checkbox" data-key="k4"><span><b>Spleet-check</b> gedaan — spleet blijft open</span></label></li>
+      <li><label><input type="checkbox" data-key="k5"><span><b>Trilling-check</b> gedaan (30 s schudden), resultaat genoteerd</span></label></li>
+      <li><label><input type="checkbox" data-key="k6"><span>STL definitief geëxporteerd met de juiste bestandsnaam en ingeleverd</span></label></li>
+    </ul>
+  </section>
+
+  <div class="naar">
+    <b>Les 8?</b> Assembleren en monteren op de scootmobiel, en de gebruikerstest: kan jouw
+    gebruiker dit echt bedienen — met verminderde handkracht, met één hand, met handschoenen aan?
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Opdracht les 7 — deliverable 10</span>
+    <span>Definitief bestand voor PETG-print</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-iteratie2-';
+
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    var isCheck=(v.type==='checkbox'||v.type==='radio');
+    try{
+      var x=localStorage.getItem(k);
+      if(x!==null){
+        if(v.type==='checkbox') v.checked=(x==='1');
+        else if(v.type==='radio') v.checked=(v.value===x);
+        else v.value=x;
+      }
+    }catch(e){}
+    v.addEventListener(isCheck?'change':'input',function(){
+      var waarde=v.type==='checkbox'?(v.checked?'1':'0'):v.value;
+      try{ localStorage.setItem(k, waarde); }catch(e){}
+      if(v.id==='last2') rekenEis2();
+    });
+  });
+
+  document.querySelector('.toon-btn').addEventListener('click',function(){
+    var ans=document.querySelector('.antwoord');
+    var open=ans.classList.toggle('open');
+    this.textContent=open?'Verberg voorbeeldantwoord':'Toon voorbeeldantwoord';
+  });
+
+  function num(v,d){ return v.toFixed(d===undefined?0:d).replace('.',','); }
+  function rekenEis2(){
+    var last=parseFloat((document.getElementById('last2').value||'').replace(',','.'));
+    var eisUit=document.getElementById('eisUit2');
+    if(!isFinite(last)||last<=0){ eisUit.textContent='— N'; return; }
+    eisUit.textContent='≈ '+num(last*3*9.8)+' N';
+  }
+  rekenEis2();
+})();
+</script>
+
+</body>
+</html>
