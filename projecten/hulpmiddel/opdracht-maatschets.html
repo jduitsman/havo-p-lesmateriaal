@@ -323,9 +323,9 @@
   function num(v,d){ return v.toFixed(d===undefined?1:d).replace('.',','); }
   function rekenBinnendiameter(){
     var buisD=parseFloat((document.getElementById('buisD').value||'').replace(',','.'));
-    var speling=parseFloat(document.getElementById('speling').value);
+    var speling=parseFloat(document.getElementById('speling').value.replace(',','.'));
     var out=document.getElementById('binnenUit');
-    if(!isFinite(buisD)||buisD<=0){ out.textContent='— mm'; return; }
+    if(!isFinite(buisD)||buisD<=0||!isFinite(speling)){ out.textContent='— mm'; return; }
     out.textContent=num(buisD)+' + '+num(speling)+' = Ø '+num(buisD+speling)+' mm';
   }
   rekenBinnendiameter();

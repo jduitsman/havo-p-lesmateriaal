@@ -370,16 +370,25 @@
   function teken(){
     while(svg.firstChild) svg.removeChild(svg.firstChild);
 
-    /* ── Parameters: dezelfde getallen voeden rekenblok én tekening ── */
+    /* ── Parameters: dezelfde getallen voeden rekenblok én tekening ──
+       De rekenbox toont pas een uitkomst zodra de leerling zelf een speling
+       heeft ingevuld — anders verklapt de fallbackwaarde het antwoord van
+       de tolerantie-les nog vóórdat die les begonnen is. De tekening zelf
+       mag wél altijd een fallback gebruiken, anders staat er niks. */
+    var spelingRuw=document.getElementById('speling').value.trim();
+    var spelingIngevuld=isFinite(parseFloat(spelingRuw.replace(',','.')));
+
     var buisD=parseFloat((document.getElementById('buisD').value||'25,0').replace(',','.'));
     if(!isFinite(buisD)||buisD<5||buisD>60) buisD=25.0;
-    var speling=parseFloat(document.getElementById('speling').value);
+    var speling=parseFloat(spelingRuw.replace(',','.'));
+    if(!isFinite(speling)||speling<0||speling>2) speling=0.4;
     var binnenD=buisD+speling;
     var WAND=3, HOOG=10, FLENS_UIT=10, FLENS_DIK=6, GAT_A=3.4, GAT_B=4.0, BOUT_X=5, FILLET=2;
     var buitenD=binnenD+2*WAND;
 
-    document.getElementById('binnenUit').textContent=
-      num(buisD)+' + '+num(speling)+' = Ø '+num(binnenD)+' mm';
+    document.getElementById('binnenUit').textContent=spelingIngevuld
+      ? num(buisD)+' + '+num(speling)+' = Ø '+num(binnenD)+' mm'
+      : 'vul eerst je speling in';
 
     var S=1.9;                       // schaal mm → tekeneenheden
     var rB=binnenD/2*S, rU=buitenD/2*S;
