@@ -12,6 +12,17 @@ leerling (niet op een server). Gebruik daarom altijd je eigen device of inlog �
 op een gedeeld apparaat overschrijft de volgende leerling de vorige antwoorden.
 Download je werk als PDF via de knop rechtsboven en lever dat in.
 
+## Privacy
+
+Deze pagina's hebben geen backend en versturen niets automatisch. Alles wat je
+invult — tekst, aangevinkte vakjes, geüploade foto's — blijft uitsluitend
+opgeslagen in `localStorage` van je eigen browser, op je eigen apparaat. Er is
+geen formulier, geen fetch-aanroep en geen inlogsysteem dat gegevens naar deze
+repo, GitHub of wie dan ook stuurt. Deze repository bevat alleen de lege
+sjablonen; ingevulde antwoorden van leerlingen komen hier nooit in terecht. De
+enige manier waarop werk de browser verlaat, is wanneer de leerling zelf de
+PDF downloadt en die inlevert bij de docent.
+
 ## Herkomst
 
 Dit lesmateriaal wordt gebouwd met [Agent Studio](https://github.com/jduitsman/agent-studio),
