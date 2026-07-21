@@ -108,8 +108,11 @@
   nav.index a.mark{color:var(--red);}
   nav.index a.mark:hover{background:var(--red);color:#fff;}
 
+  /* Offset voor interne links, zodat het doel niet onder de sticky navbalk valt.
+     Geldt voor álle ankers (secties, lesblokken, deliverable-rijen). */
+  html{scroll-padding-top:72px;}
   /* ---------- Secties ---------- */
-  section{margin-bottom:46px;scroll-margin-top:58px;}
+  section{margin-bottom:46px;}
   .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;}
   .sec-head h2{font-size:1.5rem;text-transform:uppercase;letter-spacing:.01em;white-space:nowrap;}
   .sec-head .rule{flex:1;height:1px;background:var(--line);}
