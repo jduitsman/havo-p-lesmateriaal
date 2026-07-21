@@ -58,7 +58,13 @@ def projecten() -> list[dict]:
         return []
     uit = []
     for map_ in sorted(p for p in PROJECTEN.iterdir() if p.is_dir()):
+        # Sla niet-projecten over: verborgen/hulpmappen (_reviews, .git) en
+        # mappen zonder projectdocument.md zijn geen project.
+        if map_.name.startswith(("_", ".")):
+            continue
         doc = map_ / "projectdocument.md"
+        if not doc.exists():
+            continue
         animaties = sorted((map_ / "animaties").glob("*.html")) if (map_ / "animaties").is_dir() else []
         uit.append(
             {
