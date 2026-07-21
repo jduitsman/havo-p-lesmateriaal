@@ -126,6 +126,28 @@
     .les,.algemeen,.denkvraag,.antwoord,.blok{break-inside:avoid;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
+
+  /* tabellen: mapping + verantwoording eindtermen */
+  table{border-collapse:collapse;width:100%;background:var(--sheet);font-size:.9rem;}
+  table th,table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top;}
+  table th{background:#f4f2ec;font-family:'Archivo',sans-serif;font-weight:600;}
+  table.wide{min-width:760px;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);margin:8px 0;}
+  .scroll > table{border:none;}
+  .niveau-legenda{display:flex;flex-wrap:wrap;margin:0 0 12px;border:1px solid var(--line);}
+  .niveau-legenda span{flex:1;min-width:130px;padding:8px 12px;font-family:'Space Mono',monospace;
+    font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;border-right:1px solid var(--line);}
+  .niveau-legenda span:last-child{border-right:none;}
+  .niveau-legenda .l1{background:#faf1f0;color:var(--red);}
+  .niveau-legenda .l2{background:#fdf8ec;color:var(--amber);}
+  .niveau-legenda .l3{background:#f1f5f2;color:var(--green);}
+  table.eindtermen td.etnr{font-family:'Space Mono',monospace;font-weight:700;color:var(--blue);text-align:center;width:34px;}
+  table.eindtermen td.ettitel strong{font-family:'Archivo',sans-serif;font-weight:600;}
+  tr.domein-rij td{background:#f4f2ec;font-family:'Archivo',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;}
+  .dek{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;white-space:nowrap;border:1px solid;}
+  .dek-sterk{color:var(--green);border-color:var(--green);background:#f1f5f2;}
+  .dek-deels{color:var(--amber);border-color:var(--amber);background:#fdf8ec;}
+  .dek-niet{color:var(--red);border-color:var(--red);background:#faf1f0;}
 </style>
 </head>
 <body>
@@ -156,6 +178,8 @@
     <a href="#les5">L5</a><a href="#les6">L6</a><a href="#les7">L7</a><a href="#les8">L8</a>
     <a href="#les9">L9</a><a href="#les10">L10</a>
     <a href="#beoordeling">Beoordeling</a>
+    <a href="#alignment">Alignment</a>
+    <a href="#eindtermen">Eindtermen</a>
   </nav>
 
   <!-- ══ Voorbereiding ══ -->
@@ -441,6 +465,81 @@
       <p>"Welke buismaat heb je gemeten, en welke maat staat er in je CAD-model?" Het verschil moet 0,3–0,5 mm zijn, en de leerling moet dat kunnen verklaren (krimp, elephant foot, meetfout). Kan hij het getal niet noemen of is het verschil 0,0 mm, dan is het model niet begrepen maar overgetekend — hoe mooi het er ook uitziet.</p>
       <h3>3. Beoordeel criterium 5 fysiek, op de scootmobiel, met de veerunster erbij.</h3>
       <p>Niet op foto en niet op het model. Hang het gewicht eraan (3× de bedoelde last), doe de schud-test van 30 seconden, en voel met je hand over de randen. Veiligheidsgrenzen zijn geen weging maar een drempel: een product dat aan de rem zit of waar een mens op kan steunen, is Onvoldoende op criterium 5 — hoe goed het CAD-werk ook is. Een ontwerp dat gevaarlijk is, is geen goed ontwerp.</p>
+    </div>
+  </section>
+
+  <!-- ══ Alignment ══ -->
+  <section id="alignment">
+    <div class="sec-head"><h2>Zo hangen leerdoelen, beoordeling en eindtermen samen</h2><span class="rule"></span><span class="code">De rode draad</span></div>
+    <div class="algemeen">
+      <p>Elk leerdoel hoort bij een rubriccriterium én bij een of meer eindtermen van het praktijkgerichte programma Technologie. Niet elke eindterm hoeft in dít project volledig aan bod te komen — over de drie profielprojecten samen zijn ze allemaal gedekt.</p>
+      <div class="scroll">
+        <table class="wide">
+          <thead><tr><th>Leerdoel</th><th>Rubriccriterium</th><th>Eindterm(en)</th></tr></thead>
+          <tbody>
+            <tr><td>1 Gebruikersonderzoek → PvE</td><td>1</td><td>1, 2, 6, 16</td></tr>
+            <tr><td>2 Nauwkeurig meten + maatschets</td><td>2</td><td>10, 22</td></tr>
+            <tr><td>3 3D-model met variabelen (Onshape)</td><td>2</td><td>11, 22</td></tr>
+            <tr><td>4 Schets → model, constructieve keuzes</td><td>2 en 5</td><td>14, 18, 23</td></tr>
+            <tr><td>5 Printklaar maken + veilig produceren</td><td>3</td><td>3, 11, 22</td></tr>
+            <tr><td>6 Prototype testen (belasting + breukvlak)</td><td>4</td><td>12, 19</td></tr>
+            <tr><td>7 Twee iteraties verbeteren</td><td>4</td><td>13, 18</td></tr>
+            <tr><td>8 Presenteren + onderbouwen richting opdrachtgever</td><td>6</td><td>2, 8, 9, 13</td></tr>
+            <tr><td>9 Expert bevragen + verwerken</td><td>6</td><td>20</td></tr>
+            <tr><td>10 SDG-waarde van je product benoemen</td><td>6</td><td>24</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Verantwoording eindtermen ══ -->
+  <section id="eindtermen">
+    <div class="sec-head"><h2>Verantwoording eindtermen</h2><span class="rule"></span><span class="code">pgp-Technologie groot · SLO juni 2026</span></div>
+    <div class="algemeen">
+      <p>Dit hoofdstuk koppelt het project aan de eindtermen van het examenprogramma <strong>Praktijkgericht programma Technologie — grote variant</strong> (SLO, juni 2026). Per eindterm staat hoe sterk die in dit project aan bod komt en waaraan je dat kunt aantonen.</p>
+      <p><strong>Let op:</strong> in het examenprogramma hoeven niet alle eindtermen in één opdracht te zitten — ze moeten over het hele onderwijsprogramma aan bod komen en worden afgesloten. De eindtermen met dekking <em>Niet</em> horen dus in een ander project of een aanvulling thuis.</p>
+      <div class="niveau-legenda">
+        <span class="l3">Sterk — kernonderdeel, aantoonbaar</span>
+        <span class="l2">Deels — komt aan bod, niet volledig</span>
+        <span class="l1">Niet — nog te borgen</span>
+      </div>
+      <p style="font-size:.95rem;color:#3c434a">Dekking in dit project: <strong>15× Sterk</strong>, <strong>8× Deels</strong>, <strong>1× Niet</strong> — van 24 eindtermen.</p>
+      <div class="scroll">
+        <table class="wide eindtermen">
+          <thead><tr><th>Nr</th><th>Eindterm</th><th>Dekking</th><th>Waar in het project</th></tr></thead>
+          <tbody>
+            <tr class="domein-rij"><td colspan="4">Domein A · Loopbaanontwikkeling in praktijkgerichte opdrachten</td></tr>
+            <tr><td class="etnr">1</td><td class="ettitel"><strong>Praktijkgerichte opdrachten</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Hele project: plan van aanpak, planning met harde deadlines, uitvoering en evaluatie via het logboek.</td></tr>
+            <tr><td class="etnr">2</td><td class="ettitel"><strong>Interactie met externe opdrachtgevers</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>De gebruiker is de opdrachtgever: interview (les 2), gebruikerstest (les 8) en presentatie (les 10). Daarnaast het bedrijfsbezoek (les 1).</td></tr>
+            <tr><td class="etnr">3</td><td class="ettitel"><strong>De context van externe opdrachtgevers</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Veiligheids- en officiële voorschriften komen sterk aan bod (les 2). Bedrijfscontext en sociale conventies op de werkvloer worden ook ervaren tijdens het bedrijfsbezoek (les 1).</td></tr>
+            <tr><td class="etnr">4</td><td class="ettitel"><strong>Ontwikkelen van interesses</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Ervaring in een technologisch werkveld; oriëntatie op sector, functies en opleidingen is niet expliciet.</td></tr>
+            <tr><td class="etnr">5</td><td class="ettitel"><strong>Ontwikkelen van kwaliteiten</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Reflectie via logboek, onderbouwing en presentatie. Koppeling met beroepsbeelden en een persoonlijk leerdoel niet expliciet.</td></tr>
+            <tr class="domein-rij"><td colspan="4">Domein B · Programmaoverstijgende vaardigheden</td></tr>
+            <tr><td class="etnr">6</td><td class="ettitel"><strong>Sociaal handelen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Empathie-oefening (10 min zelf in de scootmobiel, les 2) en de gebruikerstest (les 8).</td></tr>
+            <tr><td class="etnr">7</td><td class="ettitel"><strong>Samenwerken</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Groepen van 2–3, peer review (les 2), taakverdeling en eigen bijdrage in het logboek.</td></tr>
+            <tr><td class="etnr">8</td><td class="ettitel"><strong>Taalvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Interview, technische onderbouwing (3–5 pag.) en presentatie van 8 minuten.</td></tr>
+            <tr><td class="etnr">9</td><td class="ettitel"><strong>Informatievaardigheden</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Informatie verzamelen en verwerken via het onderzoek. Bronvermelding en het wegen van bronbetrouwbaarheid niet expliciet gevraagd.</td></tr>
+            <tr><td class="etnr">10</td><td class="ettitel"><strong>Reken- en wiskundige vaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Tolerantieberekening (les 4), veiligheidsfactor 3×, metingen met min/max en in newton (les 6).</td></tr>
+            <tr><td class="etnr">11</td><td class="ettitel"><strong>Digitale vaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Onshape (CAD), slicer, export naar STL/3MF, digitale camera/film.</td></tr>
+            <tr><td class="etnr">12</td><td class="ettitel"><strong>Analytische denkvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Breukvlakanalyse (les 6) en oorzaakanalyse "waarom past de testring niet?" (les 4).</td></tr>
+            <tr><td class="etnr">13</td><td class="ettitel"><strong>Kritische denkvaardigheden</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Concept- en materiaalkeuze onderbouwd en afgewogen tegen het Programma van Eisen.</td></tr>
+            <tr><td class="etnr">14</td><td class="ettitel"><strong>Creatief denken en handelen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Drie concepten schetsen (divergeren), keuze maken (convergeren), mock-up en experimenteren met materiaal en oriëntatie.</td></tr>
+            <tr class="domein-rij"><td colspan="4">Domein C · Werkvelden</td></tr>
+            <tr><td class="etnr">15</td><td class="ettitel"><strong>Werkvelden</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Het project speelt in één werkveld (mobiliteit / zorgtechnologie), met een korte werkveld-oriëntatie bij het bedrijfsbezoek (les 1). Voor volledige dekking meerdere werkvelden laten verkennen.</td></tr>
+            <tr class="domein-rij"><td colspan="4">Domein D · Programmaspecifieke vaardigheden</td></tr>
+            <tr><td class="etnr">16</td><td class="ettitel"><strong>Onderzoeken</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Deelvragen, gebruikersonderzoek (les 2) en onderzoek naar tolerantie en breukgedrag.</td></tr>
+            <tr><td class="etnr">17</td><td class="ettitel"><strong>STEAM</strong></td><td><span class="dek dek-deels">Deels</span></td><td>3D-uitwerkingen in Onshape. Expliciete combinatie van natuurwetenschap en kunst (VR/AR, artistieke visualisatie) is beperkt.</td></tr>
+            <tr><td class="etnr">18</td><td class="ettitel"><strong>Maken van een prototype</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Kern van het project: prototype v1/v2 en definitief PETG-product met ontwerpmethodiek en technische tekening.</td></tr>
+            <tr><td class="etnr">19</td><td class="ettitel"><strong>Kansen, risico's en gevolgen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Veiligheidsgrenzen, belastingstest en schud-test; gebruikszekerheid van het product.</td></tr>
+            <tr><td class="etnr">20</td><td class="ettitel"><strong>Expert bevragen</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Onderbouwde expertvraag bij het bedrijfsbezoek (les 1), met antwoord + bron, verwerkt in de onderbouwing (deliverable 13). Het evalueren van de samenwerking met de expert kan nog explicieter.</td></tr>
+            <tr><td class="etnr">21</td><td class="ettitel"><strong>Processen</strong></td><td><span class="dek dek-niet">Niet</span></td><td>Het project ontwerpt een product, geen proces. Te borgen: een montage-werkinstructie of stappenplan als deliverable vragen.</td></tr>
+            <tr><td class="etnr">22</td><td class="ettitel"><strong>Technologieën, technieken en materialen</strong></td><td><span class="dek dek-sterk">Sterk</span></td><td>Materiaalkeuze PLA vs PETG (les 5), Onshape/slicer, kolomboor en handgereedschap, voor- en nadelen van materialen.</td></tr>
+            <tr><td class="etnr">23</td><td class="ettitel"><strong>Vorm, functie en werking van systemen</strong></td><td><span class="dek dek-deels">Deels</span></td><td>Vorm–functie via de klemverbinding en constructieve keuzes. Systeemdenken (input/output, terugkoppeling, rendement) komt niet aan bod.</td></tr>
+            <tr><td class="etnr">24</td><td class="ettitel"><strong>Duurzame ontwikkelingsdoelen</strong></td><td><span class="dek dek-deels">Deels</span></td><td>In de onderbouwing (deliverable 13) koppelt de leerling het product aan minstens drie SDG's met toelichting (bijv. 3, 10, 12); daarnaast re-use van de fietsbinnenband.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 

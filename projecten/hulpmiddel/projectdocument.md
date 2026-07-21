@@ -50,30 +50,6 @@ Na afloop van dit project kun je:
 
 ---
 
-## Zo hangen leerdoelen, beoordeling en eindtermen samen
-
-Deze tabel maakt de rode draad zichtbaar: elk leerdoel hoort bij een rubriccriterium
-én bij een of meer eindtermen van het praktijkgerichte programma Technologie. Lees
-hem als je wilt weten *waarom* je iets doet — en gebruik hem bij je onderbouwing.
-
-| Leerdoel | Rubriccriterium | Eindterm(en) |
-|----------|-----------------|--------------|
-| 1 Gebruikersonderzoek → PvE | 1 | 1, 2, 6, 16 |
-| 2 Nauwkeurig meten + maatschets | 2 | 10, 22 |
-| 3 3D-model met variabelen (Onshape) | 2 | 11, 22 |
-| 4 Schets → model, constructieve keuzes | 2 en 5 | 14, 18, 23 |
-| 5 Printklaar maken + veilig produceren | 3 | 3, 11, 22 |
-| 6 Prototype testen (belasting + breukvlak) | 4 | 12, 19 |
-| 7 Twee iteraties verbeteren | 4 | 13, 18 |
-| 8 Presenteren + onderbouwen richting opdrachtgever | 6 | 2, 8, 9, 13 |
-| 9 Expert bevragen + verwerken | 6 | 20 |
-| 10 SDG-waarde van je product benoemen | 6 | 24 |
-
-> Niet elke eindterm hoeft in dít project volledig aan bod te komen — over de drie
-> profielprojecten samen zijn ze allemaal gedekt. Deze tabel laat zien wat híer speelt.
-
----
-
 ## Deelvragen
 
 Dit zijn je kompas voor het hele project — lees ze nu, aan het begin. Ze volgen
