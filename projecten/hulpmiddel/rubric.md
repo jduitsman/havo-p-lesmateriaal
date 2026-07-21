@@ -79,16 +79,3 @@ Deze rubric hoort bij het projectdocument. Lees hem vóórdat je begint: dan wee
 | Onvoldoende | Voldoende | Goed | Uitstekend |
 |---|---|---|---|
 | Onderbouwing ontbreekt of beschrijft alleen wat je deed, niet waarom. Geen (eigen) logboek. STL-deadlines gemist, waardoor de printer stilstond. Geen aantoonbaar eigen CAD-werk. De presentatie is een verhaal waarin alles meteen goed ging. Geen expertvraag gesteld en het resultaat is niet met de gebruiker besproken. | Onderbouwing van 3–5 pagina's met probleem, PvE, ontwerpkeuzes, materiaalkeuze, beide iteraties, testresultaten en de 6 deelvragen beantwoord met bewijs uit het logboek. Het antwoord van je expert is verwerkt **met bronvermelding**, je product is aan **minstens drie SDG's** gekoppeld, en je hebt het eindresultaat met de gebruiker besproken. Eigen logboek per les. Deadlines gehaald. Presentatie van 8 minuten met probleem → oplossing → wat ging er mis. Elke leerling heeft aantoonbaar eigen CAD-werk geleverd. | Elke keuze is onderbouwd mét een reden en een bron: waarom déze speling (uit je testring), waarom déze oriëntatie (uit je breekproef), waarom PETG (uit de materiaaleigenschappen). De inbreng van je expert en van de gebruiker heeft aantoonbaar een ontwerpkeuze beïnvloed, en je SDG-koppeling is onderbouwd — niet zomaar opgesomd. Foto's van mislukte prints en breukvlakken staan erin. De taakverdeling staat in het logboek en klopt met wat er is opgeleverd. | Je legt eerlijk uit wat er misging én wat je er de vólgende keer anders in zou doen. Je onderbouwing kan een andere leerling gebruiken om jouw ontwerp na te bouwen. In de presentatie kun je een kritische vraag over een ontwerpkeuze beantwoorden met een getal of een testresultaat, niet met een mening. |
-
----
-
-## Beoordelingstips voor de docent
-
-**1. Vraag naar de mislukte print, niet naar het eindproduct.**
-Het eindproduct laat zien of het werkt; de mislukte print laat zien of ze het begrijpen. Een groep die geen enkele fout kan laten zien, heeft óf niet getest óf het bewijs weggegooid — beide zijn een probleem bij criterium 4. Leg de v1-print naast de v2-print op tafel en laat ze het verschil aanwijzen en verklaren. Dat gesprek van twee minuten onderscheidt "Voldoende" van "Goed" beter dan het hele verslag.
-
-**2. Toets de tolerantie met één vraag.**
-"Welke buismaat heb je gemeten, en welke maat staat er in je CAD-model?" Het verschil moet 0,3–0,5 mm zijn, en de leerling moet dat verschil kunnen verklaren (krimp, elephant foot, meetfout). Kan hij het getal niet noemen of is het verschil 0,0 mm, dan is het CAD-model niet begrepen maar overgetekend — ongeacht hoe mooi het model eruitziet.
-
-**3. Beoordeel criterium 5 fysiek, op de scootmobiel, met de veerunster erbij.**
-Niet op foto en niet op het model. Hang het gewicht eraan (3× de bedoelde last), doe de schud-test van 30 seconden, en voel met je hand over de randen. Veiligheidsgrenzen zijn geen weging maar een drempel: een product dat aan de rem zit of waar een mens op kan steunen, is Onvoldoende op criterium 5 — hoe goed het CAD-werk ook is. Dat is geen strengheid, dat is de kern van het vak: een ontwerp dat gevaarlijk is, is geen goed ontwerp.

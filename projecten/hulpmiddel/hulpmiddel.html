@@ -316,37 +316,6 @@
   .dek-deels{color:var(--amber);border-color:var(--amber);background:#fdf8ec;}
   .dek-niet{color:var(--red);border-color:var(--red);background:#faf1f0;}
 
-  /* ---------- Leerling/Docent-versie + zelf antwoorden ---------- */
-  .versie-toggle{
-    position:fixed;left:20px;top:20px;z-index:50;
-    font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
-    background:#fff;color:var(--ink);border:2px solid var(--ink);padding:11px 16px;cursor:pointer;
-    box-shadow:0 6px 18px rgba(0,0,0,.2);
-  }
-  .versie-toggle:hover{background:#f4f2ec;}
-  .versie-toggle b{color:var(--blue);}
-  .zelf{margin:16px 0;padding:14px 16px;border:1px dashed var(--steel);background:#fbfaf6;}
-  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.92rem;margin-bottom:8px;color:var(--ink);}
-  .zelf-input{
-    width:100%;box-sizing:border-box;resize:vertical;min-height:78px;
-    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.7;
-    padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);
-  }
-  .zelf-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
-  .toon-btn{
-    margin-top:10px;
-    font-family:'Archivo',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
-    background:var(--blue);color:#fff;border:none;padding:10px 16px;cursor:pointer;
-  }
-  .toon-btn:hover{background:var(--ink);}
-  .antwoord{display:none;margin:12px 0;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
-  .antwoord::before{
-    content:"Voorbeeldantwoord";display:block;
-    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:0 0 8px;
-  }
-  .antwoord.open{display:block;}
-  body.v-docent .antwoord{display:block;}
-  body.v-docent .zelf{display:none;}
 
   /* ---------- PDF-knop ---------- */
   .pdf{
@@ -392,9 +361,7 @@
     body{background:#fff!important;color:#000!important;font-size:11pt;line-height:1.5;}
     .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
     .frame{border:none;padding:0;}
-    .pdf,nav.index,.no-print,.versie-toggle,.toon-btn,.voortgang,.uitleg-klein{display:none!important;}
-    body.v-leerling .antwoord{display:none!important;}
-    body.v-docent .zelf{display:none!important;}
+    .pdf,nav.index,.no-print,.voortgang,.uitleg-klein{display:none!important;}
     .zelf{break-inside:avoid;}
     .zelf-input{min-height:96px;}
     .titleblock,section,.part{animation:none!important;}
@@ -412,8 +379,6 @@
 </style>
 </head>
 <body>
-
-<button class="versie-toggle" id="versieToggle" type="button" aria-label="Wissel tussen leerling- en docentversie">Weergave: <b>Leerling</b></button>
 <button class="pdf" onclick="window.print()">Downloaden als PDF</button>
 
 <div class="sheet">
@@ -633,9 +598,7 @@
       <div class="les-head key"><span class="les-nr">LES 02 <span class="les-week">· WEEK 2</span></span><h3>Van gebruiker naar concept</h3></div>
       <div class="les-body">
         <p>Een zware week — vier deliverables in één les. Eerst de <a href="#deelvragen">6 deelvragen</a> doornemen — dit is je kompas voor het hele project. Veiligheidsprotocol ondertekenen. Interview, observatie en empathie-oefening met je gebruiker. Gebruikersonderzoek omzetten in een Programma van Eisen. Drie concepten schetsen, peer review, één concept kiezen en onderbouwen.</p>
-        <p class="week-links">Lever op: <a href="veiligheidsprotocol.html" target="_blank" rel="noopener">2. Protocol ↗</a> · <a href="opdracht-gebruikersonderzoek.html" target="_blank" rel="noopener">3. Onderzoek ↗</a> · <a href="werkblad-pve.html" target="_blank" rel="noopener">4. PvE ↗</a> · <a href="werkblad-concepten.html" target="_blank" rel="noopener">5. Concepten ↗</a> <span class="terug">(<a href="#deliverable-2">details</a>)</span></p>
-        <p class="week-links geen-dl"><b>Docent — voorbereiding (standaard):</b> laat het interview en de empathie-oefening al vóór les 2 doen. <b>Richtlijn voor de tijd in de les:</b> protocol ± 10 min, onderzoek verwerken ± 40 min, PvE ± 65 min, concepten ± 65 min. Blijft het krap? Verplaats de conceptkeuze naar het begin van les 3, vóór het kartonmodel.</p>
-      </div>
+        <p class="week-links">Lever op: <a href="veiligheidsprotocol.html" target="_blank" rel="noopener">2. Protocol ↗</a> · <a href="opdracht-gebruikersonderzoek.html" target="_blank" rel="noopener">3. Onderzoek ↗</a> · <a href="werkblad-pve.html" target="_blank" rel="noopener">4. PvE ↗</a> · <a href="werkblad-concepten.html" target="_blank" rel="noopener">5. Concepten ↗</a> <span class="terug">(<a href="#deliverable-2">details</a>)</span></p>      </div>
     </article>
 
 
@@ -644,11 +607,9 @@
       <div class="les-head"><span class="les-nr">LES 03 <span class="les-week">· WEEK 3</span></span><h3>Kartonmodel, precisiemeten en de testring</h3></div>
       <div class="les-body">
         <p>Eerst een kartonmodel van je gekozen concept: vorm en pasvorm testen vóórdat je gaat meten en tekenen. Daarna schuifmaat-metingen + omgevingsschets. Tot slot geeft de docent klassikaal Onshape-instructie (samen blokken tekenen met gaten en maten); je past het meteen toe op je eigen testring — je maten staan daar al klaar.</p>
-        <p class="week-links">Lever op: <a href="opdracht-kartonmodel.html" target="_blank" rel="noopener">6. Kartonmodel ↗</a> · <a href="opdracht-maatschets.html" target="_blank" rel="noopener">7. Maatschets ↗</a> · <a href="opdracht-testring.html" target="_blank" rel="noopener">8. Testring ↗</a> <span class="terug">(<a href="#deliverable-6">details</a>)</span></p>
-        <p class="week-links geen-dl"><b>Docent — richtlijn voor de tijd:</b> kartonmodel ± 25 min, maatschets ± 30 min, Onshape-instructie + testring ± 130 min. Vol, met minimale buffer.</p>
-      </div>
+        <p class="week-links">Lever op: <a href="opdracht-kartonmodel.html" target="_blank" rel="noopener">6. Kartonmodel ↗</a> · <a href="opdracht-maatschets.html" target="_blank" rel="noopener">7. Maatschets ↗</a> · <a href="opdracht-testring.html" target="_blank" rel="noopener">8. Testring ↗</a> <span class="terug">(<a href="#deliverable-6">details</a>)</span></p>      </div>
     </article>
-    <div class="tussen"><b>Tussen de lessen</b> Testringen printen (± 12 min per deel, 2 delen per leerling). Docent: M3-inserts en M3 × 12-boutjes klaarleggen voor les 4.</div>
+    <div class="tussen"><b>Tussen de lessen</b> Testringen printen (± 12 min per deel, 2 delen per leerling).</div>
 
     <article class="les" id="les4">
       <div class="les-head key"><span class="les-nr">LES 04 <span class="les-week">· WEEK 4</span></span><h3>De tolerantie-les</h3></div>
@@ -872,7 +833,7 @@
         <ul>
           <li>Onshape (webbased, schoolaccount voor elke leerling)</li>
           <li>Slicer (schoolstandaard) op de werkplekken</li>
-          <li>FDM-printers, PLA én PETG beschikbaar — <b>docent: check vooraf of het aantal printers de piek tussen les 3 en 4 aankan.</b> Elke leerling print dan 2 ringdelen × ± 12 min; bij 24 leerlingen is dat ± 9,5 printeruur in één week. Te weinig printers? Print in duo's of laat de ringdelen als batch draaien.</li>
+          <li>FDM-printers, PLA én PETG beschikbaar.</li>
           <li>Één echte scootmobiel in het praktijklokaal om aan te meten en te passen</li>
           <li>Schuifmaat (minimaal 1 per 2 groepen), rolmaat, digitale camera/telefoon</li>
           <li>Kolomboor, handgereedschap, ontbraamgereedschap, vijlen, schuurpapier</li>
@@ -900,7 +861,7 @@
     <div class="box veiligheid" style="margin-top:16px">
       <h3>Veiligheid — dit is een harde voorwaarde voor deelname</h3>
       <ul>
-        <li><b>Aan de scootmobiel:</b> sleutel eruit, accu los, parkeerrem erop, wielen geblokkeerd. Er wordt niet in gereden. Er wordt niet in het frame geboord. De veiligheidsgrenzen ("mag wél / mag niet", zie hierboven) gelden zonder uitzondering en worden in les 2 klassikaal behandeld en ondertekend. <b>Docent:</b> zorg dat de handtekening er staat vóórdat een leerling de scootmobiel aanraakt — is de printer in les 2 bezet of de rij lang, laat leerlingen dan wachten met de scootmobiel tot hun protocol echt ondertekend is, of houd een paar vooraf geprinte protocolvellen achter de hand.</li>
+        <li><b>Aan de scootmobiel:</b> sleutel eruit, accu los, parkeerrem erop, wielen geblokkeerd. Er wordt niet in gereden. Er wordt niet in het frame geboord. De veiligheidsgrenzen ("mag wél / mag niet", zie hierboven) gelden zonder uitzondering en worden in les 2 klassikaal behandeld en ondertekend.</li>
         <li><b>Kolomboor:</b> werkstuk altijd inklemmen — een los geprint deel wordt door de boor gegrepen en tolt rond, dat is een snijwond. Veiligheidsbril op. <b>Laag toerental bij plastic:</b> hoog toerental smelt het materiaal en de boor loopt vast.</li>
         <li><b>3D-printer:</b> nozzle 200–240 °C, bed 60–90 °C — niet aanraken, ook niet "even". PETG geeft meer fijnstof en VOC's dan PLA: ventileer de ruimte, deur of raam open.</li>
         <li><b>Handgereedschap:</b> snijden altijd van je lichaam af. Ontbramen met gereedschap, niet met je duim.</li>
@@ -1059,16 +1020,6 @@
     </div>
   </section>
 
-  <!-- ══ Beoordelingstips ══ -->
-  <section id="tips">
-    <div class="sec-head"><h2>Beoordelingstips voor de docent</h2><span class="rule"></span><span class="code">Deel B · slot</span></div>
-    <ol class="tips">
-      <li><strong>Vraag naar de mislukte print, niet naar het eindproduct.</strong> Het eindproduct laat zien of het werkt; de mislukte print laat zien of ze het begrijpen. Een groep die geen enkele fout kan laten zien, heeft óf niet getest óf het bewijs weggegooid — beide zijn een probleem bij criterium 4. Leg de v1-print naast de v2-print op tafel en laat ze het verschil aanwijzen en verklaren. Dat gesprek van twee minuten onderscheidt "Voldoende" van "Goed" beter dan het hele verslag.</li>
-      <li><strong>Toets de tolerantie met één vraag.</strong> "Welke buismaat heb je gemeten, en welke maat staat er in je CAD-model?" Het verschil moet 0,3–0,5 mm zijn, en de leerling moet dat verschil kunnen verklaren (krimp, elephant foot, meetfout). Kan hij het getal niet noemen of is het verschil 0,0 mm, dan is het CAD-model niet begrepen maar overgetekend — ongeacht hoe mooi het model eruitziet.</li>
-      <li><strong>Beoordeel criterium 5 fysiek, op de scootmobiel, met de veerunster erbij.</strong> Niet op foto en niet op het model. Hang het gewicht eraan (3× de bedoelde last), doe de schud-test van 30 seconden, en voel met je hand over de randen. Veiligheidsgrenzen zijn geen weging maar een drempel: een product dat aan de rem zit of waar een mens op kan steunen, is Onvoldoende op criterium 5 — hoe goed het CAD-werk ook is. Dat is geen strengheid, dat is de kern van het vak: een ontwerp dat gevaarlijk is, is geen goed ontwerp.</li>
-    </ol>
-  </section>
-
   <!-- ══ Verantwoording eindtermen ══ -->
   <div class="part" id="eindtermen">
     <h2>Verantwoording eindtermen</h2>
@@ -1139,34 +1090,6 @@
 
 <script>
 (function(){
-  var body = document.body;
-  var toggle = document.getElementById('versieToggle');
-
-  function setMode(m){
-    body.classList.remove('v-leerling','v-docent');
-    body.classList.add(m);
-    toggle.innerHTML = (m === 'v-docent') ? 'Weergave: <b>Docent</b>' : 'Weergave: <b>Leerling</b>';
-    try{ localStorage.setItem('hulpmiddel-versie', m); }catch(e){}
-  }
-  toggle.addEventListener('click', function(){
-    setMode(body.classList.contains('v-docent') ? 'v-leerling' : 'v-docent');
-  });
-  var saved = null;
-  try{ saved = localStorage.getItem('hulpmiddel-versie'); }catch(e){}
-  setMode(saved || 'v-leerling');
-
-  // Onthul-knoppen: tonen/verbergen het bijbehorende voorbeeldantwoord.
-  // De knop staat direct vóór het .antwoord-blok (naslag; het invullen
-  // gebeurt op de opdrachtbladen zelf, niet hier).
-  document.querySelectorAll('.toon-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var ans = btn.nextElementSibling;
-      if(ans && ans.classList.contains('antwoord')){
-        var open = ans.classList.toggle('open');
-        btn.textContent = open ? 'Verberg voorbeeldantwoord' : 'Toon voorbeeldantwoord';
-      }
-    });
-  });
 
   // Deliverables afvinken — bewaard op déze pagina, dus altijd betrouwbaar
   // (niet afhankelijk van of losse opdrachtbladen onderling gegevens delen).
