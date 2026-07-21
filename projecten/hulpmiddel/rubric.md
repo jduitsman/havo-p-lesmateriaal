@@ -8,6 +8,8 @@ Deze rubric hoort bij het projectdocument. Lees hem vóórdat je begint: dan wee
 
 **Zo werkt het:** er zijn 6 criteria. Elk criterium heeft 4 niveaus. Je moet een niveau kunnen *aantonen* — met je logboek, je CAD-bestanden, je foto's, je testresultaten en je eindproduct. Wat je niet kunt laten zien, telt niet mee.
 
+**Controleer jezelf onderweg.** Op twee momenten leg je je werk formeel naast deze rubric en bepaal je je volgende stap: in **les 5** (vóór de docentcheck) en in **les 9** (vóór de presentatie). Gebruik daarvoor het [zelfcheck-werkblad](werkblad-zelfcheck.html). Dit telt niet mee in je cijfer — het helpt je een hoger niveau te halen.
+
 | Criterium | Weging | Label |
 |---|---|---|
 | 1. Gebruikersonderzoek & Programma van Eisen | 15 % | 🔄 Proces |
@@ -72,11 +74,11 @@ Deze rubric hoort bij het projectdocument. Lees hem vóórdat je begint: dan wee
 
 ## 6. Onderbouwing, presentatie & samenwerking — 10 % 🔄 Proces
 
-*Kun je je keuzes uitleggen aan iemand die er niet bij was — en heb je je deel van het werk gedaan?*
+*Kun je je keuzes uitleggen aan iemand die er niet bij was, je expert- en gebruikersinput verwerken — en heb je je deel van het werk gedaan?*
 
 | Onvoldoende | Voldoende | Goed | Uitstekend |
 |---|---|---|---|
-| Onderbouwing ontbreekt of beschrijft alleen wat je deed, niet waarom. Geen (eigen) logboek. STL-deadlines gemist, waardoor de printer stilstond. Geen aantoonbaar eigen CAD-werk. De presentatie is een verhaal waarin alles meteen goed ging. | Onderbouwing van 3–5 pagina's met probleem, PvE, ontwerpkeuzes, materiaalkeuze, beide iteraties, testresultaten en de 6 deelvragen beantwoord met bewijs uit het logboek. Eigen logboek per les. Deadlines gehaald. Presentatie van 8 minuten met probleem → oplossing → wat ging er mis. Elke leerling heeft aantoonbaar eigen CAD-werk geleverd. | Elke keuze is onderbouwd mét een reden en een bron: waarom déze speling (uit je testring), waarom déze oriëntatie (uit je breekproef), waarom PETG (uit de materiaaleigenschappen). Foto's van mislukte prints en breukvlakken staan erin. De taakverdeling staat in het logboek en klopt met wat er is opgeleverd. | Je legt eerlijk uit wat er misging én wat je er de vólgende keer anders in zou doen. Je onderbouwing kan een andere leerling gebruiken om jouw ontwerp na te bouwen. In de presentatie kun je een kritische vraag over een ontwerpkeuze beantwoorden met een getal of een testresultaat, niet met een mening. |
+| Onderbouwing ontbreekt of beschrijft alleen wat je deed, niet waarom. Geen (eigen) logboek. STL-deadlines gemist, waardoor de printer stilstond. Geen aantoonbaar eigen CAD-werk. De presentatie is een verhaal waarin alles meteen goed ging. Geen expertvraag gesteld en het resultaat is niet met de gebruiker besproken. | Onderbouwing van 3–5 pagina's met probleem, PvE, ontwerpkeuzes, materiaalkeuze, beide iteraties, testresultaten en de 6 deelvragen beantwoord met bewijs uit het logboek. Het antwoord van je expert is verwerkt **met bronvermelding**, je product is aan **minstens drie SDG's** gekoppeld, en je hebt het eindresultaat met de gebruiker besproken. Eigen logboek per les. Deadlines gehaald. Presentatie van 8 minuten met probleem → oplossing → wat ging er mis. Elke leerling heeft aantoonbaar eigen CAD-werk geleverd. | Elke keuze is onderbouwd mét een reden en een bron: waarom déze speling (uit je testring), waarom déze oriëntatie (uit je breekproef), waarom PETG (uit de materiaaleigenschappen). De inbreng van je expert en van de gebruiker heeft aantoonbaar een ontwerpkeuze beïnvloed, en je SDG-koppeling is onderbouwd — niet zomaar opgesomd. Foto's van mislukte prints en breukvlakken staan erin. De taakverdeling staat in het logboek en klopt met wat er is opgeleverd. | Je legt eerlijk uit wat er misging én wat je er de vólgende keer anders in zou doen. Je onderbouwing kan een andere leerling gebruiken om jouw ontwerp na te bouwen. In de presentatie kun je een kritische vraag over een ontwerpkeuze beantwoorden met een getal of een testresultaat, niet met een mening. |
 
 ---
 

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Werkblad — Zelfcheck met de rubric — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:960px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.95rem;}
+  .uitleg p:last-child{margin-bottom:0;}
+  .uitleg a{color:var(--blue);}
+
+  .crit{border:1px solid var(--line);margin-bottom:16px;background:var(--sheet);break-inside:avoid;}
+  .crit-head{border-bottom:1px solid var(--line);background:#f4f2ec;padding:11px 16px;}
+  .crit-head .top{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;}
+  .crit-nr{font-family:'Space Mono',monospace;font-weight:700;font-size:.76rem;color:#fff;
+    background:var(--blue);padding:3px 8px;letter-spacing:.06em;white-space:nowrap;}
+  .crit-head h3{font-size:1.03rem;}
+  .crit-head .weeg{font-family:'Space Mono',monospace;font-size:.66rem;color:var(--steel);
+    letter-spacing:.08em;text-transform:uppercase;margin-left:auto;white-space:nowrap;}
+  .crit-head .vraag{font-style:italic;color:#5a616a;font-size:.9rem;margin:6px 0 0;}
+  .crit-body{padding:12px 16px 14px;display:grid;gap:12px;}
+
+  .moment{border:1px solid var(--line);background:#fff;}
+  .moment-lbl{font-family:'Space Mono',monospace;font-weight:700;font-size:.64rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--blue);
+    background:#eef4f8;border-bottom:1px solid var(--line);padding:5px 11px;}
+  .moment-in{padding:10px 11px;display:grid;gap:9px;}
+  .niveaus{display:flex;flex-wrap:wrap;gap:6px;}
+  .niveaus label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:.8rem;
+    border:1px solid var(--line);background:#fff;padding:5px 10px;user-select:none;}
+  .niveaus input{position:absolute;opacity:0;width:0;height:0;}
+  .niveaus label:hover{border-color:var(--blue);}
+  .niveaus label.n1.aan{background:#faf1f0;border-color:var(--red);color:var(--red);}
+  .niveaus label.n2.aan{background:#fdf8ec;border-color:var(--amber);color:#7a5a10;}
+  .niveaus label.n3.aan{background:#eef4f8;border-color:var(--blue);color:var(--blue);}
+  .niveaus label.n4.aan{background:#e9f4ec;border-color:#2c7a4b;color:#2c7a4b;}
+  .stap label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.82rem;margin-bottom:4px;}
+  .stap textarea{width:100%;resize:vertical;min-height:40px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:.96rem;line-height:1.5;
+    padding:7px 10px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .stap textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.4pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf{display:none!important;}
+    .tb-top{padding-top:0;}
+    .crit{break-inside:avoid;margin-bottom:9px;}
+    .crit-body{padding:9px 12px 10px;gap:8px;}
+    .uitleg{padding:8px 12px;margin:0 0 12px;font-size:9pt;break-inside:avoid;}
+    .stap textarea{border:1px solid #000;min-height:30px;}
+    .niveaus label{border:1px solid #000;}
+    .idcel input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Werkblad · les 5 en les 9</div>
+      <h1>Zelfcheck met de rubric</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · formatief · telt niet mee</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="z-naam">Naam</label><input id="z-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="z-klas">Klas</label><input id="z-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="z-groep">Groep / gebruiker</label><input id="z-groep" type="text" autocomplete="off"></div>
+  </div>
+
+  <div class="uitleg">
+    <p><b>Dit cijfer telt niet mee — dit is om jezelf te helpen.</b> Leg je werk naast de
+    <a href="hulpmiddel.html#rubric" target="_blank" rel="noopener">rubric</a> en bepaal per criterium eerlijk
+    waar je nu staat. De vraag is niet "welk cijfer wil ik", maar "wat is mijn volgende stap
+    om een niveau hoger te komen?".</p>
+    <p>Je vult dit blad <b>twee keer</b> in: in <b>les 5</b> (vóór de docentcheck) en in
+    <b>les 9</b> (vóór de presentatie). Zo zie je zwart-op-wit wat je tussendoor verbeterd hebt.
+    Kruis je niveau aan en schrijf één concrete volgende stap. Download aan het eind als PDF.</p>
+  </div>
+
+  <div id="criteria"></div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Zelfcheck — formatief</span>
+    <span>Les 5 en les 9</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-zelfcheck-';
+
+  var CRIT=[
+    {nr:1, titel:'Gebruikersonderzoek & Programma van Eisen', weeg:'15% · Proces',
+      vraag:'Is je ontwerp gebaseerd op een écht probleem van een échte gebruiker, vertaald naar meetbare eisen?'},
+    {nr:2, titel:'CAD-ontwerp in Onshape', weeg:'20% · Product',
+      vraag:'Meet je nauwkeurig en vertaal je dat naar een aanpasbaar (parametrisch) 3D-model?'},
+    {nr:3, titel:'3D-printkennis toegepast', weeg:'15% · Product',
+      vraag:'Stuur je het printgedrag bewust met oriëntatie, materiaal en supports?'},
+    {nr:4, titel:'Iteratie & testen', weeg:'20% · Proces',
+      vraag:'Kun je aantonen wát er misging, wát je daarom veranderde en of dát werkte?'},
+    {nr:5, titel:'Eindproduct: functie, veiligheid & pasvorm', weeg:'20% · Product',
+      vraag:'Doet het wat het moet doen, past het op de scootmobiel, en is het veilig?'},
+    {nr:6, titel:'Onderbouwing, presentatie & samenwerking', weeg:'10% · Proces',
+      vraag:'Kun je je keuzes uitleggen en je expert- en gebruikersinput verwerken?'}
+  ];
+  var MOMENTEN=[{id:'l5', lbl:'Les 5 — vóór de docentcheck'},{id:'l9', lbl:'Les 9 — vóór de presentatie'}];
+  var NIVEAUS=[{k:'1',t:'Onvoldoende'},{k:'2',t:'Voldoende'},{k:'3',t:'Goed'},{k:'4',t:'Uitstekend'}];
+
+  var wrap=document.getElementById('criteria');
+  CRIT.forEach(function(c){
+    var momenten=MOMENTEN.map(function(m){
+      var groep='niv-'+c.nr+'-'+m.id;
+      var pills=NIVEAUS.map(function(n){
+        return '<label class="n'+n.k+'" data-groep="'+groep+'">'+
+          '<input type="radio" name="'+groep+'" value="'+n.k+'" data-key="'+groep+'">'+n.t+'</label>';
+      }).join('');
+      return '<div class="moment"><div class="moment-lbl">'+m.lbl+'</div>'+
+        '<div class="moment-in">'+
+          '<div class="niveaus">'+pills+'</div>'+
+          '<div class="stap"><label>Mijn volgende stap om hoger te komen:</label>'+
+            '<textarea data-key="stap-'+c.nr+'-'+m.id+'" rows="2"></textarea></div>'+
+        '</div></div>';
+    }).join('');
+    var el=document.createElement('div');
+    el.className='crit';
+    el.innerHTML=
+      '<div class="crit-head"><div class="top">'+
+        '<span class="crit-nr">CRIT '+c.nr+'</span>'+
+        '<h3>'+c.titel+'</h3>'+
+        '<span class="weeg">'+c.weeg+'</span>'+
+      '</div><p class="vraag">'+c.vraag+'</p></div>'+
+      '<div class="crit-body">'+momenten+'</div>';
+    wrap.appendChild(el);
+  });
+
+  /* opslaan + herstellen: radio's, textarea's en de id-velden */
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    var isRadio=v.type==='radio';
+    try{
+      var x=localStorage.getItem(k);
+      if(x!==null){
+        if(isRadio){ v.checked=(v.value===x); }
+        else { v.value=x; }
+      }
+    }catch(e){}
+    v.addEventListener(isRadio?'change':'input',function(){
+      try{ localStorage.setItem(k, v.value); }catch(e){}
+      if(isRadio) markeer(v.name);
+    });
+  });
+
+  function markeer(groep){
+    document.querySelectorAll('label[data-groep="'+groep+'"]').forEach(function(lab){
+      var r=lab.querySelector('input');
+      lab.classList.toggle('aan', r.checked);
+    });
+  }
+  /* radiogroepen bij laden gelijk kleuren */
+  var gedaan={};
+  document.querySelectorAll('input[type=radio]').forEach(function(r){
+    if(!gedaan[r.name]){ markeer(r.name); gedaan[r.name]=1; }
+  });
+})();
+</script>
+
+</body>
+</html>
