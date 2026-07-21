@@ -19,9 +19,6 @@ Zo'n klein probleem is precies het soort probleem dat jij kunt oplossen met een 
 
 In dit project werk je voor één echte gebruiker. Je gaat naar de scootmobiel toe, je meet, je interviewt, je ontwerpt, je print, het gaat mis, je verbetert het, en je levert een product op dat de gebruiker in zijn handen kan houden en kan gebruiken. Geen oefening. Een product.
 
-> **Denkstimulerende vraag 1**
-> Hoe zou jij erachter komen wat een scootmobielgebruiker écht lastig vindt aan zijn voertuig — zonder dat je hem de vraag "wat vind je lastig?" stelt?
-
 De vraag "wat vind je lastig?" levert bijna nooit een bruikbaar antwoord op. Mensen zijn gewend aan hun eigen ongemak en noemen het niet meer. Ze zeggen "het gaat wel" terwijl ze drie keer moeten grijpen om hun tas te pakken. Daarom kijk en meet je in les 2 zelf: je filmt de gebruiker terwijl hij instapt, wegrijdt en zijn spullen pakt, en je gaat zelf 10 minuten in de scootmobiel zitten met je jas dicht en handschoenen aan. Wat kun jíj dan niet? Wat je zelf voelt en op film ziet, is echte informatie. Wat iemand zegt, is een mening.
 
 ---
@@ -48,6 +45,32 @@ Na afloop van dit project kun je:
 6. **een prototype testen** op pasvorm, functionaliteit en sterkte, inclusief een belastingstest met veerunster en een breukvlakanalyse.
 7. **je ontwerp in minimaal twee iteraties verbeteren** in het CAD-model op basis van testresultaten en gebruikersfeedback, en aantoonbaar maken wat er misging, wat je veranderde en wat dat opleverde.
 8. **je technische ontwerp presenteren en onderbouwen** richting een opdrachtgever: ontwerpkeuzes, materiaalkeuze, productiekeuzes en de waarde voor de gebruiker.
+9. **een expert gericht bevragen en het antwoord verwerken:** een onderbouwde hulpvraag stellen aan een deskundige (bijvoorbeeld bij het bedrijfsbezoek), het antwoord verwerken in je onderbouwing en de bron vermelden.
+10. **de waarde van je product benoemen voor mens en wereld:** je hulpmiddel koppelen aan minstens drie duurzame ontwikkelingsdoelen (SDG's) en uitleggen waarom.
+
+---
+
+## Zo hangen leerdoelen, beoordeling en eindtermen samen
+
+Deze tabel maakt de rode draad zichtbaar: elk leerdoel hoort bij een rubriccriterium
+én bij een of meer eindtermen van het praktijkgerichte programma Technologie. Lees
+hem als je wilt weten *waarom* je iets doet — en gebruik hem bij je onderbouwing.
+
+| Leerdoel | Rubriccriterium | Eindterm(en) |
+|----------|-----------------|--------------|
+| 1 Gebruikersonderzoek → PvE | 1 | 1, 2, 6, 16 |
+| 2 Nauwkeurig meten + maatschets | 2 | 10, 22 |
+| 3 3D-model met variabelen (Onshape) | 2 | 11, 22 |
+| 4 Schets → model, constructieve keuzes | 2 en 5 | 14, 18, 23 |
+| 5 Printklaar maken + veilig produceren | 3 | 3, 11, 22 |
+| 6 Prototype testen (belasting + breukvlak) | 4 | 12, 19 |
+| 7 Twee iteraties verbeteren | 4 | 13, 18 |
+| 8 Presenteren + onderbouwen richting opdrachtgever | 6 | 2, 8, 9, 13 |
+| 9 Expert bevragen + verwerken | 6 | 20 |
+| 10 SDG-waarde van je product benoemen | 6 | 24 |
+
+> Niet elke eindterm hoeft in dít project volledig aan bod te komen — over de drie
+> profielprojecten samen zijn ze allemaal gedekt. Deze tabel laat zien wat híer speelt.
 
 ---
 
@@ -78,7 +101,7 @@ bijbehorende fase op het Groow-onlineplatform.
 
 | # | Product | Beschrijving | Groow-fase | Deadline |
 |---|---------|--------------|------------|----------|
-| 1 | Bedrijfsbezoek ([opdracht-bedrijfsbezoek.html](opdracht-bedrijfsbezoek.html)) | Voorbereidingsvragen, aantekeningen tijdens het bezoek, minimaal 2 foto's en een kort verslag: wat vond je interessant, wat neem je mee voor je eigen ontwerpproces. Invullen op de opdracht, inleveren als PDF. | Begrijpen | Les 1 |
+| 1 | Bedrijfsbezoek ([opdracht-bedrijfsbezoek.html](opdracht-bedrijfsbezoek.html)) | Voorbereidingsvragen, aantekeningen tijdens het bezoek, minimaal 2 foto's en een kort verslag. Daarbij: één onderbouwde **expertvraag** aan een medewerker (wie is de expert, waarom déze vraag) met het antwoord + bron, en een korte **werkveld-oriëntatie** (in welke andere werkvelden speelt dit type ontwerpprobleem). Invullen op de opdracht, inleveren als PDF. | Begrijpen | Les 1 |
 | 2 | Ondertekend veiligheidsprotocol ([veiligheidsprotocol.html](veiligheidsprotocol.html)) | Iedere leerling vinkt de regels digitaal af, print het blad en ondertekent met pen. Zonder handtekening geen toegang tot scootmobiel, gereedschap of printer. | Begrijpen | Les 2 |
 | 3 | Gebruikersonderzoek ([opdracht-gebruikersonderzoek.html](opdracht-gebruikersonderzoek.html)) | Interviewvragen + antwoorden, foto's/film van de scootmobiel, bevindingen uit de empathie-oefening, conclusie: dit is het probleem. Dit is de **input** voor het PvE — geen onderdeel ervan. Invullen op de opdracht, inleveren als PDF. | Ontdekken | Les 2 |
 | 4 | Programma van Eisen ([werkblad-pve.html](werkblad-pve.html)) | Eisen van de gebruiker + de harde eisen (zie randvoorwaarden), meetbaar geformuleerd. Invullen op het werkblad; stap 1 neemt de conclusie én het bewijs uit je gebruikersonderzoek (deliverable 3) over. Inleveren als PDF. | Ontwerpen | Les 2 |
@@ -86,11 +109,11 @@ bijbehorende fase op het Groow-onlineplatform.
 | 6 | Kartonmodel ([opdracht-kartonmodel.html](opdracht-kartonmodel.html)) | Kartonnen of foamboard model van je gekozen concept, ongeveer op ware grootte: vorm en pasvorm getest tegen de scootmobiel en je eigen hand, met minimaal 2 foto's. Invullen op de opdracht, inleveren als PDF. | Ontwerpen | Les 3 |
 | 7 | Maatschets met omgeving ([opdracht-maatschets.html](opdracht-maatschets.html)) | Schets van de bevestigingsplek met alle maten (min/max, 3 plekken × 2 richtingen) én de kabels, hendels en bewegende delen eromheen. Meten en tekenen op de opdracht (blad MS-01), inleveren als PDF. | Ontwerpen | Les 3 |
 | 8 | Testring, 2 delen (STL) ([opdracht-testring.html](opdracht-testring.html)) | Tweedelige ring van 10 mm hoog om je gemeten buismaat te controleren. Modelleren volgens blad TR-01: deel A met doorloopgaten Ø3,4, deel B met insertgaten Ø4,0 (M3-inserts), variabelen #buisD en #speling. | Maken | Einde les 3 |
-| 9 | Prototype v1 (STL/3MF) | Volledig CAD-model, printklaar, docentcheck afgetekend. | Maken | Einde les 5 |
+| 9 | Prototype v1 ([opdracht-printvoorbereiding.html](opdracht-printvoorbereiding.html)) | Volledig CAD-model, printklaar, docentcheck afgetekend. Je oriëntatie-, materiaal- en support-keuzes denk je door en onderbouw je op de opdracht Printvoorbereiding; inleveren als STL/3MF + PDF. | Maken | Einde les 5 |
 | 10 | Prototype v2 (STL/3MF) ([opdracht-iteratie1.html](opdracht-iteratie1.html)) | Verbeterd model na iteratie 1, met logboeknotitie wat er veranderde en waarom. Testen en analyseren op de opdracht Iteratie 1 — passen & falen. | Maken | Einde les 6 |
 | 11 | Definitief bestand in PETG ([opdracht-iteratie2-montage.html](opdracht-iteratie2-montage.html)) | Eindmodel na iteratie 2, getest tot de PvE-eis (niet-destructief) en vergeleken met de breuk van v1, klaar voor de eindprint. Monteren en controleren op de opdracht Iteratie 2 + montage. | Maken | Einde les 7 |
 | 12 | Eindproduct | Gemonteerd, getest hulpmiddel op de echte scootmobiel. | Maken | Les 10 |
-| 13 | Technische onderbouwing | 3–5 pagina's: probleem, PvE, ontwerpkeuzes, tolerantieberekening, printoriëntatie, materiaalkeuze, beide iteraties met foto's van wat faalde, testresultaten, en de definitieve antwoorden op de 6 deelvragen (met bewijs uit je logboek). | Delen | Les 10 |
+| 13 | Technische onderbouwing | 3–5 pagina's: probleem, PvE, ontwerpkeuzes, tolerantieberekening, printoriëntatie, materiaalkeuze, beide iteraties met foto's van wat faalde, testresultaten, en de definitieve antwoorden op de 6 deelvragen (met bewijs uit je logboek). Verwerk hierin ook het **antwoord van je expert** (met bronvermelding) en een korte alinea die je product koppelt aan **minstens drie SDG's** en uitlegt waarom. | Delen | Les 10 |
 | 14 | Presentatie (8 min) | Probleem → oplossing → wat ging er mis → wat leerde je daarvan. | Delen | Les 10 |
 
 **Logboek** ([logboek.html](logboek.html)): je houdt per les bij wat je deed, wat er misging en wat je besloot — en je voegt er foto's en een bestandenlijst aan toe. Foto's van mislukte prints en gebroken onderdelen zijn géén schande — die zijn je bewijsmateriaal. Zonder mislukking geen leerproces. Kom je bewijs tegen voor een van de deelvragen (zie hierboven), noteer dat er dan meteen bij — dat scheelt zoeken in les 10. Elke leerling houdt een eigen exemplaar.
@@ -103,26 +126,33 @@ Dit project loopt over **10 weken**, met steeds één les per week: les 1 is wee
 
 | Les / week | Thema | Wat je doet | Deadline / deliverable |
 |-----|-------|-------------|------------------------|
-| **1** | Bedrijfsbezoek | Op bezoek bij een bedrijf: voorbereidingsvragen, aantekeningen tijdens het bezoek, minimaal 2 foto's en een kort verslag na afloop. Geen scootmobielwerk deze week. Vastleggen op de opdracht Bedrijfsbezoek. | Verslag + foto's |
-| **2** | Van gebruiker naar concept | Een zware week — vier deliverables in één les. De 6 deelvragen doornemen — dit is je kompas voor het hele project. Veiligheidsprotocol doornemen en ondertekenen. Gebruiker interviewen, scootmobiel bekijken/filmen/fotograferen, empathie-oefening (10 min zelf in de scootmobiel). Vastleggen op de opdracht Gebruikersonderzoek. Gebruikersonderzoek omzetten in een Programma van Eisen op het werkblad Van probleem naar PvE. 3 concepten schetsen, peer review, 1 concept kiezen en onderbouwen op het werkblad Concepten kiezen. **Richtlijn voor de tijd:** protocol ± 10 min, onderzoek ± 55 min, PvE ± 65 min, concepten ± 65 min — precies vol, zonder buffer. Overweeg interview en empathie-oefening als voorbereiding vóór de les te laten doen. | Ondertekend protocol + gebruikersonderzoek + PvE + 3 concepten |
+| **1** | Bedrijfsbezoek | Op bezoek bij een bedrijf: voorbereidingsvragen, aantekeningen tijdens het bezoek, minimaal 2 foto's en een kort verslag na afloop. Stel één onderbouwde expertvraag aan een medewerker en noteer het antwoord + de bron. Doe een korte werkveld-oriëntatie. Geen scootmobielwerk deze week. Vastleggen op de opdracht Bedrijfsbezoek. | Verslag + foto's + expertvraag |
+| **2** | Van gebruiker naar concept | Een zware week — vier deliverables in één les. De 6 deelvragen doornemen — dit is je kompas voor het hele project. Veiligheidsprotocol doornemen en ondertekenen. Gebruiker interviewen, scootmobiel bekijken/filmen/fotograferen, empathie-oefening (10 min zelf in de scootmobiel). Vastleggen op de opdracht Gebruikersonderzoek. Gebruikersonderzoek omzetten in een Programma van Eisen op het werkblad Van probleem naar PvE. 3 concepten schetsen, peer review, 1 concept kiezen en onderbouwen op het werkblad Concepten kiezen. **Voorbereiding vóór de les (standaard):** laat het interview met de gebruiker en de empathie-oefening (10 min in de scootmobiel) al vóór les 2 doen. Zo houd je de les zelf werkbaar. **Richtlijn voor de tijd in de les:** protocol ± 10 min, onderzoek verwerken ± 40 min, PvE ± 65 min, concepten ± 65 min. Blijft het krap? Verplaats de conceptkeuze naar het begin van les 3, vóór het kartonmodel. | Ondertekend protocol + gebruikersonderzoek + PvE + 3 concepten |
 | **3** | Kartonmodel, precisiemeten + de testring | Eerst een kartonmodel van het gekozen concept (± 25 min): vorm en pasvorm testen tegen de scootmobiel en de eigen hand, vóórdat er gemeten of getekend wordt. Daarna meten en tekenen op de opdracht Maatschets met omgeving: schuifmaat, 3 plekken × 2 richtingen, min én max, plus de omgeving (kabels, hendels, bewegende delen). Tot slot geeft de docent klassikaal Onshape-instructie (samen blokken tekenen met gaten en maten); leerlingen passen dit meteen toe op hun eigen testring (sketch, dimensions, extrude, extrude-remove, fillet) — de maten uit de maatschets staan daar al klaar. **Richtlijn voor de tijd:** kartonmodel ± 25 min, maatschets ± 30 min, Onshape-instructie + testring ± 130 min — vol, met minimale buffer. | **Kartonmodel + maatschets + testring ingeleverd** |
 | | *tussen de lessen* | Testringen printen (± 12 min per deel, 2 delen per leerling). Docent: M3-inserts en M3 × 12-boutjes klaarleggen voor les 4. | |
 | **4** | **De tolerantie-les** | Je testring past niet. Klassikaal uitzoeken waarom: krimp, elephant foot, meetfout, ronde gaten die te klein printen. Je bepaalt je eigen speling-waarde. Daarna: eigen ontwerp starten in Onshape met `#buisD` en `#speling` als variabelen. | Eigen speling-waarde vastgelegd |
-| **5** | CAD afmaken + printvoorbereiding | Fillets, boutgaten, materiaal weghalen waar het niet draagt. **Docentcheck vóór export — ook wíe wat gemodelleerd heeft, niet alleen of het ontwerp klopt.** Slicen: oriëntatie tegen de belastingsrichting in, infill 30–40 %, 4 wanden. | **STL/3MF prototype v1 ingeleverd** |
+| **5** | CAD afmaken + printvoorbereiding | Fillets, boutgaten, materiaal weghalen waar het niet draagt. Korte **peer review** op elkaars model (klemverbinding + pasvorm, twee vaste vragen). **Zelfcheck 1:** leg je werk naast de rubric en kruis je huidige niveau aan ([werkblad-zelfcheck.html](werkblad-zelfcheck.html)). **Docentcheck vóór export — ook wíe wat gemodelleerd heeft, niet alleen of het ontwerp klopt.** Slicen: oriëntatie tegen de belastingsrichting in, infill 30–40 %, 4 wanden. Je oriëntatie-, materiaal- en support-keuzes denk je door op de [opdracht Printvoorbereiding](opdracht-printvoorbereiding.html). | **STL/3MF prototype v1 + zelfcheck** |
 | | *tussen de lessen* | Prototype 1 printen in PLA. | |
 | **6** | **Iteratie 1 — passen & falen** | Je prototype past niet, zit los of raakt een kabel. Analyseer wáárom. Nabewerken, passen op de scootmobiel. Belastingstest met veerunster: belasten tót het breekt. Foto van de breuk, breukvlak analyseren. Oriëntatieproef: twee identieke haakjes in twee richtingen, allebei kapottrekken. CAD aanpassen. Stap voor stap op de opdracht Iteratie 1 — passen & falen. | **STL v2 ingeleverd** |
 | | *tussen de lessen* | Prototype 2 printen in PLA. | |
 | **7** | **Iteratie 2 + montage** | v2 passen. Boutgaten ruimen met de kolomboor. Monteren met bouten, nylock-moeren en rubberstrip. Niet-destructieve belastingstest tot de PvE-eis — vergelijk met de breuk van v1 in les 6. Spleet- en trillingcontrole. Stap voor stap op de opdracht Iteratie 2 + montage. | **Definitieve STL voor PETG-print ingeleverd** |
 | | *tussen de lessen* | Eindproduct printen in PETG. Langere printtijd, hoger faalrisico — buffer ingepland. | |
 | **8** | Eindproduct + gebruikerstest | Assembleren en monteren op de scootmobiel. Gebruikerstest: kan iemand met verminderde handkracht dit bedienen? Met één hand? Met handschoenen aan? Zittend, zonder op te staan? Bevindingen noteren. Reserve-printslot voor mislukte prints. | Testverslag gebruikerstest |
-| **9** | Afwerken + onderbouwing | Afwerken (randen ontbramen, geen scherpe delen, dopmoeren). Technische onderbouwing schrijven: waarom PETG, waarom deze oriëntatie, welke speling en waarom, welke twee iteraties en wat leverden die op. Presentatie voorbereiden. | Concept-onderbouwing |
+| **9** | Afwerken + onderbouwing | Afwerken (randen ontbramen, geen scherpe delen, dopmoeren). Technische onderbouwing schrijven: waarom PETG, waarom deze oriëntatie, welke speling en waarom, welke twee iteraties en wat leverden die op — inclusief het expertantwoord (met bron) en de SDG-koppeling. **Zelfcheck 2:** leg je werk nog één keer naast de rubric ([werkblad-zelfcheck.html](werkblad-zelfcheck.html)) en bepaal je laatste verbeterstap vóór de presentatie. Presentatie voorbereiden. | Concept-onderbouwing + zelfcheck |
 | **10** | Eindtest + presentatie | Eindtest op de scootmobiel volgens je eigen PvE — belasten tot de PvE-eis (3× de bedoelde last), niet tot breuk. Schud-test. Presentatie (8 min): probleem → oplossing → wat ging er mis en wat leerde je daarvan. | Eindproduct + onderbouwing + presentatie |
 
 **Reken op 15–20 % printfaal.** Filament op, bedhechting weg, PETG die niet wil hechten — het hoort erbij. Daarom staan er reserveslots in de planning. **Een project zonder mislukte eerste print is een verdacht project.**
 
 ---
 
-## Programma van Eisen — de harde eisen
+## Achtergrond & vakkennis
+
+Dit deel is **naslag — géén planning**. Hier staan de eisen, de veiligheidsgrenzen en de
+vakkennis (toleranties, printoriëntatie, de klemverbinding) die je nodig hebt om de
+opdrachten goed te doen. Sla het erbij wanneer een opdracht ernaar verwijst; de
+denkvragen erover staan op de opdrachtbladen zelf.
+
+### Programma van Eisen — de harde eisen
 
 Deze eisen gelden voor iedereen. Je vult ze aan met de eisen van jouw eigen gebruiker.
 
@@ -138,12 +168,9 @@ Deze eisen gelden voor iedereen. Je vult ze aan met de eisen van jouw eigen gebr
 
 ---
 
-## Veiligheidsgrenzen aan de scootmobiel
+### Veiligheidsgrenzen aan de scootmobiel
 
-> **Denkstimulerende vraag 2**
-> Je weet al dat je nooit iets mag ontwerpen waar een gebruiker op kan steunen. Waarom zou je toch in de verleiding kunnen komen om dat wél te doen?
-
-Omdat een handgreep of opstaphulp vaak precies het probleem oplost dat je gebruiker het meest hindert — juist het nuttigste idee is het verleidelijkst. Maar daarom is dit de belangrijkste grens van dit hele project: **je maakt nooit iets waar een mens op steunt.** Een geprint onderdeel dat 70 kg lichaamsgewicht moet dragen bestaat niet — niet in PLA, niet in PETG, niet met 100 % infill. Zet een gebruiker daar bij het opstappen zijn gewicht op en die beugel begeeft het, dan valt hij — en een val van een 80-jarige betekent in de praktijk vaak een gebroken heup. Bedenk in plaats daarvan een oplossing die het probleem verkleint zónder dat er iemand op hoeft te steunen.
+Een handgreep of opstaphulp lost vaak precies het probleem op dat je gebruiker het meest hindert — juist het nuttigste idee is het verleidelijkst. Maar daarom is dit de belangrijkste grens van dit hele project: **je maakt nooit iets waar een mens op steunt.** Een geprint onderdeel dat 70 kg lichaamsgewicht moet dragen bestaat niet — niet in PLA, niet in PETG, niet met 100 % infill. Zet een gebruiker daar bij het opstappen zijn gewicht op en die beugel begeeft het, dan valt hij — en een val van een 80-jarige betekent in de praktijk vaak een gebroken heup. Bedenk in plaats daarvan een oplossing die het probleem verkleint zónder dat er iemand op hoeft te steunen.
 
 **Dit mag wél:**
 - Bevestigen aan niet-bewegende, niet-veiligheidskritische delen: framebuis van de mand, achterframe, armleuningstang, rugleuning.
@@ -162,12 +189,9 @@ Omdat een handgreep of opstaphulp vaak precies het probleem oplost dat je gebrui
 
 ---
 
-## De tolerantie-les (les 4)
+### De tolerantie-les (les 4)
 
-> **Denkstimulerende vraag 3**
-> Waarom zou een geprint gat van precies Ø25,0 mm níet om een buis van precies Ø25,0 mm passen?
-
-Vier redenen, en ze stapelen op:
+Een geprint gat van precies Ø25,0 mm past níet om een buis van precies Ø25,0 mm. Vier redenen, en ze stapelen op:
 1. **Krimp.** Warm plastic krimpt bij afkoelen. PLA 0,3–0,5 %, PETG 0,4–0,8 %.
 2. **Elephant foot.** De onderste lagen worden platgedrukt en tot 0,2 mm te breed — je gat wordt onderin nauwer.
 3. **Printers maken ronde gaten stelselmatig te klein.** De nozzle snijdt de bocht af.
@@ -185,17 +209,13 @@ Daarom print je eerst een **testring** van 10 mm hoog (12 minuten printtijd) en 
 
 ---
 
-## Printoriëntatie en materiaalkeuze (les 5 en 6)
-
-> **Denkstimulerende vraag 4**
-> Hoe zou jij een tashaak op de printplaat leggen zodat hij bij de bocht niet afbreekt — plat of staand? En waarom denk je dat?
+### Printoriëntatie en materiaalkeuze (les 5 en 6)
 
 Een FDM-print is **anisotroop**: sterk binnen een laag, zwak tússen de lagen. Laagscheiding (delaminatie) is dé faalmodus. Een tashaak die plat geprint is — met de lagen loodrecht op de trekrichting — breekt bij de bocht. Dezelfde haak, staand geprint, houdt het 3 tot 5 keer langer uit. Zelfde model, zelfde materiaal, zelfde infill. Alleen anders neergelegd.
 
 In les 6 print je daarom **twee identieke haakjes in twee oriëntaties** en trek je ze allebei kapot. Je meet met de veerunster bij hoeveel newton ze bezwijken, je fotografeert het breukvlak en je legt uit wat je ziet. Dat verschil is je bewijs — en het is het argument waarmee je in je onderbouwing je eigen printoriëntatie verdedigt.
 
-> **Denkstimulerende vraag 5**
-> Welk materiaal zou jij kiezen voor een onderdeel dat een jaar lang buiten hangt, in de regen, in de zon en op een trillend voertuig — en waarom?
+**Materiaalkeuze — PLA of PETG?** Voor een onderdeel dat een jaar buiten hangt, in regen, zon en trilling, maakt de materiaalkeuze het verschil:
 
 | | PLA | PETG |
 |---|---|---|
@@ -210,14 +230,11 @@ Een auto op een zomerdag wordt binnenin 60 °C. Een zwarte scootmobielklem in de
 
 **Advies: prototype in PLA (snel en goedkoop), eindproduct in PETG.** Wijk je hiervan af, dan onderbouw je dat in je verslag.
 
-> **Denkstimulerende vraag 6**
-> Wat zou er gebeuren als er tijdens het printen support onder het klemvlak van jouw klem zit — het vlak dat straks strak om de buis moet sluiten?
-
-Support laat een ruw, hobbelig oppervlak achter. Ruw klemvlak = geen goed contact = je klem zit los, hoeveel je de bout ook aandraait. De **45°-regel** zegt: steiler dan 45° overhang → support nodig. Maar de betere les is: **ontwerp de support wég.** Kantel je onderdeel, schuin een overhang af, splits het in twee delen. Elke support die je niet hoeft te printen, is een probleem dat je niet krijgt.
+**Supports en het klemvlak.** Support laat een ruw, hobbelig oppervlak achter. Ruw klemvlak = geen goed contact = je klem zit los, hoeveel je de bout ook aandraait. De **45°-regel** zegt: steiler dan 45° overhang → support nodig. Maar de betere les is: **ontwerp de support wég.** Kantel je onderdeel, schuin een overhang af, splits het in twee delen. Elke support die je niet hoeft te printen, is een probleem dat je niet krijgt.
 
 ---
 
-## De klemverbinding — het robuuste patroon
+### De klemverbinding — het robuuste patroon
 
 Dit werkt, en snap-fits werken niet. Snap-fit klemmen in PLA scheuren bij de eerste montage. Gebruik ze niet.
 
@@ -271,6 +288,18 @@ Dit werkt, en snap-fits werken niet. Snap-fit klemmen in PLA scheuren bij de eer
 
 **Iteratie — verplicht en beoordeeld**
 Minimaal **twee** iteratierondes zijn verplicht (les 6 en les 7) en tellen mee in je beoordeling. Je verslag laat zien: dit ging er mis, dit heb ik daarom in het CAD-model veranderd, en dit leverde dat op. Een verslag zonder mislukking is geen goed verslag — het is een onvolledig verslag.
+
+**Differentiatie**
+De vrije productkeuze en de vier rubricniveaus geven al ruimte om op eigen niveau te
+werken. Stuur daarbinnen gericht bij:
+- *Steun voor groepen die vastlopen:* geef de uitgewerkte testring-flow (sketch →
+  dimensions → extrude → extrude-remove → fillet) als voorbeeld, en laat ze eerst dát
+  stap voor stap namaken vóór ze hun eigen model starten.
+- *Verdieping voor snelle groepen:* laat ze het model écht parametrisch maken (één extra
+  variabele, bijv. `#wanddikte`), een tweede bevestigingsvariant ontwerpen, of hun
+  breekproef met meer meetpunten kwantificeren.
+- *Taal:* de kernbegrippen (anisotropie, tolerantie, elephant foot) staan in gewone taal
+  uitgelegd — laat leerlingen die in hun eigen woorden herhalen in het logboek.
 
 ---
 
