@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opdracht — Printvoorbereiding — Hulpmiddel voor scootmobielgebruikers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#b9b1a1; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:960px;margin:22px auto 40px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,36px) 34px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:24px 0 12px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);}
+  .tb-top h1{font-size:clamp(1.4rem,4vw,2.1rem);letter-spacing:-.01em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .idgrid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-top:none;}
+  .idcel{padding:8px 12px;border-right:1px solid var(--line);}
+  .idcel:last-child{border-right:none;}
+  .idcel label{display:block;font-family:'Space Mono',monospace;font-size:.6rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:2px;}
+  .idcel input{width:100%;border:none;border-bottom:1px solid var(--steel);background:transparent;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--ink);padding:2px 0;}
+  .idcel input:focus{outline:none;border-bottom:2px solid var(--blue);}
+
+  .uitleg{border:1px solid var(--line);border-left:5px solid var(--blue);background:#eef4f8;
+    padding:12px 16px;margin:20px 0;font-size:.95rem;}
+
+  section{margin-bottom:28px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;}
+  .sec-head .stap{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;
+    color:#fff;background:var(--blue);padding:3px 9px;letter-spacing:.06em;white-space:nowrap;}
+  .sec-head h2{font-size:1.12rem;text-transform:uppercase;white-space:nowrap;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .denkvraag{position:relative;margin:20px 0 14px;padding:14px 18px;
+    background:#eef4f8;border:1px solid var(--blue);border-left:6px solid var(--blue);}
+  .denkvraag .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:var(--blue);padding:4px 10px;margin-bottom:8px;}
+  .denkvraag .badge::before{content:"?";font-size:.9rem;line-height:1;}
+  .denkvraag p{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.04rem;margin:0;}
+  .zelf{margin:0 0 14px;padding:12px 14px;border:1px dashed var(--steel);background:#fbfaf6;}
+  .zelf label{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .zelf textarea{width:100%;resize:vertical;min-height:56px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:8px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .toon-btn{margin-top:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;
+    border:none;padding:9px 14px;cursor:pointer;}
+  .antwoord{display:none;margin:0 0 14px;padding:2px 0 2px 14px;border-left:3px solid var(--blue);}
+  .antwoord::before{content:"Voorbeeldantwoord";display:block;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.6rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--blue);margin:0 0 6px;}
+  .antwoord.open{display:block;}
+  .antwoord p{margin:0;}
+
+  .vraag{margin-bottom:14px;}
+  .vraag label{display:block;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.95rem;margin-bottom:6px;}
+  .vraag label em{font-weight:400;font-style:italic;color:#5a616a;font-size:.86rem;}
+  textarea.groot{width:100%;resize:vertical;min-height:60px;
+    font-family:'Source Serif 4',Georgia,serif;font-size:1rem;line-height:1.6;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  textarea.groot:focus,.zelf textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  input.tekst{width:100%;font-family:'Source Serif 4',Georgia,serif;font-size:1rem;
+    padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  input.tekst:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .hint{border:1px solid var(--line);background:#f4f2ec;padding:10px 14px;margin-bottom:12px;font-size:.9rem;}
+  .hint b{font-family:'Archivo',sans-serif;}
+
+  ul.check{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+  ul.check li{background:var(--sheet);}
+  ul.check label{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;cursor:pointer;font-size:.94rem;}
+  ul.check input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 auto;
+    width:18px;height:18px;margin-top:2px;border:2px solid var(--ink);background:#fff;cursor:pointer;
+    display:grid;place-content:center;}
+  ul.check input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue);}
+  ul.check input[type=checkbox]:checked::before{content:"✓";color:#fff;font-weight:700;font-size:.76rem;}
+  ul.check b{font-family:'Archivo',sans-serif;}
+
+  .naar{border:1px solid var(--amber);border-left:5px solid var(--amber);background:#fdf8ec;
+    padding:12px 16px;margin-top:18px;font-size:.95rem;}
+  .naar b{font-family:'Archivo',sans-serif;color:var(--amber);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--blue);}
+  .pdf::before{content:"↓ ";}
+
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding-top:12px;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  @media (max-width:640px){
+    .idgrid{grid-template-columns:1fr 1fr;}
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+  }
+  @media print{
+    @page{size:A4;margin:13mm 13mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.5pt;line-height:1.4;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,.toon-btn{display:none!important;}
+    .antwoord{display:none!important;}
+    .tb-top{padding-top:0;}
+    section{margin-bottom:12px;}
+    .denkvraag,.zelf,.vraag,.hint,ul.check{break-inside:avoid;}
+    .zelf textarea,textarea.groot,input.tekst{border:1px solid #000;min-height:38px;}
+    .idcel input{border-bottom:1px solid #000;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Opdracht · les 5</div>
+      <h1>Printvoorbereiding</h1>
+    </div>
+    <div class="sub">Hulpmiddel voor scootmobielgebruikers<br>HAVO-P · deliverable 9 · les 5 · Groow: Maken</div>
+  </div>
+
+  <div class="idgrid">
+    <div class="idcel"><label for="pv-naam">Naam</label><input id="pv-naam" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="pv-klas">Klas</label><input id="pv-klas" type="text" autocomplete="off"></div>
+    <div class="idcel"><label for="pv-datum">Datum</label><input id="pv-datum" type="text" autocomplete="off" placeholder="dd-mm-jjjj"></div>
+  </div>
+
+  <div class="uitleg">
+    <b>Vóór je slicet en print, denk je drie dingen door:</b> hoe je je onderdeel neerlegt
+    (oriëntatie), waarvan je het print (materiaal) en waar supports komen. Deze drie keuzes
+    bepalen of je print sterk is en past — of dat hij bij de bocht breekt of los zit.
+    Schrijf bij elke vraag <b>eerst je eigen antwoord</b> op; bekijk daarna het voorbeeldantwoord.
+    Dit blad is deliverable 9, samen met je printklare bestand (STL/3MF).
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="stap">DEEL 1</span><h2>Oriëntatie</h2><span class="rule"></span><span class="code">Sterkte</span></div>
+    <div class="denkvraag">
+      <span class="badge">Denkstimulerende vraag</span>
+      <p>Hoe zou jij een tashaak op de printplaat leggen zodat hij bij de bocht niet afbreekt — plat of staand? En waarom denk je dat?</p>
+    </div>
+    <div class="zelf">
+      <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+      <textarea data-key="denk-orientatie" rows="3"></textarea>
+      <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+    </div>
+    <div class="antwoord">
+      <p>Een FDM-print is <b>anisotroop</b>: sterk binnen een laag, zwak tússen de lagen —
+      laagscheiding (delaminatie) is dé faalmodus. Plat geprint, met de lagen loodrecht op de
+      trekrichting, breekt de haak bij de bocht. Dezelfde haak staand geprint houdt het 3 tot 5
+      keer langer uit. Zelfde model, zelfde materiaal, zelfde infill — alleen anders neergelegd.
+      Leg je onderdeel dus zó neer dat de lagen niet loodrecht op de belasting staan.</p>
+    </div>
+    <div class="vraag">
+      <label>Hoe leg jíj je onderdeel neer, en waarom? <em>Benoem de belastingsrichting en laat zien dat je lagen daar niet loodrecht op staan.</em></label>
+      <textarea class="groot" data-key="mijn-orientatie" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">DEEL 2</span><h2>Materiaal</h2><span class="rule"></span><span class="code">PLA vs PETG</span></div>
+    <div class="denkvraag">
+      <span class="badge">Denkstimulerende vraag</span>
+      <p>Welk materiaal zou jij kiezen voor een onderdeel dat een jaar lang buiten hangt, in de regen, in de zon en op een trillend voertuig — en waarom?</p>
+    </div>
+    <div class="zelf">
+      <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+      <textarea data-key="denk-materiaal" rows="3"></textarea>
+      <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+    </div>
+    <div class="antwoord">
+      <p><b>PLA</b> is stijf maar <b>bros</b> (knapt zonder waarschuwing) en vervormt al bij
+      ~55–60 °C; slecht tegen UV. <b>PETG</b> is <b>taai</b> (vervormt eerst), kan tot ~75 °C en
+      is beter tegen zon en buiten. Een zwarte klem in de zon wordt zó 60 °C. Een onderdeel dat
+      zonder waarschuwing knapt terwijl een gebruiker eraan hangt, is onacceptabel.
+      <b>Advies: prototype in PLA (snel en goedkoop), eindproduct in PETG.</b> Wijk je hiervan af,
+      onderbouw dat in je verslag.</p>
+    </div>
+    <div class="vraag">
+      <label>Welk materiaal kies jij voor je eindproduct, en waarom? <em>Onderbouw met eigenschappen (bros/taai, warmte, UV), niet met "PETG is beter".</em></label>
+      <textarea class="groot" data-key="mijn-materiaal" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">DEEL 3</span><h2>Supports</h2><span class="rule"></span><span class="code">Het klemvlak</span></div>
+    <div class="denkvraag">
+      <span class="badge">Denkstimulerende vraag</span>
+      <p>Wat zou er gebeuren als er tijdens het printen support onder het klemvlak van jouw klem zit — het vlak dat straks strak om de buis moet sluiten?</p>
+    </div>
+    <div class="zelf">
+      <label>Jouw antwoord — schrijf het eerst zelf op:</label>
+      <textarea data-key="denk-support" rows="3"></textarea>
+      <button class="toon-btn" type="button">Toon voorbeeldantwoord</button>
+    </div>
+    <div class="antwoord">
+      <p>Support laat een <b>ruw, hobbelig oppervlak</b> achter. Ruw klemvlak = geen goed contact
+      = je klem zit los, hoe hard je de bout ook aandraait. De <b>45°-regel</b>: steiler dan 45°
+      overhang → support nodig. Maar de betere les is: <b>ontwerp de support wég.</b> Kantel je
+      onderdeel, schuin een overhang af, of splits het in twee delen. Elke support die je niet
+      hoeft te printen, is een probleem dat je niet krijgt.</p>
+    </div>
+    <div class="vraag">
+      <label>Waar zouden bij jouw onderdeel supports komen, en hoe voorkom je ze op het klemvlak? <em>Kantelen, afschuinen of splitsen — wat doe jij?</em></label>
+      <textarea class="groot" data-key="mijn-support" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">DEEL 4</span><h2>Mijn slice-instellingen</h2><span class="rule"></span><span class="code">Noteer je keuzes</span></div>
+    <div class="hint"><b>Richtlijn:</b> infill 30–40 %, 4 wanden, oriëntatie tegen de belastingsrichting in, geen support op klemvlakken. Wijk je af, noteer waarom.</div>
+    <div class="vraag">
+      <label>Printoriëntatie (hoe ligt het onderdeel op de plaat?)</label>
+      <input class="tekst" type="text" data-key="set-orientatie" placeholder="bijv. staand, klemvlak naar boven">
+    </div>
+    <div class="vraag">
+      <label>Infill % en aantal wanden</label>
+      <input class="tekst" type="text" data-key="set-infill" placeholder="bijv. 35 % infill, 4 wanden">
+    </div>
+    <div class="vraag">
+      <label>Materiaal (prototype / eindproduct)</label>
+      <input class="tekst" type="text" data-key="set-materiaal" placeholder="bijv. prototype PLA, eindproduct PETG">
+    </div>
+    <div class="vraag">
+      <label>Geschatte printtijd <em>(moet ≤ 4 uur per onderdeel zijn)</em></label>
+      <input class="tekst" type="text" data-key="set-printtijd" placeholder="bijv. 3 u 10 min">
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="stap">DEEL 5</span><h2>Inleveren</h2><span class="rule"></span><span class="code">Einde les 5</span></div>
+    <ul class="check">
+      <li><label><input type="checkbox" data-key="k1"><span>Alle drie de denkvragen beantwoord (eerst zelf, daarna voorbeeld bekeken)</span></label></li>
+      <li><label><input type="checkbox" data-key="k2"><span>Mijn oriëntatie-, materiaal- en support-keuzes onderbouwd</span></label></li>
+      <li><label><input type="checkbox" data-key="k3"><span>Slice-instellingen genoteerd; printtijd ≤ 4 uur</span></label></li>
+      <li><label><input type="checkbox" data-key="k4"><span>Docentcheck vóór export afgetekend</span></label></li>
+      <li><label><input type="checkbox" data-key="k5"><span><b>Printklaar bestand (STL/3MF)</b> geëxporteerd en ingeleverd</span></label></li>
+      <li><label><input type="checkbox" data-key="k6"><span>Dit blad gedownload als PDF en ingeleverd</span></label></li>
+    </ul>
+  </section>
+
+  <div class="naar">
+    <b>Tussen de lessen:</b> je prototype v1 wordt geprint in PLA. Volgende les (6): passen op de
+    scootmobiel, belastingstest en de oriëntatieproef — precies waar deze keuzes zich bewijzen.
+  </div>
+
+  <footer>
+    <span>HAVO-P · Hulpmiddel voor scootmobielgebruikers</span>
+    <span>Opdracht les 5 — deliverable 9</span>
+    <span>Printvoorbereiding</span>
+  </footer>
+
+</div></div>
+
+<script>
+(function(){
+  var KEY='hulpmiddel-printvoorbereiding-';
+
+  var velden=[].slice.call(document.querySelectorAll('[data-key], .idcel input'));
+  velden.forEach(function(v){
+    var k=KEY+(v.dataset.key||v.id);
+    var isCheck=v.type==='checkbox';
+    try{
+      var x=localStorage.getItem(k);
+      if(x!==null){ if(isCheck) v.checked=(x==='1'); else v.value=x; }
+    }catch(e){}
+    v.addEventListener(isCheck?'change':'input',function(){
+      try{ localStorage.setItem(k, isCheck?(v.checked?'1':'0'):v.value); }catch(e){}
+    });
+  });
+
+  // Onthul-knoppen: elke knop toont/verbergt het .antwoord dat er direct op volgt
+  document.querySelectorAll('.toon-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var ans=btn.closest('.zelf').nextElementSibling;
+      if(ans && ans.classList.contains('antwoord')){
+        var open=ans.classList.toggle('open');
+        btn.textContent=open?'Verberg voorbeeldantwoord':'Toon voorbeeldantwoord';
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
