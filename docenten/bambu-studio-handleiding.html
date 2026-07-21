@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bambu Studio &amp; Onshape-export — docentenhandleiding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#a9a596; --sheet:#fbfaf7; --ink:#22262b; --steel:#767e87;
+    --blue:#1e5f8c; --red:#c43b2e; --amber:#b07a12; --green:#2c7a4b; --line:#d7d3ca;
+    --grid:rgba(30,95,140,.07);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--board);color:var(--ink);
+    font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;}
+  .sheet{max-width:1000px;margin:22px auto 44px;background:var(--sheet);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid #8f8778;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);padding:14px;}
+  .frame{border:1px solid var(--steel);padding:0 clamp(16px,4vw,40px) 40px;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-weight:700;line-height:1.15;margin:0;}
+  p{margin:0 0 .7em;}
+  a{color:var(--blue);}
+  .mono{font-family:'Space Mono',ui-monospace,monospace;}
+  code{font-family:'Space Mono',monospace;font-size:.86em;background:#f0eee7;border:1px solid var(--line);padding:1px 5px;}
+
+  .tb-top{border-bottom:2px solid var(--ink);padding:26px 0 14px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .tb-eyebrow{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--red);}
+  .tb-top h1{font-size:clamp(1.5rem,4.4vw,2.4rem);letter-spacing:-.02em;text-transform:uppercase;}
+  .tb-top .sub{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--steel);text-align:right;}
+
+  .intro{border:1px solid var(--line);border-left:5px solid var(--red);background:#faf1f0;
+    padding:14px 18px;margin:22px 0 10px;font-size:.97rem;}
+  .intro b{font-family:'Archivo',sans-serif;}
+
+  nav.index{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;
+    background:rgba(251,250,247,.94);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--ink);margin:18px 0 30px;}
+  nav.index a{flex:1 1 auto;text-align:center;font-family:'Archivo',sans-serif;font-weight:600;
+    font-size:.68rem;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);
+    text-decoration:none;padding:10px 8px;border-right:1px solid var(--line);}
+  nav.index a:last-child{border-right:none;}
+  nav.index a:hover{background:var(--red);color:#fff;}
+
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:36px 0 8px;}
+  .sec-head .nr{font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;color:#fff;
+    background:var(--ink);padding:3px 10px;}
+  .sec-head h2{font-size:1.25rem;text-transform:uppercase;letter-spacing:-.01em;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .sec-head .code{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--steel);
+    letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+
+  .lead{font-size:1rem;color:#3c434a;margin:2px 0 12px;}
+
+  ol.stappen{list-style:none;counter-reset:s;margin:0;padding:0;}
+  ol.stappen>li{counter-increment:s;position:relative;padding:4px 0 14px 46px;margin-bottom:8px;
+    border-bottom:1px dotted var(--line);}
+  ol.stappen>li:last-child{border-bottom:none;}
+  ol.stappen>li::before{content:counter(s);position:absolute;left:0;top:2px;
+    width:30px;height:30px;display:grid;place-content:center;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;color:#fff;background:var(--blue);border-radius:50%;}
+  ol.stappen b{font-family:'Archivo',sans-serif;}
+  ol.stappen ul{margin:.35em 0 0;padding-left:1.1em;}
+  ol.stappen ul li{margin-bottom:.2em;}
+
+  .kaart{border:1px solid var(--line);background:var(--sheet);padding:2px 18px 12px;margin:8px 0 14px;}
+  .kaart h3{font-size:1rem;margin:14px 0 6px;font-family:'Archivo',sans-serif;}
+
+  .callout{border:1px solid var(--line);padding:10px 15px;margin:14px 0;font-size:.94rem;}
+  .callout .lbl{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;
+    font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+  .callout.tip{border-left:5px solid var(--green);background:#f1f5f2;}
+  .callout.tip .lbl{color:var(--green);}
+  .callout.let{border-left:5px solid var(--amber);background:#fdf8ec;}
+  .callout.let .lbl{color:var(--amber);}
+  .callout.info{border-left:5px solid var(--blue);background:#eef4f8;}
+  .callout.info .lbl{color:var(--blue);}
+
+  .ui{font-family:'Space Mono',monospace;font-size:.82em;font-weight:700;
+    background:#eef4f8;border:1px solid #b9d2e4;color:var(--blue);padding:1px 6px;white-space:nowrap;}
+  .pad{font-family:'Space Mono',monospace;font-size:.9em;color:var(--steel);}
+
+  table{border-collapse:collapse;width:100%;background:var(--sheet);font-size:.9rem;margin:8px 0;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top;}
+  th{background:#f4f2ec;font-family:'Archivo',sans-serif;font-weight:600;}
+
+  footer{border-top:2px solid var(--ink);margin-top:40px;padding-top:14px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--steel);}
+
+  .pdf{position:fixed;right:20px;top:20px;z-index:50;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.08em;
+    text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:12px 18px;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .pdf:hover{background:var(--red);}
+  .pdf::before{content:"↓ ";}
+
+  @media (max-width:640px){
+    .sheet{margin:0;border:none;padding:8px;}
+    .frame{padding:0 12px 24px;}
+    .pdf{right:10px;top:10px;padding:9px 12px;font-size:.68rem;}
+    .tb-top .sub{text-align:left;}
+  }
+  @media print{
+    @page{size:A4;margin:14mm;}
+    body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.45;}
+    .sheet{max-width:none;margin:0;padding:0;border:none;box-shadow:none;background:#fff;background-image:none;}
+    .frame{border:none;padding:0;}
+    .pdf,nav.index{display:none!important;}
+    ol.stappen>li,.kaart,.callout,table{break-inside:avoid;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<button class="pdf" onclick="window.print()">Downloaden als PDF</button>
+
+<div class="sheet"><div class="frame">
+
+  <div class="tb-top">
+    <div>
+      <div class="tb-eyebrow">Docentenhandleiding · eerste keer</div>
+      <h1>Bambu Studio &amp; Onshape-export</h1>
+    </div>
+    <div class="sub">Van Onshape naar 3D-print of lasersnijder<br>HAVO-P Technologie</div>
+  </div>
+
+  <div class="intro">
+    <b>Voor docenten, bedoeld voor de eerste keer.</b> Deze handleiding neemt je stap voor stap
+    mee: je Onshape-tekening exporteren (voor de 3D-printer én de lasersnijder), Bambu Studio
+    downloaden en installeren, je eerste model importeren, slicen en naar de printer sturen.
+    Hoort bij de <a href="docentenhandleiding.html">docentenhandleiding</a>, maar staat er los van.
+  </div>
+  <div class="callout let"><span class="lbl">Controlepunt · versies</span>
+    Deze uitleg is gebaseerd op algemene kennis van Bambu Studio en Onshape. Beide worden vaak
+    bijgewerkt, dus <b>exacte knopnamen en menu's kunnen per versie iets afwijken.</b> Loop de
+    stappen één keer zelf door op jullie eigen versie en pas waar nodig aan. Werken jullie met een
+    <b>niet-Bambu printer</b>? Dan is <b>OrcaSlicer</b> (een afsplitsing van Bambu Studio) vaak
+    handiger — de werkwijze hieronder is vrijwel identiek.
+  </div>
+
+  <nav class="index" aria-label="Inhoud">
+    <a href="#onshape">1 · Onshape-export</a>
+    <a href="#installeren">2 · Installeren</a>
+    <a href="#eerstekeer">3 · Eerste keer</a>
+    <a href="#importeren">4 · Importeren</a>
+    <a href="#slicen">5 · Slicen</a>
+    <a href="#printer">6 · Naar de printer</a>
+    <a href="#checklist">7 · Checklist</a>
+  </nav>
+
+  <!-- 1. ONSHAPE -->
+  <section id="onshape">
+    <div class="sec-head"><span class="nr">1</span><h2>Onshape: je tekening exporteren</h2><span class="rule"></span><span class="code">STL/3MF &amp; DXF</span></div>
+    <p class="lead">Uit Onshape haal je twee verschillende bestanden, afhankelijk van de machine: een <b>3D-bestand</b> (STL of 3MF) voor de 3D-printer, en een <b>2D-bestand</b> (DXF) voor de lasersnijder.</p>
+
+    <div class="kaart">
+      <h3>A · Voor de 3D-printer — STL of 3MF</h3>
+      <ol class="stappen">
+        <li><b>Open je Part Studio</b> met het onderdeel dat je wilt printen.</li>
+        <li>In de <b>onderdelenlijst</b> (linksonder): <b>rechtermuisklik op het onderdeel</b> → kies <span class="ui">Export</span>.<br>
+          <span class="pad">Wil je meerdere onderdelen samen? Rechtsklik op het tabblad van het Part Studio in plaats van op één onderdeel.</span></li>
+        <li>Zet in het exportvenster:
+          <ul>
+            <li><b>Format:</b> <span class="ui">STL</span> (of <span class="ui">3MF</span> als je die keuze hebt — 3MF bewaart meer info).</li>
+            <li><b>Units:</b> <span class="ui">Millimeter</span> — heel belangrijk, anders komt je model 25× te groot of te klein binnen.</li>
+            <li><b>STL Format:</b> <span class="ui">Binary</span> (kleiner bestand).</li>
+            <li><b>Resolution:</b> <span class="ui">Fine</span> voor ronde vormen; <span class="ui">Medium</span> is meestal genoeg.</li>
+          </ul>
+        </li>
+        <li>Kies <span class="ui">Download</span> en bewaar het <code>.stl</code>- (of <code>.3mf</code>-)bestand op een vindbare plek.</li>
+      </ol>
+      <div class="callout tip"><span class="lbl">Tip</span> Geef het bestand een duidelijke naam met je eigen naam + versie, bijv. <code>klem_jan_v1.stl</code>. Dat scheelt zoeken bij 24 leerlingen op één printer.</div>
+    </div>
+
+    <div class="kaart">
+      <h3>B · Voor de lasersnijder — DXF (2D)</h3>
+      <p>De lasersnijder werkt met een <b>platte 2D-omtrek</b>, niet met een 3D-model. Je exporteert daarom één vlak of een schets als DXF. Let op: de lasersnijder gebruikt zijn <b>eigen software</b> (bijv. LightBurn of de software van jullie machine) — Bambu Studio is <b>alleen</b> voor 3D-printen.</p>
+      <ol class="stappen">
+        <li><b>Selecteer het platte vlak</b> dat je wilt snijden (het vlak dat straks op de plaat ligt).</li>
+        <li><b>Rechtermuisklik op dat vlak</b> → <span class="ui">Export as DXF/DWG</span> (of <span class="ui">Export</span> → Format <span class="ui">DXF</span>).</li>
+        <li>Zet <b>Units</b> op <span class="ui">Millimeter</span> en download het <code>.dxf</code>-bestand.</li>
+        <li>Open de DXF in de <b>lasersoftware</b>, controleer de maat (teken een bekend detail na), en stel daar snelheid/vermogen in per materiaal.</li>
+      </ol>
+      <div class="callout info"><span class="lbl">Alternatief</span> Voor nettere maatvoering kun je in Onshape ook een <b>Drawing</b> maken (aanzicht invoegen) en die als DXF/DWG exporteren. Voor een simpele omtrek is het vlak-exporteren sneller.</div>
+    </div>
+  </section>
+
+  <!-- 2. INSTALLEREN -->
+  <section id="installeren">
+    <div class="sec-head"><span class="nr">2</span><h2>Bambu Studio downloaden &amp; installeren</h2><span class="rule"></span><span class="code">Eenmalig</span></div>
+    <ol class="stappen">
+      <li>Ga naar <b>bambulab.com</b> → <span class="ui">Download</span> → <span class="ui">Bambu Studio</span> (gratis).<br>
+        <span class="pad">Directe pagina: bambulab.com/download/studio</span></li>
+      <li>Kies de juiste versie: <b>Windows</b> (10/11, 64-bit), <b>macOS</b> (11 of nieuwer) of <b>Linux</b>.</li>
+      <li><b>Windows:</b> open het <code>.exe</code>-installatiebestand en volg de wizard (Volgende → Installeren). <br>
+        <b>macOS:</b> open de <code>.dmg</code> en sleep <b>Bambu Studio</b> naar de map <b>Programma's</b>. Eerste keer openen: rechtsklik → <span class="ui">Open</span> om de beveiligingsmelding weg te klikken.</li>
+      <li>Start Bambu Studio.</li>
+    </ol>
+    <div class="callout let"><span class="lbl">Op schoollaptops</span> Installeren vraagt vaak <b>beheerdersrechten</b>. Regel dit vooraf met ICT, of laat de software als schoolpakket uitrollen — anders loop je de eerste les vast op 24 installaties.</div>
+  </section>
+
+  <!-- 3. EERSTE KEER -->
+  <section id="eerstekeer">
+    <div class="sec-head"><span class="nr">3</span><h2>De eerste keer opstarten</h2><span class="rule"></span><span class="code">Printer + filament instellen</span></div>
+    <p class="lead">De eerste keer verschijnt een korte installatiewizard. Je stelt in met welke printer en welk materiaal je werkt.</p>
+    <ol class="stappen">
+      <li><b>Regio:</b> kies je regio (Europa).</li>
+      <li><b>Inloggen (optioneel):</b> een Bambu-account is alleen nodig voor cloud/afstandsbediening. Voor lokaal slicen kun je dit <b>overslaan</b>.</li>
+      <li><b>Printer kiezen:</b> selecteer jullie printermodel.
+        <ul>
+          <li><b>Bambu Lab printer</b> (A1, A1 mini, P1P, P1S, X1, X1C…): kies het exacte model — dan kloppen bouwvolume en profielen meteen.</li>
+          <li><b>Andere printer:</b> Bambu Studio ondersteunt vooral Bambu-printers. Heb je een ander merk, gebruik dan <b>OrcaSlicer</b> of voeg een profiel toe dat bij jouw printer past. Controleer altijd het <b>bouwvolume</b> (bij dit project max 120 × 120 × 120 mm per onderdeel — dat past ruim).</li>
+        </ul>
+      </li>
+      <li><b>Filament kiezen:</b> vink de materialen aan die jullie gebruiken — <b>PLA</b> (prototypes) en <b>PETG</b> (eindproducten). Merk mag "Generic PLA / Generic PETG" zijn.</li>
+      <li>Rond de wizard af. Je komt in het hoofdscherm met bovenaan de tabs <span class="ui">Prepare</span>, <span class="ui">Preview</span> en <span class="ui">Device</span>.</li>
+    </ol>
+  </section>
+
+  <!-- 4. IMPORTEREN -->
+  <section id="importeren">
+    <div class="sec-head"><span class="nr">4</span><h2>Je eerste model importeren</h2><span class="rule"></span><span class="code">STL/3MF op de plaat</span></div>
+    <ol class="stappen">
+      <li>Zorg dat je op het tabblad <span class="ui">Prepare</span> staat.</li>
+      <li><b>Importeer je model:</b> <span class="ui">File</span> → <span class="ui">Import</span> → <span class="ui">Import 3MF/STL…</span>, of <b>sleep</b> het <code>.stl</code>/<code>.3mf</code>-bestand gewoon op de bouwplaat.</li>
+      <li><b>Controleer de maat:</b> klik het model aan; rechts (of onderin) zie je de afmetingen. Klopt het niet (bijv. 25× te klein)? Dan zijn bij het exporteren de <b>units</b> misgegaan — exporteer opnieuw in millimeter, of schaal met de tool <span class="ui">Scale</span>.</li>
+      <li><b>Leg het goed neer</b> met de linker toolbar:
+        <ul>
+          <li><span class="ui">Move</span> — verplaatsen op de plaat.</li>
+          <li><span class="ui">Rotate</span> — draaien; hiermee bepaal je de <b>printoriëntatie</b>.</li>
+          <li><span class="ui">Place on face</span> — klik een vlak aan om dat plat op de plaat te leggen.</li>
+        </ul>
+      </li>
+      <li>Meerdere onderdelen? Gebruik <span class="ui">Arrange</span> (het raster-icoon) om ze automatisch netjes op de plaat te schikken.</li>
+    </ol>
+    <div class="callout info"><span class="lbl">Koppeling met het project</span> De printoriëntatie is een <b>ontwerpkeuze</b>, geen toeval: leg het onderdeel zó neer dat de laagjes niet loodrecht op de belasting staan (zie de denkvraag over oriëntatie, les 5). Draai dus bewust met <span class="ui">Rotate</span>.</div>
+  </section>
+
+  <!-- 5. SLICEN -->
+  <section id="slicen">
+    <div class="sec-head"><span class="nr">5</span><h2>Slicen: de instellingen</h2><span class="rule"></span><span class="code">Van model naar printinstructie</span></div>
+    <p class="lead">"Slicen" is het omzetten van je 3D-model naar laagjes die de printer begrijpt. Rechts in beeld staan de instellingen. Voor dit project zijn deze het belangrijkst:</p>
+
+    <table>
+      <thead><tr><th>Instelling</th><th>Waar</th><th>Projectrichtlijn</th></tr></thead>
+      <tbody>
+        <tr><td><b>Filament</b></td><td>Dropdown bovenaan</td><td>Prototype: <b>PLA</b> · eindproduct: <b>PETG</b></td></tr>
+        <tr><td><b>Layer height</b> (laaghoogte)</td><td>Process → <span class="ui">Quality</span>, of de dropdown <span class="ui">0.20mm Standard</span></td><td>0,20 mm is prima voor de eerste keer</td></tr>
+        <tr><td><b>Wall loops</b> (wanden)</td><td>Process → <span class="ui">Strength</span></td><td><b>4 wanden</b></td></tr>
+        <tr><td><b>Sparse infill density</b> (vulling)</td><td>Process → <span class="ui">Strength</span></td><td><b>30–40 %</b> (patroon Grid of Gyroid)</td></tr>
+        <tr><td><b>Support</b></td><td>Process → <span class="ui">Support</span></td><td>Alleen aan als het echt moet; <b>nooit onder het klemvlak</b></td></tr>
+        <tr><td><b>Brim</b> (hechtrand)</td><td>Process → <span class="ui">Others</span></td><td>Aanzetten bij kleine contactvlakken die loslaten</td></tr>
+      </tbody>
+    </table>
+
+    <ol class="stappen">
+      <li><b>Kies je filament</b> in de dropdown bovenaan (PLA of PETG).</li>
+      <li><b>Stel de sterkte in:</b> ga naar <span class="ui">Process</span> → <span class="ui">Strength</span> en zet <b>Wall loops = 4</b> en <b>Sparse infill = 30–40 %</b>.</li>
+      <li><b>Support:</b> laat uit als je het weg-ontworpen hebt. Moet het toch, kies <span class="ui">Support</span> → type <span class="ui">Tree(auto)</span> of <span class="ui">Normal(auto)</span> — maar zorg dat het <b>klemvlak vrij blijft</b> (kantel het onderdeel).</li>
+      <li>Klik rechtsonder op <span class="ui">Slice plate</span>.</li>
+      <li>Bekijk het resultaat op het tabblad <span class="ui">Preview</span>: met de <b>schuifbalk</b> loop je laag voor laag door de print. Rechtsonder zie je de <b>geschatte printtijd</b> en het <b>materiaalverbruik</b>.</li>
+      <li><b>Controleer de printtijd:</b> bij dit project geldt <b>max 4 uur per onderdeel</b>. Te lang? Verlaag de vulling, kies een grotere laaghoogte (0,28 mm) of splits het onderdeel.</li>
+    </ol>
+    <div class="callout let"><span class="lbl">Veelgemaakte fout</span> Vergeten te <b>slicen</b> na een wijziging. Verander je een instelling, dan moet je opnieuw op <span class="ui">Slice plate</span> klikken — anders stuur je de oude versie naar de printer.</div>
+  </section>
+
+  <!-- 6. NAAR DE PRINTER -->
+  <section id="printer">
+    <div class="sec-head"><span class="nr">6</span><h2>Naar de printer sturen</h2><span class="rule"></span><span class="code">Netwerk of SD-kaart</span></div>
+    <p class="lead">Er zijn twee manieren om de gesliceerde print bij de printer te krijgen.</p>
+    <div class="kaart">
+      <h3>A · Via het netwerk (Bambu-printer)</h3>
+      <ol class="stappen">
+        <li>Na het slicen: klik rechtsonder op <span class="ui">Print</span> (of <span class="ui">Print plate</span>).</li>
+        <li>Kies de juiste <b>printer</b> uit de lijst. Staat de printer in <b>LAN-modus</b>, dan heb je soms een <b>toegangscode</b> nodig (die staat op het schermpje van de printer).</li>
+        <li>Verstuur en volg de voortgang op het tabblad <span class="ui">Device</span>.</li>
+      </ol>
+    </div>
+    <div class="kaart">
+      <h3>B · Via een SD-/microSD-kaart</h3>
+      <ol class="stappen">
+        <li>Na het slicen: klik op <span class="ui">Export plate sliced file</span> (het diskette-icoon) en bewaar het bestand op de <b>(micro)SD-kaart</b>.</li>
+        <li>Stop de kaart in de printer, kies het bestand op het schermpje en start de print.</li>
+      </ol>
+    </div>
+    <div class="callout info"><span class="lbl">Klassenmanagement</span> Bij één printer en veel leerlingen: laat leerlingen hun bestand inleveren (of op een gedeelde map zetten) met een <b>duidelijke naam</b>, en print jij of een printbeheerder in batches. Reken op printen <b>tussen de lessen door</b>.</div>
+  </section>
+
+  <!-- 7. CHECKLIST -->
+  <section id="checklist">
+    <div class="sec-head"><span class="nr">7</span><h2>Eerste-keer checklist &amp; veelvoorkomende problemen</h2><span class="rule"></span><span class="code">Snelhulp</span></div>
+    <div class="kaart">
+      <h3>Vóór je print — snelle check</h3>
+      <ul>
+        <li>Model op <b>millimeter</b> geïmporteerd (maat klopt)?</li>
+        <li>Onderdeel binnen het <b>bouwvolume</b> en goed op de plaat?</li>
+        <li>Oriëntatie bewust gekozen (laagjes niet loodrecht op de belasting)?</li>
+        <li>Filament = <b>PLA</b> (prototype) of <b>PETG</b> (eindproduct)?</li>
+        <li><b>4 wanden</b>, <b>30–40 % vulling</b>, geen support op het klemvlak?</li>
+        <li><b>Geslicet</b> na de laatste wijziging, printtijd <b>≤ 4 uur</b>?</li>
+      </ul>
+    </div>
+    <div class="kaart">
+      <h3>Veelvoorkomende problemen</h3>
+      <table>
+        <thead><tr><th>Probleem</th><th>Waarschijnlijke oorzaak / oplossing</th></tr></thead>
+        <tbody>
+          <tr><td>Model komt piepklein binnen</td><td>Bij export niet in mm gezet. Opnieuw exporteren in millimeter, of schalen.</td></tr>
+          <tr><td>Print laat los van de plaat</td><td>Zet een <b>Brim</b> aan (Others), controleer bedtemperatuur/hechting.</td></tr>
+          <tr><td>Ruw, hobbelig oppervlak op het klemvlak</td><td>Er zat <b>support</b> onder. Kantel het onderdeel zodat het klemvlak vrij blijft.</td></tr>
+          <tr><td>Print duurt veel te lang</td><td>Vulling omlaag, grotere laaghoogte (0,28 mm), of onderdeel splitsen.</td></tr>
+          <tr><td>PETG hecht slecht / veel fijnstof</td><td>Ventileer de ruimte; PETG print kieskeuriger dan PLA — reken op meer faal.</td></tr>
+          <tr><td>Onderdeel breekt makkelijk bij een bocht</td><td>Verkeerde oriëntatie: laagjes staan loodrecht op de trekrichting. Draai het onderdeel.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout tip"><span class="lbl">Reken op faal</span> Een eerste print die meteen perfect is, is eerder uitzondering dan regel. Plan reserve-printtijd en gebruik de testring om toleranties te checken vóór de grote print van 4 uur.</div>
+  </section>
+
+  <footer>
+    <span>Bambu Studio &amp; Onshape-export · docentenhandleiding</span>
+    <span>Eerste keer · niet-versiegebonden</span>
+    <span>HAVO-P Technologie</span>
+  </footer>
+
+</div></div>
+
+</body>
+</html>
