@@ -46,7 +46,12 @@
     display:block;width:100%;border:none;background:transparent;color:var(--ink);padding:2px 0;
     font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;resize:none;}
   .idcel input:focus,.idcel textarea:focus,.slot textarea:focus,.cijfer input:focus{outline:2px solid var(--blue);outline-offset:1px;}
-  .idcel textarea{height:3.2em;line-height:1.5;}
+  .idcel textarea{min-height:3.2em;line-height:1.5;}
+  /* tekstvakken groeien mee met de tekst (zie script), dus nooit een scrollbalk */
+  .idcel textarea,.slot textarea{overflow:hidden;}
+  /* kopie van de getypte tekst voor de afdruk: een tekstvak kan niet over de pagina meegroeien, een gewoon blok wel */
+  .afdruk{display:none;white-space:pre-wrap;overflow-wrap:break-word;color:var(--ink);padding:2px 0;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;line-height:1.5;}
 
   .uitleg{font-size:.9rem;color:#3c434a;margin:14px 0 12px;}
 
@@ -96,7 +101,7 @@
   .slot{display:grid;grid-template-columns:1fr 190px;border:2px solid var(--ink);background:#fff;break-inside:avoid;margin-top:16px;}
   .slot > div{padding:10px 14px;}
   .slot .opm{border-right:2px solid var(--ink);}
-  .slot textarea{height:7em;line-height:1.5;font-weight:500;font-size:.95rem;}
+  .slot textarea{min-height:7em;line-height:1.5;font-weight:500;font-size:.95rem;}
   .cijfer .veldlabel{color:var(--ink);font-weight:700;}
   .cijfer input{font-size:2.6rem;text-align:center;height:1.6em;}
   .berekend{display:block;text-align:center;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--steel);min-height:1.4em;}
@@ -138,7 +143,10 @@
     .tb-top h1{font-size:17pt;}
     .idgrid{border-color:#000;}
     .idcel{border-color:#000;padding:5px 9px;}
-    .idcel textarea,.idcel input{height:15mm;}
+    .idcel textarea,.idcel input{height:15mm!important;min-height:0;}
+    .gevuld > textarea{display:none!important;}
+    .gevuld > .afdruk{display:block;}
+    .idcel .afdruk{min-height:15mm;}
     .uitleg{font-size:9pt;margin:6px 0 7px;}
     .crit{margin-bottom:9px;}
     .crit-head{padding:5px 9px;}
@@ -164,7 +172,9 @@
     table.som td.bij,table.som td.totaal{min-width:24mm;}
     .slot{margin-top:14px;grid-template-columns:1fr 46mm;}
     .slot > div{padding:7px 10px;}
-    .slot textarea{height:110mm;font-size:10pt;}
+    .slot textarea{height:110mm!important;min-height:0;font-size:10pt;}
+    .opm .afdruk{min-height:110mm;font-size:10pt;font-weight:500;}
+    .slot{break-inside:auto;}
     .cijfer input{height:26mm;font-size:28pt;}
     .berekend{font-size:6.6pt;}
     footer{margin-top:10px;padding-top:5px;font-size:6pt;}
@@ -190,7 +200,7 @@
   </div>
 
   <div class="idgrid">
-    <div class="idcel"><label class="veldlabel" for="b-namen">Namen leerlingen</label><textarea id="b-namen" rows="2" autocomplete="off"></textarea></div>
+    <div class="idcel"><label class="veldlabel" for="b-namen">Namen leerlingen</label><textarea id="b-namen" rows="2" autocomplete="off"></textarea><div class="afdruk" aria-hidden="true"></div></div>
     <div class="idcel"><label class="veldlabel" for="b-klas">Klas</label><input id="b-klas" type="text" autocomplete="off"></div>
     <div class="idcel"><label class="veldlabel" for="b-datum">Datum</label><input id="b-datum" type="text" autocomplete="off"></div>
   </div>
@@ -390,7 +400,7 @@
     <p class="hint" id="hint"></p>
 
     <div class="slot">
-      <div class="opm"><label class="veldlabel" for="b-opm">Opmerkingen</label><textarea id="b-opm" rows="4" autocomplete="off"></textarea></div>
+      <div class="opm"><label class="veldlabel" for="b-opm">Opmerkingen</label><textarea id="b-opm" rows="4" autocomplete="off"></textarea><div class="afdruk" aria-hidden="true"></div></div>
       <div class="cijfer"><label class="veldlabel" for="b-cijfer">Cijfer</label><input id="b-cijfer" type="text" inputmode="decimal" autocomplete="off"><span class="berekend" id="berekend"></span></div>
     </div>
   </div>
@@ -446,6 +456,18 @@
     if(!zelfIngevuld) cijfer.value=compleet?eindcijfer(som):'';
   }
 
+  /* Tekstvakken: meegroeien op het scherm + kopie voor de afdruk, zodat lange tekst niet wegvalt in de PDF. */
+  var tekstvakken=[].slice.call(document.querySelectorAll('.idcel textarea,.slot textarea'));
+  function pasAan(ta){
+    var gevuld=(ta.value.trim()!=='');
+    ta.style.height='';
+    if(gevuld) ta.style.height=ta.scrollHeight+'px';
+    ta.parentNode.classList.toggle('gevuld',gevuld);
+    ta.parentNode.querySelector('.afdruk').textContent=ta.value;
+  }
+  tekstvakken.forEach(function(ta){ ta.addEventListener('input',function(){ pasAan(ta); }); pasAan(ta); });
+  window.addEventListener('resize',function(){ tekstvakken.forEach(pasAan); });
+
   vakjes.forEach(function(v){ v.addEventListener('change',reken); });
   cijfer.addEventListener('input',function(){
     zelfIngevuld=(cijfer.value.trim()!=='');
@@ -456,6 +478,7 @@
     vakjes.forEach(function(v){ v.checked=false; });
     ['b-namen','b-klas','b-datum','b-opm','b-cijfer'].forEach(function(id){ document.getElementById(id).value=''; });
     zelfIngevuld=false;
+    tekstvakken.forEach(pasAan);
     reken();
     window.scrollTo(0,0);
   });

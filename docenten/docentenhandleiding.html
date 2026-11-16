@@ -148,6 +148,16 @@
   .dek-sterk{color:var(--green);border-color:var(--green);background:#f1f5f2;}
   .dek-deels{color:var(--amber);border-color:var(--amber);background:#fdf8ec;}
   .dek-niet{color:var(--red);border-color:var(--red);background:#faf1f0;}
+  /* print: brede tabellen passen op A4 — geen scrollvak, geen vaste minimumbreedte.
+     Staat onderaan, zodat het de regels voor .scroll en table.wide hierboven overschrijft. */
+  @media print{
+    .scroll{overflow:visible;}
+    table.wide{min-width:0;width:100%;}
+    table.wide th,table.wide td{overflow-wrap:break-word;}
+    tr{break-inside:avoid;}
+    thead{display:table-header-group;}
+    .sec-head{break-after:avoid;}   /* kop niet los onderaan een pagina */
+  }
 </style>
 </head>
 <body>
